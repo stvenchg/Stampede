@@ -1,4 +1,4 @@
 # Terraria-Like
-Projet universitaire de reproduction du jeu Terraria en Java
+Projet universitaire d'un jeu semblable à Terraria en Java.
 Membres du groupe : Philippe SANTOS, Steven CHING, Yanis HAMANI
 
