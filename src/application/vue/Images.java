@@ -10,7 +10,7 @@ public class Images {
 	private String CheminRelatifImages;
 	private Image[] tableauImage;
 	private int tailleDef;
-	private int nbImage;
+	private int nbImages;
 
 	public Images(String cheminRelatif) {
 		this.CheminRelatifImages = cheminRelatif;
@@ -26,26 +26,26 @@ public class Images {
 	// Création d'un tableau de l'objet Image
 	private void creerTableauImage() {
 		URL chemin = getClass().getResource(CheminRelatifImages); // transformation d'un chemin String en URL
-		nbImage = new File(chemin.getFile()).listFiles().length; // récupération du nombre d'images présentes dans le
+		nbImages = new File(chemin.getFile()).listFiles().length; // récupération du nombre d'images présentes dans le
 																	// dossier
-		this.tableauImage = new Image[nbImage]; // Création du tableau d'Image
+		this.tableauImage = new Image[nbImages]; // Création du tableau d'Image
 
-		for (int i = 0; i < tableauImage.length; i++)
+		for (int i = 0; i < nbImages; i++)
 			tableauImage[i] = new Image(chemin.toString() + i + ".png"); // Ajout de chaque Image présente dans le
 																			// dossier dans le tableau d'Image
 	}
 
 	private void creerTableauImageRedimentioner() {
 		URL chemin = getClass().getResource(CheminRelatifImages);
-		nbImage = new File(chemin.getFile()).listFiles().length;
-		this.tableauImage = new Image[nbImage];
+		nbImages = new File(chemin.getFile()).listFiles().length;
+		this.tableauImage = new Image[nbImages];
 
-		for (int i = 0; i < tableauImage.length; i++)
+		for (int i = 0; i < nbImages; i++)
 			tableauImage[i] = new Image(chemin.toString() + i + ".png", tailleDef, tailleDef, true, false);
 	}
 
-	public Image[] gettableauImageObjets() {
-		return tableauImage;
+	public int getNombreImages() {
+		return nbImages;
 	}
 
 	public Image getImage(int numero) {

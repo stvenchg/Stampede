@@ -32,6 +32,15 @@ public class Environnement {
 		return largeur;
 	}
 	
+	public int getPosition(int x, int y) {
+		if(y>=16)
+			return (y/16 * 64 + x/16);
+		else if(x>=16)
+			return (x/16);
+		else
+			return x;
+	}
+	
 	public Environnement getEnvironement() {
 		return this;
 	}	

@@ -1,6 +1,5 @@
 package application.controleur;
 
-import application.modele.Joueur;
 import application.modele.Personnage;
 import application.vue.JoueurVue;
 import application.vue.DeplacementAnimation;
@@ -11,10 +10,12 @@ public class KeyPressed implements EventHandler<KeyEvent> {
 
 	private Personnage joueur;
 	private JoueurVue joueurVue;
+	private Controleur controleur;
 
-	public KeyPressed(Personnage joueur2, JoueurVue joueurVue) {
+	public KeyPressed(Personnage joueur2, JoueurVue joueurVue, Controleur controleur) {
 		this.joueur = joueur2;
 		this.joueurVue = joueurVue;
+		this.controleur = controleur;
 	}
 
 	public void handle(KeyEvent event) {
@@ -44,13 +45,12 @@ public class KeyPressed implements EventHandler<KeyEvent> {
 			break;
 		case F1:	
 			joueur.perdreVie(1);
-			System.out.println("Le joueur perd un demi coeur.");
 			break;
 		case F2:	
 			joueur.ajouterVie(1);
-			System.out.println("Le joueur gagne un demi coeur.");
 			break;
-			
+		case TAB:
+			controleur.getInventaireVue().affichageInventaire();
 		default:
 			break;
 			
