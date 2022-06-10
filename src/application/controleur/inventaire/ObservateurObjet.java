@@ -85,6 +85,7 @@ public class ObservateurObjet implements ChangeListener<Number>{
 		objetVue.setOnMousePressed(mouseEvent -> {
 			if(mouseEvent.getButton() == MouseButton.PRIMARY){
 				joueur.prendreEnMain(obj);
+				inventaireVue.affichageInventaire();
 			}
 		});
 
