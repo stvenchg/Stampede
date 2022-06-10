@@ -87,7 +87,7 @@ public class CarteVue {
 		}
 
 		env.getMap().remove(position);
-		env.getMap().add(position, 7);
+		env.getMap().add(position, 0);
 		panneauJeu.getChildren().remove(position);
 		panneauJeu.getChildren().add(position, new ImageView(imagesTilesMap.getImage(env.getMap().get(position))));
 		ajouterEvents((ImageView) panneauJeu.getChildren().get(panneauJeu.getChildren().size() - 1));

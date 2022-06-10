@@ -9,14 +9,26 @@ public abstract class Personnage {
 	private SimpleIntegerProperty Y;
 	public SimpleIntegerProperty direction;
 	private Environnement env;
-	private SimpleIntegerProperty vieProperty;
+	private SimpleIntegerProperty vie;
 
-	public Personnage(Environnement env) {
+	public Personnage(Environnement env, int vie) {
 		this.env = env;
 		this.X = new SimpleIntegerProperty();
 		this.Y = new SimpleIntegerProperty();
 		this.direction = new SimpleIntegerProperty(1);
-		this.vieProperty = new SimpleIntegerProperty(12);
+		this.vie = new SimpleIntegerProperty(vie);
+	}
+	
+//	public void allerAGauche() {
+//		this.setX(getX()-1);
+//	}
+//	
+//	public void allerADroite() {
+//		this.setX(getX()+1);
+//	}
+
+	public void gravite() {
+		this.setY(this.getY()+5);
 	}
 
 	public int getX() {
@@ -42,6 +54,10 @@ public abstract class Personnage {
 	public SimpleIntegerProperty yProperty() {
 		return this.Y;
 	}
+	
+	public int getVie() {
+		return this.vie.getValue();
+	}
 
 	public void setX(int valeur) {
 		this.X.setValue(valeur);
@@ -56,18 +72,30 @@ public abstract class Personnage {
 	}
 	
 	public final IntegerProperty vieProperty() {
-		return this.vieProperty;
+		return this.vie;
 	}
 	
 	public void perdreVie(int nombre) {
-		if(vieProperty.getValue() - nombre > 0)
-			vieProperty.setValue(vieProperty.getValue() - nombre);
+		if(vie.getValue() - nombre >= -2)
+			vie.setValue(vie.getValue() - nombre);
 	}
 	
 	public void ajouterVie(int nombre) {
-		if(vieProperty.getValue() + nombre <= 12)
-			vieProperty.setValue(vieProperty.getValue() + nombre);
+		if(vie.getValue() + nombre <= 12)
+			vie.setValue(vie.getValue() + nombre);
 	}
 	
+	public void setVie(int nombre) {
+		vie.setValue(nombre);
+	}
 	
+	public abstract void attaque(Personnage perso);
+	
+	public boolean estVivant() {
+		return this.getVie()>0;
+	}
+	
+	public void meurt() {
+		this.vie.setValue(0);
+	}
 }
