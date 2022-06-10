@@ -40,7 +40,10 @@ public class Environnement {
 		else
 			return x;
 	}
-	
+
+	public Joueur getJoueur(){
+		return ((Joueur) joueur);
+	}
 	public Environnement getEnvironement() {
 		return this;
 	}	

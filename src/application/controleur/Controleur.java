@@ -1,20 +1,14 @@
 package application.controleur;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import application.controleur.inventaire.ObservableObjet;
-import application.controleur.inventaire.ObservableResources;
+import application.controleur.inventaire.ObservateurObjet;
+import application.controleur.inventaire.ObservateurResources;
 import application.modele.Environnement;
 import application.modele.Joueur;
 import application.modele.Personnage;
 import application.modele.RobotFantassin;
-import application.modele.objet.Objet;
-import application.modele.objet.Outils.Pioche;
-import application.modele.objet.armes.Epee;
-import application.modele.objet.materiaux.MineraiDeFer;
 import application.vue.CarteVue;
 import application.vue.JoueurVue;
 import application.vue.RobotFantassinVue;
@@ -22,14 +16,11 @@ import application.vue.VieVue;
 import application.vue.inventaire.InventaireVue;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.collections.ListChangeListener;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
@@ -44,6 +35,10 @@ public class Controleur implements Initializable {
 	private Personnage robotFantassin;
 	private Timeline gameLoop;
 	private ObservableVie obsVie;
+
+	private BooleanProperty mine;
+
+	private int tempInit;
 	private JoueurVue joueurVue;
 	private VieVue vieVue;
 	private CarteVue carteVue;
@@ -62,6 +57,7 @@ public class Controleur implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		this.mine = new SimpleBooleanProperty(false);
 		initialiserVariables();
 		faireBindEtListener();
 		insererImagesPaneCentral();
@@ -73,10 +69,12 @@ public class Controleur implements Initializable {
 		root.addEventHandler(KeyEvent.KEY_PRESSED, new KeyPressed(joueur, joueurVue, this));
 		root.addEventHandler(KeyEvent.KEY_RELEASED, new KeyReleased(this));
 		joueur.getInventaire().ajouterObjet(0, 6);
-		joueur.getInventaire().ajouterObjet(2, 93*5);
+		joueur.getInventaire().ajouterObjet(2, 93);
 		joueur.getInventaire().ajouterObjet(1, 3);
+		joueur.getInventaire().ajouterObjet(3, 7);
 		//joueur.getInventaire().supprimerObjet(2, 5);
 		joueur.getInventaire().supprimerObjet(0, 3);
+		joueur.getInventaire().ajouterObjet(2, 93);
 	}
 
 	private void initGameLoop() {
@@ -126,6 +124,27 @@ public class Controleur implements Initializable {
 		
 		joueurVue.setScaleX(joueur.getDirection());
 		robotFantassinVue.setScaleX(robotFantassin.getDirection());
+
+		casserBlokMinage();
+
+	}
+
+	private void casserBlokMinage(){
+		if(mine.getValue()){
+			if(tempInit == 0){
+				tempInit = temps;
+			}else {
+				if(temps - tempInit > 500){
+					System.out.println("j'ai fini'");
+					tempInit = 0;
+					mine.setValue(false);
+				}else{
+					System.out.println("je mine encore");
+				}
+			}
+		}else{
+			tempInit = 0;
+		}
 	}
 
 	private void initialiserVariables() {
@@ -133,10 +152,10 @@ public class Controleur implements Initializable {
 		this.env = new Environnement();
 
 		// création de la vue de la map
-		this.carteVue = new CarteVue(env, panneauJeu, 56, 31);
+		this.carteVue = new CarteVue(this, env, panneauJeu, 56, 31);
 
 		// Création du joueur et de la vue du joueur
-		this.joueur = new Joueur();
+		this.joueur = env.getJoueur();
 		this.joueurVue = new JoueurVue();
 
 		// Création de la vue de la vie avec l'observable
@@ -162,9 +181,13 @@ public class Controleur implements Initializable {
 		this.robotFantassinVue.translateYProperty().bindBidirectional(this.robotFantassin.yProperty());
 		
 		//Creation des Listeners pour InventaireVue
-		joueur.getInventaire().getObjet(0).RessourceProperty().addListener(new ObservableObjet(joueur.getInventaire().getObjet(0), inventaireVue));
-		joueur.getInventaire().getObjet(1).RessourceProperty().addListener(new ObservableObjet(joueur.getInventaire().getObjet(1), inventaireVue));
-		joueur.getInventaire().getObjet(2).RessourceProperty().addListener(new ObservableResources(joueur.getInventaire().getObjet(2), inventaireVue));
+		joueur.getInventaire().getObjet(0).objetProperty().addListener(new ObservateurObjet(joueur.getInventaire().getObjet(0), inventaireVue, env.getJoueur()));
+		joueur.getInventaire().getObjet(1).objetProperty().addListener(new ObservateurObjet(joueur.getInventaire().getObjet(1), inventaireVue, env.getJoueur()));
+		joueur.getInventaire().getObjet(2).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(2), inventaireVue, env.getJoueur()));
+		joueur.getInventaire().getObjet(3).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(3), inventaireVue, env.getJoueur()));
+
+		//Bin CarteVue
+		carteVue.mineProperty().bindBidirectional(mine);
 	}
 
 	private void insererImagesPaneCentral() {
@@ -187,5 +210,25 @@ public class Controleur implements Initializable {
 	
 	public InventaireVue getInventaireVue() {
 		return inventaireVue;
+	}
+
+	public Environnement getEnv() {
+		return env;
+	}
+
+	public Joueur getJoueur() {
+		return joueur;
+	}
+
+	public JoueurVue getJoueurVue() {
+		return joueurVue;
+	}
+
+	public CarteVue getCarteVue() {
+		return carteVue;
+	}
+
+	public int getTemps(){
+		return temps;
 	}
 }

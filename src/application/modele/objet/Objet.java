@@ -7,12 +7,12 @@ public abstract class Objet {
 	
 	private Integer objetNumero;
 	private String nom;
-	private IntegerProperty nbRessource;
+	private IntegerProperty nbObjet;
 	
 	public Objet(int numero, String nom, int nbRes) {
 		this.objetNumero = numero;
 		this.nom = nom;
-		this.nbRessource = new SimpleIntegerProperty(nbRes);
+		this.nbObjet = new SimpleIntegerProperty(nbRes);
 	}
 	
 	public abstract void lacher();
@@ -32,15 +32,15 @@ public abstract class Objet {
 	}
 	
 	public void addRessources(int nombre) {
-		nbRessource.setValue(nbRessource.getValue() + nombre);
+		nbObjet.setValue(nbObjet.getValue() + nombre);
 	}
 	
 	public int getNbRessources() {
-		return nbRessource.getValue();
+		return nbObjet.getValue();
 	}
 	
-	public IntegerProperty RessourceProperty() {
-		return nbRessource;
+	public IntegerProperty objetProperty() {
+		return nbObjet;
 	}
 	
 }

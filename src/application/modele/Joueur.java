@@ -38,8 +38,15 @@ public class Joueur extends Personnage {
 		return this.vitesseD;
 	}
 	
-	 public Inventaire getInventaire(){
+	public Inventaire getInventaire(){
 		 return this.inventaire; 
-		 }
+	}
 
+	public void prendreEnMain(Objet objet){
+		this.enMain = objet;
+	}
+
+	public Objet getEnMain(){
+		return enMain;
+	}
 }
