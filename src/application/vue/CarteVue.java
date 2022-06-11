@@ -1,37 +1,34 @@
 package application.vue;
 
 
-import application.controleur.Controleur;
+import application.controleur.Minage;
 import application.modele.Environnement;
-import application.modele.objet.Outils.Pioche;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.TilePane;
 
 public class CarteVue {
 	
 	final static String CheminRelatifTilesMap = "../ressources/tiles/map/";
-	
-	
 	private Images imagesTilesMap;
 	private Environnement env;
 	private int hauteur;
+	private ImageView tileMiner;
 
 	private int tempsInit;
-	private Controleur controleur;
-
-	private BooleanProperty mine;
+	private int tempInitialMinage;
+	private boolean etatClik;
 	private int largeur;
 	private TilePane panneauJeu;
+
+	private Minage lancerMinage;
 	
-	public CarteVue(Controleur controleur, Environnement env, TilePane panneauJeu, int largeur, int hauteur) {
-		this.controleur = controleur;
+	public CarteVue(Environnement env, TilePane panneauJeu, int largeur, int hauteur) {
 		this.panneauJeu = panneauJeu;
 		this.hauteur = hauteur;
 		this.largeur = largeur;
 		this.env = env;
-		this.mine = new SimpleBooleanProperty(false);
+		this.lancerMinage = new Minage(this, env.getJoueur(), env.getMap());
 		creerMap();
 	}
 	
@@ -39,12 +36,13 @@ public class CarteVue {
 		imagesTilesMap = new Images(CheminRelatifTilesMap);
 		for(int i=0; i<env.getMap().size(); i++) {
 			panneauJeu.getChildren().add(new ImageView(imagesTilesMap.getImage(env.getMap().get(i))));
-			ajouterEvents((ImageView) panneauJeu.getChildren().get(panneauJeu.getChildren().size()-1));
+			if(env.getMap().get(i) != 0)
+				ajouterEvents((ImageView) panneauJeu.getChildren().get(panneauJeu.getChildren().size()-1));
 
 		}
 	}
 	
-	private void ajouterEvents(ImageView tile){
+	public void ajouterEvents(ImageView tile){
 		tile.setOnMouseEntered(mouseEvent -> {
 			tile.setOpacity(0.8);
 			tile.setScaleX(1.5);
@@ -58,46 +56,37 @@ public class CarteVue {
 		});
 
 		tile.setOnMousePressed(mouseEvent -> {
-			if(env.getJoueur().getEnMain() instanceof Pioche) {
-				mine.setValue(true);
-			}
+			etatClik = true;
+			tileMiner = tile;
+			new Thread(lancerMinage).start();
+
+			//new Thread(new Minage(this, env.getJoueur(), env.getMap())).start();
 		});
 
 		tile.setOnMouseReleased(mouseEvent -> {
-			if(!mine.getValue() && env.getJoueur().getEnMain() instanceof Pioche){
-				piocher(tile);
+			if(etatClik) {
+				etatClik = false;
+				tileMiner = null;
 			}
-			mine.setValue(false);
 		});
 
 
-	}
-
-	private void piocher(ImageView tile){
-		int position = (panneauJeu.getChildren().indexOf(tile));
-		int numeroRessource;
-		String url = tile.getImage().getUrl();
-
-		if (url.charAt(url.length() - 6) != '/') {
-			numeroRessource = Integer.parseInt(String.valueOf(url.charAt(url.length() - 6) + url.charAt(url.length() - 5)));
-
-
-		} else {
-			numeroRessource = Integer.parseInt(String.valueOf(url.charAt(url.length() - 5)));
-		}
-
-		env.getMap().remove(position);
-		env.getMap().add(position, 0);
-		panneauJeu.getChildren().remove(position);
-		panneauJeu.getChildren().add(position, new ImageView(imagesTilesMap.getImage(env.getMap().get(position))));
-		ajouterEvents((ImageView) panneauJeu.getChildren().get(panneauJeu.getChildren().size() - 1));
-		env.getJoueur().getInventaire().ajouterObjet(numeroRessource);
 	}
 	
 	public int getTailleBlock() {
 		return ((int) imagesTilesMap.getImage(0).getWidth());
 	}
-	
+
+	public int getNumeroTileMiner(){
+		String url = tileMiner.getImage().getUrl();
+
+		if (url.charAt(url.length() - 6) != '/')
+			return Integer.parseInt(String.valueOf(url.charAt(url.length() - 6) + url.charAt(url.length() - 5)));
+		else
+			return Integer.parseInt(String.valueOf(url.charAt(url.length() - 5)));
+
+	}
+
 	public int getLargeur() {
 		return largeur;
 	}
@@ -110,7 +99,23 @@ public class CarteVue {
 		return imagesTilesMap;
 	}
 
-	public BooleanProperty mineProperty(){
-		return mine;
+	public boolean isEtatClik() {
+		return etatClik;
+	}
+
+	public void setTempInitialMinage(int tempInitialMinage) {
+		this.tempInitialMinage = tempInitialMinage;
+	}
+
+	public int getTempInitialMinage() {
+		return tempInitialMinage;
+	}
+
+	public ImageView getTileMiner() {
+		return tileMiner;
+	}
+
+	public TilePane getPanneauJeu() {
+		return panneauJeu;
 	}
 }

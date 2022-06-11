@@ -9,6 +9,10 @@ import application.modele.Environnement;
 import application.modele.Joueur;
 import application.modele.Personnage;
 import application.modele.SoundEffect;
+import application.modele.objet.Inventaire;
+import application.modele.objet.Objet;
+import application.modele.objet.Outils.Pioche;
+import application.modele.objet.materiaux.Ressource;
 import application.vue.CarteVue;
 import application.vue.DroneSentinelleVue;
 import application.vue.JoueurVue;
@@ -18,8 +22,6 @@ import application.vue.inventaire.InventaireVue;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
@@ -58,8 +60,6 @@ public class Controleur implements Initializable {
 
 	private Joueur joueur;
 	private SoundEffect die = new SoundEffect("application/ressources/sounds/boss_die.wav");
-	private BooleanProperty mine;
-	private int tempInit;
 	private InventaireVue inventaireVue;
 	boolean isGameOverAdded = false;
 
@@ -108,7 +108,7 @@ public class Controleur implements Initializable {
 					if (temps % 5 == 0) {
 
 						faireTour();
-						afficherInfosEnConsole();
+						//afficherInfosEnConsole();
 					}
 					temps++;
 				}));
@@ -266,7 +266,6 @@ public class Controleur implements Initializable {
 		robotFantassinVue.setScaleX(robotFantassin.getDirection());
 		droneSentinelleVue.setScaleX(droneSentinelle.getDirection());
 
-		casserBlokMinage();
 	}
 
 
@@ -280,30 +279,12 @@ public class Controleur implements Initializable {
 //		}
 //	}
 
-	private void casserBlokMinage(){
-		if(mine.getValue()){
-			if(tempInit == 0){
-				tempInit = temps;
-			}else {
-				if(temps - tempInit > 500){
-					System.out.println("j'ai fini'");
-					tempInit = 0;
-					mine.setValue(false);
-				}else{
-					System.out.println("je mine encore");
-				}
-			}
-		}else{
-			tempInit = 0;
-		}
-	}
-
 	private void initialiserVariables() {
 		// création de l'environnement
 		this.env = new Environnement();
 
 		// création de la vue de la map
-		this.carteVue = new CarteVue(this, env, panneauJeu, 95, 68);
+		this.carteVue = new CarteVue(env, panneauJeu, 95, 68);
 
 		// Création du joueur et de la vue du joueur
 		this.joueurPersonnage = this.env.getJoueurPersonnage();
@@ -326,8 +307,6 @@ public class Controleur implements Initializable {
 		// Création d'une sentinelle et de sa vue
 		this.droneSentinelle = this.env.getDroneSentinelle();
 		this.droneSentinelleVue = new DroneSentinelleVue();
-
-		this.mine = new SimpleBooleanProperty(false);
 	}
 
 	private void faireBindEtListener() {
@@ -349,8 +328,6 @@ public class Controleur implements Initializable {
 		joueur.getInventaire().getObjet(2).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(2), inventaireVue, joueur));
 		joueur.getInventaire().getObjet(3).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(3), inventaireVue, joueur));
 
-		//Bin CarteVue
-		carteVue.mineProperty().bindBidirectional(mine);
 	}
 
 	private void insererImagesPaneCentral() {

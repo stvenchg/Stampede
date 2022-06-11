@@ -9,7 +9,8 @@ public class Carte {
 	final static String CheminMap = "src/application/ressources/map/Map.txt";
 	private ArrayList<Integer> map;
 	private int largeur;
-	private int hauteur; 
+	private int hauteur;
+	private final static Integer[] tilesTerre = {1, 2, 4, 5, 6};
 	
 	public Carte(){
 		initialiserMap();
@@ -23,14 +24,17 @@ public class Carte {
 		try {
 			FileReader fichier = new FileReader(CheminMap);
 			BufferedReader pointeur = new BufferedReader(fichier);
-			
+
 			ligne = pointeur.readLine();
 			this.largeur = ligne.length();
-			
-			Y=0;
-			while(ligne != null) {
-				for(int i=0; i<ligne.length(); i++) 
-					map.add(Character.getNumericValue(ligne.charAt(i)));
+
+			Y = 0;
+			int numero = 0;
+			while (ligne != null) {
+				for (int i = 0; i < ligne.length(); i++) {
+					numero = Character.getNumericValue(ligne.charAt(i));
+					map.add(numero);
+				}
 				ligne = pointeur.readLine();
 				Y++;
 			}
@@ -54,6 +58,14 @@ public class Carte {
 		return map;
 	}
 
+	private boolean contains(Integer[] tab, Integer r) {
+		for(Integer i : tab){
+			if(i == r){
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public int getHauteur() {
 		return largeur;
