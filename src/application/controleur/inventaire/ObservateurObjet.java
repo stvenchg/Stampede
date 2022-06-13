@@ -85,7 +85,6 @@ public class ObservateurObjet implements ChangeListener<Number>{
 		objetVue.setOnMousePressed(mouseEvent -> {
 			if(mouseEvent.getButton() == MouseButton.PRIMARY){
 				joueur.prendreEnMain(obj);
-				inventaireVue.affichageInventaire();
 			}
 		});
 
@@ -94,15 +93,19 @@ public class ObservateurObjet implements ChangeListener<Number>{
 		});
 
 		objetVue.setOnMouseReleased(mouseEvent2 -> {
-			if(drag) {
-				int numeroColonneInventaire = (((int)mouseEvent2.getSceneX()) - inventaireVue.getDecalageBordSceneXEtInventaireXETContenaireImagesX()) / inventaireVue.getTailleBoxContenaireImage();
-				int numeroLigneInventaire = (((int)mouseEvent2.getSceneY()) - inventaireVue.getDecalageBordSceneInventaireYEtDecalageBordInventaireBoxY()) / inventaireVue.getTailleBoxContenaireImage();
-				if(numeroColonneInventaire < 6 && numeroColonneInventaire >= 0 && numeroLigneInventaire < 3 && numeroLigneInventaire >= 0){
-					inventaireVue.changerOrdreListeInvetaire(objetVue, (numeroLigneInventaire*inventaireVue.getNbColonnesInventaire() + numeroColonneInventaire));
+			if(mouseEvent2.getButton() == MouseButton.PRIMARY) {
+				if (drag) {
+					int numeroColonneInventaire = (((int) mouseEvent2.getSceneX()) - inventaireVue.getDecalageBordSceneXEtInventaireXETContenaireImagesX()) / inventaireVue.getTailleBoxContenaireImage();
+					int numeroLigneInventaire = (((int) mouseEvent2.getSceneY()) - inventaireVue.getDecalageBordSceneInventaireYEtDecalageBordInventaireBoxY()) / inventaireVue.getTailleBoxContenaireImage();
+					if (numeroColonneInventaire < 6 && numeroColonneInventaire >= 0 && numeroLigneInventaire < 3 && numeroLigneInventaire >= 0) {
+						inventaireVue.changerOrdreListeInvetaire(objetVue, (numeroLigneInventaire * inventaireVue.getNbColonnesInventaire() + numeroColonneInventaire));
+					} else {
+						supprimerObjet(objetVue);
+					}
+					drag = false;
 				}else{
-					supprimerObjet(objetVue);
+					inventaireVue.affichageInventaire();
 				}
-				drag = false;
 			}
 		});
 

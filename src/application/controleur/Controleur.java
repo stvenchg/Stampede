@@ -86,12 +86,10 @@ public class Controleur implements Initializable {
 		gameLoop.play();
 		root.addEventHandler(KeyEvent.KEY_PRESSED, new KeyPressed(joueurPersonnage, joueurVue, this));
 		root.addEventHandler(KeyEvent.KEY_RELEASED, new KeyReleased(joueurPersonnage, joueurVue));
-		joueur.getInventaire().ajouterObjet(0, 6);
+		joueur.getInventaire().ajouterObjet(0, 1);
 		joueur.getInventaire().ajouterObjet(2, 93);
-		joueur.getInventaire().ajouterObjet(1, 3);
+		joueur.getInventaire().ajouterObjet(1, 1);
 		joueur.getInventaire().ajouterObjet(3, 7);
-		//(Joueur)joueur.getInventaire().supprimerObjet(2, 5);
-		joueur.getInventaire().supprimerObjet(0, 3);
 		joueur.getInventaire().ajouterObjet(2, 93);
 	}
 

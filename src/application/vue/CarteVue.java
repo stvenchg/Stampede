@@ -5,9 +5,10 @@ import application.controleur.Minage;
 import application.modele.Environnement;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 
-public class CarteVue {
+public class CarteVue extends TilePane{
 	
 	final static String CheminRelatifTilesMap = "../ressources/tiles/map/";
 	private Images imagesTilesMap;
@@ -21,6 +22,8 @@ public class CarteVue {
 	private int largeur;
 	private TilePane panneauJeu;
 
+	private int[] cordonneesSouris;
+
 	private Minage lancerMinage;
 	
 	public CarteVue(Environnement env, TilePane panneauJeu, int largeur, int hauteur) {
@@ -28,6 +31,7 @@ public class CarteVue {
 		this.hauteur = hauteur;
 		this.largeur = largeur;
 		this.env = env;
+		this.cordonneesSouris = new int[2];
 		this.lancerMinage = new Minage(this, env.getJoueur(), env.getMap());
 		creerMap();
 	}
@@ -58,6 +62,8 @@ public class CarteVue {
 		tile.setOnMousePressed(mouseEvent -> {
 			etatClik = true;
 			tileMiner = tile;
+			cordonneesSouris[0] = (int) mouseEvent.getX();
+			cordonneesSouris[1] = (int) mouseEvent.getY();
 			new Thread(lancerMinage).start();
 
 			//new Thread(new Minage(this, env.getJoueur(), env.getMap())).start();
@@ -93,6 +99,10 @@ public class CarteVue {
 	
 	public int getHauteur() {
 		return hauteur;
+	}
+
+	public int[] getCordonneesSouris() {
+		return cordonneesSouris;
 	}
 
 	public Images getImagesTilesMap(){

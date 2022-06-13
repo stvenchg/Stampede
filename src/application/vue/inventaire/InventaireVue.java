@@ -16,16 +16,16 @@ public class InventaireVue extends Pane{
 	private final static String CheminRelatifFond = "../ressources/tiles/inventaire/";
 	private final static String CheminPoliceMincraft = "/application/ressources/polices/minecraft.ttf";
 	private final static String TexteInventaire = "Inventory";
-	private final static int NbColonnesInventaire = 6;
-	private final static int DecalageBordSceneInventaireX = 60;
+	public final static int NbColonnesInventaire = 6;
+	public final static int DecalageBordSceneInventaireX = 60;
 
-	private final static int DecalageBordSceneInventaireY = 60;
-	private final static int DecalageBordInventaireBoxX = 30;
-	private final static int DecalageBordInventaireBoxY = 80;
-	private final static int DecalageBordBoxBox = 14;
+	public final static int DecalageBordSceneInventaireY = 60;
+	public final static int DecalageBordInventaireBoxX = 30;
+	public final static int DecalageBordInventaireBoxY = 80;
+	public final static int DecalageBordBoxBox = 14;
 
-	private final static int TailleBoxContenaireImage = 64;
-	private final static int DecalageBoxImages = 3+4;
+	public final static int TailleBoxContenaireImage = 64;
+	public final static int DecalageBoxImages = 3+4;
 	private Images imagesFondInventaire;
 	private Images imagesObjetsInventaire;
 	private VBox vBox;
