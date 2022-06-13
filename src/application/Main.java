@@ -1,4 +1,4 @@
- package application;
+package application;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -12,8 +12,8 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("/application/vue/vue.fxml"));
-			Scene scene = new Scene(root,890,496);
-			
+			Scene scene = new Scene(root,1520,896);
+			scene.getStylesheets().add(getClass().getResource("./application.css").toExternalForm());
 			root.requestFocus();
 			primaryStage.setResizable(false);
 			primaryStage.setScene(scene);
