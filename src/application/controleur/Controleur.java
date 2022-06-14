@@ -9,6 +9,7 @@ import application.modele.Environnement;
 import application.modele.Joueur;
 import application.modele.Personnage;
 import application.modele.SoundEffect;
+import application.modele.objet.armes.Epee;
 import application.vue.CarteVue;
 import application.vue.DeplacementAnimation;
 import application.vue.DroneSentinelleVue;
@@ -55,14 +56,13 @@ public class Controleur implements Initializable {
 	private RobotFantassinVue robotFantassinVue;
 	private Personnage droneSentinelle;
 	private DroneSentinelleVue droneSentinelleVue;
-	private Personnage joueurPersonnage;
-
 	private Joueur joueur;
 	private SoundEffect die = new SoundEffect("application/ressources/sounds/boss_die.wav");
 	private BooleanProperty mine;
 	private int tempInit;
 	private InventaireVue inventaireVue;
 	boolean isGameOverAdded = false;
+	private SoundEffect bgSound = new SoundEffect("application/ressources/sounds/bgSound.wav");
 
 
 	@Override
@@ -77,6 +77,9 @@ public class Controleur implements Initializable {
 
 		Background background = new Background(imageFond);
 
+
+		bgSound.playSound();
+
 		root.setBackground(background);
 
 		initialiserVariables();
@@ -86,8 +89,8 @@ public class Controleur implements Initializable {
 		getInventaireVue().affichageInventaire();
 
 		gameLoop.play();
-		root.addEventHandler(KeyEvent.KEY_PRESSED, new KeyPressed(joueurPersonnage, joueurVue, this));
-		root.addEventHandler(KeyEvent.KEY_RELEASED, new KeyReleased(joueurPersonnage, joueurVue));
+		root.addEventHandler(KeyEvent.KEY_PRESSED, new KeyPressed(joueur, joueurVue, this));
+		root.addEventHandler(KeyEvent.KEY_RELEASED, new KeyReleased(joueur, joueurVue));
 		joueur.getInventaire().ajouterObjet(0, 6);
 		joueur.getInventaire().ajouterObjet(2, 93);
 		joueur.getInventaire().ajouterObjet(1, 3);
@@ -116,50 +119,47 @@ public class Controleur implements Initializable {
 				}));
 
 		gameLoop.getKeyFrames().add(kf);
+
+
 	}
 	private void faireTour() {
 		this.env.update();
-		joueurPersonnage.gravite();
+		joueur.gravite();
 		robotFantassin.gravite();
 
-		if (robotFantassin.estVivant() && joueurPersonnage.estVivant()) {
-			if (joueurPersonnage.getX() > robotFantassin.getX() && (joueurPersonnage.getX() - robotFantassin.getX()) > 50) {
+		if (robotFantassin.estVivant() && joueur.estVivant()) {
+			if (joueur.getX() > robotFantassin.getX() && (joueur.getX() - robotFantassin.getX()) > 50) {
 				robotFantassin.setX(robotFantassin.getX() + 1);
 				robotFantassin.setDirection(1);
 
-			} else if (joueurPersonnage.getX() < robotFantassin.getX() && (robotFantassin.getX() - joueurPersonnage.getX()) > 50) {
+			} else if (joueur.getX() < robotFantassin.getX() && (robotFantassin.getX() - joueur.getX()) > 50) {
 				robotFantassin.setX(robotFantassin.getX() - 1);
 				robotFantassin.setDirection(-1);
 
 			} else {
-				if (Math.abs(joueurPersonnage.getY() - robotFantassin.getY()) < 50 && temps % 700 == 0) {
-					robotFantassin.attaque(joueurPersonnage);
+				if (Math.abs(joueur.getY() - robotFantassin.getY()) < 50 && temps % 700 == 0) {
+					robotFantassin.attaque(joueur);
 					robotFantassinVue.setOnMouseClicked(event -> {
-						if (Math.abs(joueur.getY() - robotFantassin.getY()) < 50)
+						if (Math.abs(joueur.getY() - robotFantassin.getY()) < 50 && joueur.getEnMain() instanceof Epee)
 							robotFantassin.perdreVie(2);
 					});
 				}
-				
-//				if (robotFantassin.getY() > joueurPersonnage.getY()) {
-//					TranslateTransition sauter = new TranslateTransition(Duration.millis(250), robotFantassinVue);
-//					sauter.setByY(-100);
-//					sauter.setAutoReverse(true);
-//				}
-			}			
+
+			}
 		}
 
-		if (droneSentinelle.estVivant() && joueurPersonnage.estVivant()) {
-			if (joueurPersonnage.getX() > droneSentinelle.getX() && (joueurPersonnage.getX() - droneSentinelle.getX()) > 50) {
+		if (droneSentinelle.estVivant() && joueur.estVivant()) {
+			if (joueur.getX() > droneSentinelle.getX() && (joueur.getX() - droneSentinelle.getX()) > 50) {
 				droneSentinelle.setX(droneSentinelle.getX() + 2);
 				droneSentinelle.setDirection(1);
 
-			} else if (joueurPersonnage.getX() < droneSentinelle.getX() && (droneSentinelle.getX() - joueurPersonnage.getX()) > 50) {
+			} else if (joueur.getX() < droneSentinelle.getX() && (droneSentinelle.getX() - joueur.getX()) > 50) {
 				droneSentinelle.setX(droneSentinelle.getX() - 2);
 				droneSentinelle.setDirection(-1);
 
 			} else {
-				if (Math.abs(joueurPersonnage.getY() - droneSentinelle.getY()) < 50 && temps % 700 == 0) {
-					droneSentinelle.attaque(joueurPersonnage);
+				if (Math.abs(joueur.getY() - droneSentinelle.getY()) < 50 && temps % 700 == 0) {
+					droneSentinelle.attaque(joueur);
 
 					droneSentinelleVue.setOnMouseClicked(event -> {
 						if (Math.abs(joueur.getY() - droneSentinelle.getY()) < 50)
@@ -171,39 +171,44 @@ public class Controleur implements Initializable {
 
 		// Collision joueur
 
-		if (env.getMap().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 1 ||
-				env.getMap().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 2 ||
-				env.getMap().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 3 ||
-				env.getMap().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 4 ||
-				env.getMap().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 5 ||
-				env.getMap().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 6 ||
-				env.getMap().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 7) {
+		if (env.getMap().get(env.getTileBas(joueur.getX(), joueur.getY())) == 1 ||
+				env.getMap().get(env.getTileBas(joueur.getX(), joueur.getY())) == 2 ||
+				env.getMap().get(env.getTileBas(joueur.getX(), joueur.getY())) == 3 ||
+				env.getMap().get(env.getTileBas(joueur.getX(), joueur.getY())) == 4 ||
+				env.getMap().get(env.getTileBas(joueur.getX(), joueur.getY())) == 5 ||
+				env.getMap().get(env.getTileBas(joueur.getX(), joueur.getY())) == 6) {
 
-			
-			joueurPersonnage.setY(joueurPersonnage.getY() - 5);
+
+			joueur.setY(joueur.getY() - 5);
 			joueur.setSaute(false);
 		}
 
-		if (env.getMap().get(env.getTileBasDroite(joueurPersonnage.getX(), joueurPersonnage.getY())) == 1 ||
-				env.getMap().get(env.getTileBasDroite(joueurPersonnage.getX(), joueurPersonnage.getY())) == 3) {
+		if (env.getMap().get(env.getTileBas(joueur.getX(), joueur.getY())) == 7) {
+			this.joueur.meurt();
+			joueurVue.setVisible(false);
+			joueur.setY(joueur.getY() - 5);
+		}
+
+		if (env.getMap().get(env.getTileBasDroite(joueur.getX(), joueur.getY())) == 1 ||
+				env.getMap().get(env.getTileBasDroite(joueur.getX(), joueur.getY())) == 3) {
 			System.out.println("TOUCHE BAS DROITE");
-			joueurPersonnage.setY(joueurPersonnage.getY() - 5);
+			joueur.setY(joueur.getY() - 5);
 		}
 
-		if (env.getMap().get(env.getTileBasGauche(joueurPersonnage.getX(), joueurPersonnage.getY())) == 1 ||
-				env.getMap().get(env.getTileBasDroite(joueurPersonnage.getX(), joueurPersonnage.getY())) == 3) {
+		if (env.getMap().get(env.getTileBasGauche(joueur.getX(), joueur.getY())) == 1 ||
+				env.getMap().get(env.getTileBasDroite(joueur.getX(), joueur.getY())) == 3) {
 			System.out.println("TOUCHE BAS GAUCHE");
-			joueurPersonnage.setY(joueurPersonnage.getY() - 5);
+			joueur.setY(joueur.getY() - 5);
 		}
 
-		if (env.getMap().get(env.getTileHautGauche(joueurPersonnage.getX(), joueurPersonnage.getY())) == 2) {
+		if (env.getMap().get(env.getTileHautGauche(joueur.getX(), joueur.getY())) == 2) {
 			System.out.println("TOUCHE HAUT GAUCHE");
-			joueurPersonnage.setX(joueurPersonnage.getX() + 5);
+			joueur.setX(joueur.getX() + 5);
 		}
 
-		if (env.getMap().get(env.getTileHautDroite(joueurPersonnage.getX(), joueurPersonnage.getY())) == 2) {
+		if (env.getMap().get(env.getTileHautDroite(joueur.getX(), joueur.getY())) == 2) {
 			System.out.println("TOUCHE HAUT DROITE");
-			joueurPersonnage.setX(joueurPersonnage.getX() - 5);
+			joueur.setX(joueur.getX() - 5);
 		}
 
 
@@ -216,12 +221,16 @@ public class Controleur implements Initializable {
 				env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 3 ||
 				env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 4 ||
 				env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 5 ||
-				env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 6 ||
-				env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 7) {
+				env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 6) {
 
 			robotFantassin.setY(robotFantassin.getY() - 5);
 
 		}
+		if (env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 7) {
+			this.robotFantassin.meurt();
+			robotFantassin.setY(robotFantassin.getY() - 5);
+		}
+
 
 		if (env.getMap().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
 				env.getMap().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 3) {
@@ -241,7 +250,7 @@ public class Controleur implements Initializable {
 			robotFantassin.setX(robotFantassin.getX() - 5);
 		}
 
-		if (!joueurPersonnage.estVivant()) {
+		if (!joueur.estVivant()) {
 			//paneCentral.getChildren().remove(joueurVue);
 			Image joueurMort = new Image("application/ressources/sprites/joueur/9.png");
 			joueurVue.setImage(joueurMort);
@@ -261,6 +270,11 @@ public class Controleur implements Initializable {
 				die.playSound();
 				isGameOverAdded = true;
 			}
+
+			if (temps % 1000 == 0) {
+				gameLoop.stop();
+			}
+
 		}
 
 		if (!robotFantassin.estVivant()) {
@@ -272,7 +286,7 @@ public class Controleur implements Initializable {
 		}
 
 
-		joueurVue.setScaleX(joueurPersonnage.getDirection());
+		joueurVue.setScaleX(joueur.getDirection());
 		robotFantassinVue.setScaleX(robotFantassin.getDirection());
 		droneSentinelleVue.setScaleX(droneSentinelle.getDirection());
 
@@ -316,15 +330,14 @@ public class Controleur implements Initializable {
 		this.carteVue = new CarteVue(this, env, panneauJeu, 95, 68);
 
 		// Création du joueur et de la vue du joueur
-		this.joueurPersonnage = this.env.getJoueurPersonnage();
-		this.joueur = env.getJoueur();
-		this.joueurPersonnage = this.joueur;
+		this.joueur = this.env.getJoueur();
+		this.joueur = this.joueur;
 		this.joueurVue = new JoueurVue();
 
 		// Création de la vue de la vie avec l'observable
 		this.vieVue = new VieVue(carteVue);
 		this.obsVie = new ObservableVie(vieVue);
-		this.joueurPersonnage.vieProperty().addListener(obsVie);
+		this.joueur.vieProperty().addListener(obsVie);
 
 		//Création de l'inventaire
 		this.inventaireVue = new InventaireVue();
@@ -342,8 +355,8 @@ public class Controleur implements Initializable {
 
 	private void faireBindEtListener() {
 		// Bind Joueur
-		this.joueurVue.translateXProperty().bindBidirectional(this.joueurPersonnage.xProperty());
-		this.joueurVue.translateYProperty().bindBidirectional(this.joueurPersonnage.yProperty());
+		this.joueurVue.translateXProperty().bindBidirectional(this.joueur.xProperty());
+		this.joueurVue.translateYProperty().bindBidirectional(this.joueur.yProperty());
 
 		// Bind RobotFantassin
 		this.robotFantassinVue.translateXProperty().bindBidirectional(this.robotFantassin.xProperty());
@@ -374,13 +387,13 @@ public class Controleur implements Initializable {
 
 	private void afficherInfosEnConsole() {
 //		System.out.println("Direction joueur:" + joueur.getDirection());
-		System.out.println("Joueur x:" + joueurPersonnage.getX());
-		System.out.println("Joueur y:" + joueurPersonnage.getY());
+		System.out.println("Joueur x:" + joueur.getX());
+		System.out.println("Joueur y:" + joueur.getY());
 		System.out.println("Robot x:" + robotFantassin.getX());
 		System.out.println("Robot y:" + robotFantassin.getY());
 //		System.out.println("Direction robot:" + robotFantassin.getDirection());
-		System.out.println("Vie du joueur: " + joueurPersonnage.vieProperty().getValue());
-		System.out.println(env.getMap().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())));
+		System.out.println("Vie du joueur: " + joueur.vieProperty().getValue());
+		System.out.println(env.getMap().get(env.getTileBas(joueur.getX(), joueur.getY())));
 		System.out.println("Vie du robot fantassin: " + robotFantassin.vieProperty().getValue());
 		System.out.println("Vie du dronde sentinelle: " + droneSentinelle.vieProperty().getValue());
 		System.out.println(this.env.getListePersonnages());

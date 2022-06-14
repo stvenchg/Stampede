@@ -32,9 +32,9 @@ public class DeplacementAnimation {
 			System.out.println("Limite hauteur de la carte atteinte");
 		}
 		else if (joueur.estVivant() && !joueur.getSaute()){
-			
+
 			joueur.setSaute(true);
-			
+
 			TranslateTransition sauter = new TranslateTransition(Duration.millis(250), joueurVue);
 
 			joueurVue.setImage(1);
@@ -58,7 +58,7 @@ public class DeplacementAnimation {
 				Transition animation = new Transition() {
 					{
 						setCycleDuration(Duration.millis(250));
-						
+
 					}
 
 					@Override
@@ -66,14 +66,14 @@ public class DeplacementAnimation {
 						int index = (int) (fraction * (images.size() - 1));
 						joueurVue.setImage(images.get(index));
 					}
-					
+
 				};
 				animation.play();
-				
+
 			});
 		}
 	}
-	
+
 
 	static int count = 3;
 	public static void allerDroite(Personnage joueur, JoueurVue joueurVue) {
@@ -81,9 +81,9 @@ public class DeplacementAnimation {
 		if (joueur.estVivant()) {
 
 			joueur.setTrajectoire(1);
-			
+
 			if (count == 3) {
-				joueurVue.setImage(joueurVue.getImages().getImage(count));
+				joueurVue.setImage(count);
 				count++;
 			}
 			else if (count == 4) {
@@ -112,8 +112,8 @@ public class DeplacementAnimation {
 			droite.setByX(+10);
 			walk.playSound();
 			droite.play();
-			
-			
+
+
 
 //			droite.setOnFinished(e -> {
 //				joueurVue.setImage(joueurVue.getImages().getImage(0));
@@ -125,7 +125,7 @@ public class DeplacementAnimation {
 	public static void allerGauche(Personnage joueur, JoueurVue joueurVue) {
 
 		if (joueur.estVivant()) {
-			
+
 			joueur.setTrajectoire(2);
 
 			joueurVue.setImage(joueurVue.getImages().getImage(0));
@@ -160,7 +160,7 @@ public class DeplacementAnimation {
 			gauche.setByX(-10);
 			walk.playSound();
 			gauche.play();
-			
+
 
 //			gauche.setOnFinished(e -> {
 //			joueurVue.setImage(joueurVue.getImages().getImage(0));

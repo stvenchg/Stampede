@@ -16,5 +16,5 @@ public class DroneSentinelleVue extends ImageView {
 	public void setImage(int numero) {
 		this.setImage(tableauImagesSentinelle.getImage(numero));
 	}
-	
+
 }

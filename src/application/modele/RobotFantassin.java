@@ -3,9 +3,9 @@ package application.modele;
 public class RobotFantassin extends Personnage{
 
 	private static Environnement env;
-	
+
 	public RobotFantassin() {
-		super(env, 10);
+		super(10);
 		this.setX(300);
 		this.setY(320);
 	}

@@ -5,12 +5,11 @@ import application.modele.objet.Objet;
 
 public class Joueur extends Personnage {
 
-	private static Environnement env;
 	private Inventaire inventaire;
 	private Objet enMain;
 
 	public Joueur() {
-		super(env, 12);
+		super(12);
 		this.setX(100);
 		this.setY(310);
 		this.inventaire = new Inventaire();
