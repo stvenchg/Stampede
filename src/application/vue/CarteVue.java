@@ -103,7 +103,6 @@ public class CarteVue extends TilePane{
 			return Integer.parseInt(String.valueOf(url.charAt(url.length() - 6) + url.charAt(url.length() - 5)));
 		else
 			return Integer.parseInt(String.valueOf(url.charAt(url.length() - 5)));
-
 	}
 
 	public int getLargeur() {

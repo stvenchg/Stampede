@@ -58,6 +58,7 @@ public class Minage implements Runnable {
             }
             if(i != -1){
                 int position = mapVue.getPanneauJeu().getChildren().indexOf(mapVue.getTileMiner());
+                joueur.getInventaire().getObjet(mapVue.getNumeroTile(mapVue.getTileMiner())).addRessources(1);
                 map.set(position, 0);
             }
         }

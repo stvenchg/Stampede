@@ -5,15 +5,12 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 public abstract class Objet {
 
-	private static int nombre = 0;
-	private int id;
 	private Integer objetNumero;
 	private String nom;
 	private IntegerProperty nbObjet;
 	
 	public Objet(int numero, String nom, int nbRes) {
 		this.objetNumero = numero;
-		this.id = nombre++;
 		this.nom = nom;
 		this.nbObjet = new SimpleIntegerProperty(nbRes);
 	}
