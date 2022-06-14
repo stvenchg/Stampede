@@ -3,9 +3,9 @@ package application.vue;
 
 import application.controleur.Minage;
 import application.modele.Environnement;
+import application.modele.objet.materiaux.Ressource;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 
 public class CarteVue extends TilePane{
@@ -20,9 +20,11 @@ public class CarteVue extends TilePane{
 	private int tempInitialMinage;
 	private boolean etatClik;
 	private int largeur;
+
+	private int positionMiner;
 	private TilePane panneauJeu;
 
-	private int[] cordonneesSouris;
+
 
 	private Minage lancerMinage;
 	
@@ -31,42 +33,53 @@ public class CarteVue extends TilePane{
 		this.hauteur = hauteur;
 		this.largeur = largeur;
 		this.env = env;
-		this.cordonneesSouris = new int[2];
-		this.lancerMinage = new Minage(this, env.getJoueur(), env.getMap());
+		this.lancerMinage = new Minage(this, env.getJoueur(), env.mapProperty());
 		creerMap();
 	}
 	
 	private void creerMap() {
 		imagesTilesMap = new Images(CheminRelatifTilesMap);
-		for(int i=0; i<env.getMap().size(); i++) {
-			panneauJeu.getChildren().add(new ImageView(imagesTilesMap.getImage(env.getMap().get(i))));
-			if(env.getMap().get(i) != 0)
-				ajouterEvents((ImageView) panneauJeu.getChildren().get(panneauJeu.getChildren().size()-1));
+		for(int i = 0; i<env.mapProperty().size(); i++) {
+			panneauJeu.getChildren().add(new ImageView(imagesTilesMap.getImage(env.mapProperty().get(i))));
+			ajouterEvents((ImageView) panneauJeu.getChildren().get(panneauJeu.getChildren().size()-1));
+			if(env.mapProperty().get(i) == 0)
+				((ImageView) panneauJeu.getChildren().get(panneauJeu.getChildren().size()-1)).setOpacity(0);
 
 		}
 	}
 	
 	public void ajouterEvents(ImageView tile){
 		tile.setOnMouseEntered(mouseEvent -> {
-			tile.setOpacity(0.8);
+			//tile.setOpacity(0.8);
 			tile.setScaleX(1.5);
 			tile.setScaleY(1.5);
 		});
 
 		tile.setOnMouseExited(mouseEvent -> {
-			tile.setOpacity(1);
+			//tile.setOpacity(1);
 			tile.setScaleX(1);
 			tile.setScaleY(1);
+		});
+
+		tile.setOnMouseClicked(mouseEvent -> {
+			if(mouseEvent.getButton() == MouseButton.PRIMARY) {
+				if (env.getJoueur().getEnMain() instanceof Ressource) {
+					int numeroObjet = ((Ressource) env.getJoueur().getEnMain()).getobjetNumero();
+					if(env.getJoueur().getInventaire().getObjet(numeroObjet).removeRessources(1)){
+						int position = panneauJeu.getChildren().indexOf(tile);
+						env.mapProperty().set(position, numeroObjet);
+					}else{
+						env.getJoueur().setEnMain(null);
+					}
+				}
+			}
 		});
 
 		tile.setOnMousePressed(mouseEvent -> {
 			etatClik = true;
 			tileMiner = tile;
-			cordonneesSouris[0] = (int) mouseEvent.getX();
-			cordonneesSouris[1] = (int) mouseEvent.getY();
+			positionMiner = panneauJeu.getChildren().indexOf(tile);
 			new Thread(lancerMinage).start();
-
-			//new Thread(new Minage(this, env.getJoueur(), env.getMap())).start();
 		});
 
 		tile.setOnMouseReleased(mouseEvent -> {
@@ -83,8 +96,8 @@ public class CarteVue extends TilePane{
 		return ((int) imagesTilesMap.getImage(0).getWidth());
 	}
 
-	public int getNumeroTileMiner(){
-		String url = tileMiner.getImage().getUrl();
+	public int getNumeroTile(ImageView tile){
+		String url = tile.getImage().getUrl();
 
 		if (url.charAt(url.length() - 6) != '/')
 			return Integer.parseInt(String.valueOf(url.charAt(url.length() - 6) + url.charAt(url.length() - 5)));
@@ -99,10 +112,6 @@ public class CarteVue extends TilePane{
 	
 	public int getHauteur() {
 		return hauteur;
-	}
-
-	public int[] getCordonneesSouris() {
-		return cordonneesSouris;
 	}
 
 	public Images getImagesTilesMap(){
@@ -127,5 +136,9 @@ public class CarteVue extends TilePane{
 
 	public TilePane getPanneauJeu() {
 		return panneauJeu;
+	}
+
+	public int getPositionTileMiner() {
+		return positionMiner;
 	}
 }

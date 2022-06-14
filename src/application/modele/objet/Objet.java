@@ -4,13 +4,16 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public abstract class Objet {
-	
+
+	private static int nombre = 0;
+	private int id;
 	private Integer objetNumero;
 	private String nom;
 	private IntegerProperty nbObjet;
 	
 	public Objet(int numero, String nom, int nbRes) {
 		this.objetNumero = numero;
+		this.id = nombre++;
 		this.nom = nom;
 		this.nbObjet = new SimpleIntegerProperty(nbRes);
 	}
@@ -33,6 +36,15 @@ public abstract class Objet {
 	
 	public void addRessources(int nombre) {
 		nbObjet.setValue(nbObjet.getValue() + nombre);
+	}
+
+	public boolean removeRessources(int nombre) {
+		if(nbObjet.getValue() - nombre >= 0){
+			nbObjet.setValue(nbObjet.getValue() - nombre);
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	public int getNbRessources() {

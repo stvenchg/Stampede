@@ -1,5 +1,7 @@
 package application.modele;
 
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 
 public class Environnement {
@@ -59,8 +61,8 @@ public class Environnement {
 		return this.droneSentinelle;
 	}
 
-	public ArrayList<Integer> getMap() {
-		return this.carte.getMap();
+	public ObservableList<Integer> mapProperty() {
+		return this.carte.mapProperty();
 	}
 
 	public ArrayList<Personnage> getListePersonnages() {

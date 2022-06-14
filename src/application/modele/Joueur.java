@@ -33,4 +33,8 @@ public class Joueur extends Personnage {
 	public Object getEnMain(){
 		return enMain;
 	}
+
+	public void setEnMain(Objet objet){
+		enMain = objet;
+	}
 }

@@ -5,14 +5,11 @@ import java.util.ResourceBundle;
 
 import application.controleur.inventaire.ObservateurObjet;
 import application.controleur.inventaire.ObservateurResources;
+import application.controleur.map.ObservateurMap;
 import application.modele.Environnement;
 import application.modele.Joueur;
 import application.modele.Personnage;
 import application.modele.SoundEffect;
-import application.modele.objet.Inventaire;
-import application.modele.objet.Objet;
-import application.modele.objet.Outils.Pioche;
-import application.modele.objet.materiaux.Ressource;
 import application.vue.CarteVue;
 import application.vue.DroneSentinelleVue;
 import application.vue.JoueurVue;
@@ -160,36 +157,36 @@ public class Controleur implements Initializable {
 
 		// Collision joueur
 
-		if (env.getMap().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 1 ||
-				env.getMap().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 2 ||
-				env.getMap().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 3 ||
-				env.getMap().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 4 ||
-				env.getMap().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 5 ||
-				env.getMap().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 6 ||
-				env.getMap().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 7) {
+		if (env.mapProperty().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 1 ||
+				env.mapProperty().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 2 ||
+				env.mapProperty().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 3 ||
+				env.mapProperty().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 4 ||
+				env.mapProperty().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 5 ||
+				env.mapProperty().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 6 ||
+				env.mapProperty().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())) == 7) {
 
 			joueurPersonnage.setY(joueurPersonnage.getY() - 5);
 
 		}
 
-		if (env.getMap().get(env.getTileBasDroite(joueurPersonnage.getX(), joueurPersonnage.getY())) == 1 ||
-				env.getMap().get(env.getTileBasDroite(joueurPersonnage.getX(), joueurPersonnage.getY())) == 3) {
+		if (env.mapProperty().get(env.getTileBasDroite(joueurPersonnage.getX(), joueurPersonnage.getY())) == 1 ||
+				env.mapProperty().get(env.getTileBasDroite(joueurPersonnage.getX(), joueurPersonnage.getY())) == 3) {
 			System.out.println("TOUCHE BAS DROITE");
 			joueurPersonnage.setY(joueurPersonnage.getY() - 5);
 		}
 
-		if (env.getMap().get(env.getTileBasGauche(joueurPersonnage.getX(), joueurPersonnage.getY())) == 1 ||
-				env.getMap().get(env.getTileBasDroite(joueurPersonnage.getX(), joueurPersonnage.getY())) == 3) {
+		if (env.mapProperty().get(env.getTileBasGauche(joueurPersonnage.getX(), joueurPersonnage.getY())) == 1 ||
+				env.mapProperty().get(env.getTileBasDroite(joueurPersonnage.getX(), joueurPersonnage.getY())) == 3) {
 			System.out.println("TOUCHE BAS GAUCHE");
 			joueurPersonnage.setY(joueurPersonnage.getY() - 5);
 		}
 
-		if (env.getMap().get(env.getTileHautGauche(joueurPersonnage.getX(), joueurPersonnage.getY())) == 2) {
+		if (env.mapProperty().get(env.getTileHautGauche(joueurPersonnage.getX(), joueurPersonnage.getY())) == 2) {
 			System.out.println("TOUCHE HAUT GAUCHE");
 			joueurPersonnage.setX(joueurPersonnage.getX() + 5);
 		}
 
-		if (env.getMap().get(env.getTileHautDroite(joueurPersonnage.getX(), joueurPersonnage.getY())) == 2) {
+		if (env.mapProperty().get(env.getTileHautDroite(joueurPersonnage.getX(), joueurPersonnage.getY())) == 2) {
 			System.out.println("TOUCHE HAUT DROITE");
 			joueurPersonnage.setX(joueurPersonnage.getX() - 5);
 		}
@@ -199,33 +196,33 @@ public class Controleur implements Initializable {
 
 		// Collision robot
 
-		if (env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
-				env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 2 ||
-				env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 3 ||
-				env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 4 ||
-				env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 5 ||
-				env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 6 ||
-				env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 7) {
+		if (env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
+				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 2 ||
+				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 3 ||
+				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 4 ||
+				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 5 ||
+				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 6 ||
+				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 7) {
 
 			robotFantassin.setY(robotFantassin.getY() - 5);
 
 		}
 
-		if (env.getMap().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
-				env.getMap().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 3) {
+		if (env.mapProperty().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
+				env.mapProperty().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 3) {
 			robotFantassin.setY(robotFantassin.getY() - 5);
 		}
 
-		if (env.getMap().get(env.getTileBasGauche(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
-				env.getMap().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 3) {
+		if (env.mapProperty().get(env.getTileBasGauche(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
+				env.mapProperty().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 3) {
 			robotFantassin.setY(robotFantassin.getY() - 5);
 		}
 
-		if (env.getMap().get(env.getTileHautGauche(robotFantassin.getX(), robotFantassin.getY())) == 2) {
+		if (env.mapProperty().get(env.getTileHautGauche(robotFantassin.getX(), robotFantassin.getY())) == 2) {
 			robotFantassin.setX(robotFantassin.getX() + 5);
 		}
 
-		if (env.getMap().get(env.getTileHautDroite(robotFantassin.getX(), robotFantassin.getY())) == 2) {
+		if (env.mapProperty().get(env.getTileHautDroite(robotFantassin.getX(), robotFantassin.getY())) == 2) {
 			robotFantassin.setX(robotFantassin.getX() - 5);
 		}
 
@@ -326,6 +323,8 @@ public class Controleur implements Initializable {
 		joueur.getInventaire().getObjet(2).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(2), inventaireVue, joueur));
 		joueur.getInventaire().getObjet(3).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(3), inventaireVue, joueur));
 
+		//Creation Observateur Map
+		env.mapProperty().addListener(new ObservateurMap(carteVue, env.mapProperty()));
 	}
 
 	private void insererImagesPaneCentral() {
@@ -343,7 +342,7 @@ public class Controleur implements Initializable {
 		System.out.println("Joueur y:" + joueurPersonnage.getY());
 //		System.out.println("Direction robot:" + robotFantassin.getDirection());
 		System.out.println("Vie du joueur: " + joueurPersonnage.vieProperty().getValue());
-		System.out.println(env.getMap().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())));
+		System.out.println(env.mapProperty().get(env.getTileBas(joueurPersonnage.getX(), joueurPersonnage.getY())));
 		System.out.println("Vie du robot fantassin: " + robotFantassin.vieProperty().getValue());
 		System.out.println("Vie du dronde sentinelle: " + droneSentinelle.vieProperty().getValue());
 		System.out.println(this.env.getListePersonnages());

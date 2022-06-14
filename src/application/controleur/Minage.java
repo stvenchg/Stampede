@@ -9,6 +9,7 @@ import application.vue.Images;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -25,9 +26,9 @@ public class Minage implements Runnable {
     private Joueur joueur;
     private SoundEffect sonMinage;
 
-    private ArrayList<Integer> map;
+    private ObservableList<Integer> map;
 
-    public Minage(CarteVue mapVue, Joueur joueur, ArrayList<Integer> map){
+    public Minage(CarteVue mapVue, Joueur joueur, ObservableList<Integer> map){
         this.mapVue = mapVue;
         this.joueur = joueur;
         this.map = map;
@@ -40,10 +41,10 @@ public class Minage implements Runnable {
 
     private void miner(){
         if(joueur.getEnMain() instanceof Pioche){
-            Ressource objetMiner = ((Ressource) joueur.getInventaire().getObjet(mapVue.getNumeroTileMiner()));
+            Ressource objetMiner = ((Ressource) joueur.getInventaire().getObjet(mapVue.getNumeroTile(mapVue.getTileMiner())));
 
             int i=100; // +/- 10 miliseconde c'est le temps que il faut pour qu'une pression soit reconu
-            while(i<objetMiner.getResistance()*1000 && i != -1){
+            while(i<objetMiner.getResistance()*100 && i != -1){
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
@@ -57,18 +58,7 @@ public class Minage implements Runnable {
             }
             if(i != -1){
                 int position = mapVue.getPanneauJeu().getChildren().indexOf(mapVue.getTileMiner());
-                map.remove(position);
-                map.add(position, 0);
-                Platform.runLater(new Runnable(){
-                    @Override
-                    public void run() {
-                        mapVue.getPanneauJeu().getChildren().remove(position);
-                        mapVue.getPanneauJeu().getChildren().add(position, new ImageView(mapVue.getImagesTilesMap().getImage(map.get(position))));
-                        mapVue.ajouterEvents((ImageView) mapVue.getPanneauJeu().getChildren().get(position));
-                        joueur.getInventaire().ajouterObjet(mapVue.getNumeroTileMiner());
-                    }
-                });
-
+                map.set(position, 0);
             }
         }
     }
