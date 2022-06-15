@@ -4,6 +4,7 @@ package application.vue;
 import application.controleur.Minage;
 import application.modele.Environnement;
 import application.modele.objet.materiaux.Ressource;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.TilePane;
@@ -20,6 +21,8 @@ public class CarteVue extends TilePane{
 	private int tempInitialMinage;
 	private boolean etatClik;
 	private int largeur;
+
+	private int imageOriginal;
 
 	private int positionMiner;
 	private TilePane panneauJeu;
@@ -50,26 +53,33 @@ public class CarteVue extends TilePane{
 	
 	public void ajouterEvents(ImageView tile){
 		tile.setOnMouseEntered(mouseEvent -> {
-			//tile.setOpacity(0.8);
-			tile.setScaleX(1.5);
-			tile.setScaleY(1.5);
+			if (getNumeroTile(tile) != 0) {
+				tile.setOpacity(0.8);
+				tile.setScaleX(1.5);
+				tile.setScaleY(1.5);
+			}
+
 		});
 
 		tile.setOnMouseExited(mouseEvent -> {
-			//tile.setOpacity(1);
-			tile.setScaleX(1);
-			tile.setScaleY(1);
+			if(getNumeroTile(tile) != 0){
+				tile.setOpacity(1);
+				tile.setScaleX(1);
+				tile.setScaleY(1);
+			}
 		});
 
 		tile.setOnMouseClicked(mouseEvent -> {
 			if(mouseEvent.getButton() == MouseButton.PRIMARY) {
 				if (env.getJoueur().getEnMain() instanceof Ressource) {
-					int numeroObjet = ((Ressource) env.getJoueur().getEnMain()).getobjetNumero();
-					if(env.getJoueur().getInventaire().getObjet(numeroObjet).removeRessources(1)){
-						int position = panneauJeu.getChildren().indexOf(tile);
-						env.mapProperty().set(position, numeroObjet);
-					}else{
-						env.getJoueur().setEnMain(null);
+					if (getNumeroTile(tile) == 0) {
+						int numeroObjet = ((Ressource) env.getJoueur().getEnMain()).getobjetNumero();
+						if (env.getJoueur().getInventaire().getObjet(numeroObjet).removeRessources(1)) {
+							int position = panneauJeu.getChildren().indexOf(tile);
+							env.mapProperty().set(position, numeroObjet);
+						} else {
+							env.getJoueur().setEnMain(null);
+						}
 					}
 				}
 			}
