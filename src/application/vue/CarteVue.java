@@ -76,7 +76,7 @@ public class CarteVue {
 	private void piocher(ImageView tile){
 		int position = (panneauJeu.getChildren().indexOf(tile));
 		int numeroRessource;
-		String url = tile.getImage().impl_getUrl();
+		String url = tile.getImage().getUrl();
 
 		if (url.charAt(url.length() - 6) != '/') {
 			numeroRessource = Integer.parseInt(String.valueOf(url.charAt(url.length() - 6) + url.charAt(url.length() - 5)));
