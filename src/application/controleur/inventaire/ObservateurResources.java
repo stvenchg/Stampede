@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import application.modele.Joueur;
 import application.modele.objet.Objet;
 import application.vue.inventaire.InventaireVue;
+import javafx.application.Platform;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -85,7 +87,11 @@ public class ObservateurResources extends ObservateurObjet {
 		if(nbAjouts%NbMaxRessourcesBlok != 0) {
 			Pane objet = creerObjetInventaireVue(nbAjouts%NbMaxRessourcesBlok);
 			ressourcesVue.add(objet);
-			super.getInventaireVue().ajouterObjet(objet);
+			Platform.runLater(
+					() -> {
+						super.getInventaireVue().ajouterObjet(objet);
+					}
+			);
 		}
 	}
 	
@@ -94,11 +100,12 @@ public class ObservateurResources extends ObservateurObjet {
 		Pane objetVue = new Pane();
 		objetVue.setPrefHeight(50);
 		objetVue.setPrefWidth(50);
-		super.ajouterEvent(objetVue);
 		nombre.getStyleClass().add("NbRessources");
 		nombre.setLayoutY(49);
 		nombre.setFont(super.getInventaireVue().getPoliceMincraft());
-		objetVue.getChildren().addAll(new ImageView(super.getInventaireVue().getImagesObjets().getImage(super.getnumeroObj())), nombre);
+		ImageView imageObjet = new ImageView(super.getInventaireVue().getImagesObjets().getImage(super.getnumeroObj()));
+		objetVue.getChildren().addAll(imageObjet, nombre);
+		super.ajouterEvent(objetVue);
 		return objetVue;
 	}
 }

@@ -19,8 +19,10 @@ public class ObservableVie implements ChangeListener<Number>{
 		
 		if (nV <= 0) {
 			System.out.println("Fin de game Théorique");
+			this.vieVue.setVisible(false);
 		} else {
 			vieVue.setImage(nV-1);
+			this.vieVue.setVisible(true);
 		}
 	}
 

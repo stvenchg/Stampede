@@ -1,103 +1,120 @@
 package application.vue;
 
 
-import application.controleur.Controleur;
+import application.controleur.Minage;
 import application.modele.Environnement;
-import application.modele.objet.Outils.Pioche;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import application.modele.objet.materiaux.Ressource;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.TilePane;
 
-public class CarteVue {
+public class CarteVue extends TilePane{
 	
 	final static String CheminRelatifTilesMap = "../ressources/tiles/map/";
-	
-	
 	private Images imagesTilesMap;
 	private Environnement env;
 	private int hauteur;
+	private ImageView tileMiner;
 
 	private int tempsInit;
-	private Controleur controleur;
-
-	private BooleanProperty mine;
+	private int tempInitialMinage;
+	private boolean etatClik;
 	private int largeur;
+
+	private int imageOriginal;
+
+	private int positionMiner;
 	private TilePane panneauJeu;
+
+
+
+	private Minage lancerMinage;
 	
-	public CarteVue(Controleur controleur, Environnement env, TilePane panneauJeu, int largeur, int hauteur) {
-		this.controleur = controleur;
+	public CarteVue(Environnement env, TilePane panneauJeu, int largeur, int hauteur) {
 		this.panneauJeu = panneauJeu;
 		this.hauteur = hauteur;
 		this.largeur = largeur;
 		this.env = env;
-		this.mine = new SimpleBooleanProperty(false);
+		this.lancerMinage = new Minage(this, env.getJoueur(), env.mapProperty());
 		creerMap();
 	}
 	
 	private void creerMap() {
 		imagesTilesMap = new Images(CheminRelatifTilesMap);
-		for(int i=0; i<env.getMap().size(); i++) {
-			panneauJeu.getChildren().add(new ImageView(imagesTilesMap.getImage(env.getMap().get(i))));
+		for(int i = 0; i<env.mapProperty().size(); i++) {
+			panneauJeu.getChildren().add(new ImageView(imagesTilesMap.getImage(env.mapProperty().get(i))));
 			ajouterEvents((ImageView) panneauJeu.getChildren().get(panneauJeu.getChildren().size()-1));
+			if(env.mapProperty().get(i) == 0)
+				((ImageView) panneauJeu.getChildren().get(panneauJeu.getChildren().size()-1)).setOpacity(0);
 
 		}
 	}
 	
-	private void ajouterEvents(ImageView tile){
+	public void ajouterEvents(ImageView tile){
 		tile.setOnMouseEntered(mouseEvent -> {
-			tile.setOpacity(0.8);
-			tile.setScaleX(1.5);
-			tile.setScaleY(1.5);
+			if (getNumeroTile(tile) != 0) {
+				tile.setOpacity(0.8);
+				tile.setScaleX(1.5);
+				tile.setScaleY(1.5);
+			}
+
 		});
 
 		tile.setOnMouseExited(mouseEvent -> {
-			tile.setOpacity(1);
-			tile.setScaleX(1);
-			tile.setScaleY(1);
+			if(getNumeroTile(tile) != 0){
+				tile.setOpacity(1);
+				tile.setScaleX(1);
+				tile.setScaleY(1);
+			}
+		});
+
+		tile.setOnMouseClicked(mouseEvent -> {
+			if(mouseEvent.getButton() == MouseButton.PRIMARY) {
+				if (env.getJoueur().getEnMain() instanceof Ressource) {
+					if (getNumeroTile(tile) == 0) {
+						int numeroObjet = ((Ressource) env.getJoueur().getEnMain()).getobjetNumero();
+						if (env.getJoueur().getInventaire().getObjet(numeroObjet).removeRessources(1)) {
+							int position = panneauJeu.getChildren().indexOf(tile);
+							env.mapProperty().set(position, numeroObjet);
+						} else {
+							env.getJoueur().setEnMain(null);
+						}
+					}
+				}
+			}
 		});
 
 		tile.setOnMousePressed(mouseEvent -> {
-			if(env.getJoueur().getEnMain() instanceof Pioche) {
-				mine.setValue(true);
-			}
+			etatClik = true;
+			tileMiner = tile;
+			positionMiner = panneauJeu.getChildren().indexOf(tile);
+			new Thread(lancerMinage).start();
 		});
 
 		tile.setOnMouseReleased(mouseEvent -> {
-			if(!mine.getValue() && env.getJoueur().getEnMain() instanceof Pioche){
-				piocher(tile);
+			if(etatClik) {
+				etatClik = false;
+				tileMiner = null;
 			}
-			mine.setValue(false);
 		});
 
 
-	}
-
-	private void piocher(ImageView tile){
-		int position = (panneauJeu.getChildren().indexOf(tile));
-		int numeroRessource;
-		String url = tile.getImage().getUrl();
-
-		if (url.charAt(url.length() - 6) != '/') {
-			numeroRessource = Integer.parseInt(String.valueOf(url.charAt(url.length() - 6) + url.charAt(url.length() - 5)));
-
-
-		} else {
-			numeroRessource = Integer.parseInt(String.valueOf(url.charAt(url.length() - 5)));
-		}
-
-		env.getMap().remove(position);
-		env.getMap().add(position, 7);
-		panneauJeu.getChildren().remove(position);
-		panneauJeu.getChildren().add(position, new ImageView(imagesTilesMap.getImage(env.getMap().get(position))));
-		ajouterEvents((ImageView) panneauJeu.getChildren().get(panneauJeu.getChildren().size() - 1));
-		env.getJoueur().getInventaire().ajouterObjet(numeroRessource);
 	}
 	
 	public int getTailleBlock() {
 		return ((int) imagesTilesMap.getImage(0).getWidth());
 	}
-	
+
+	public int getNumeroTile(ImageView tile){
+		String url = tile.getImage().getUrl();
+
+		if (url.charAt(url.length() - 6) != '/')
+			return Integer.parseInt(String.valueOf(url.charAt(url.length() - 6) + url.charAt(url.length() - 5)));
+		else
+			return Integer.parseInt(String.valueOf(url.charAt(url.length() - 5)));
+	}
+
 	public int getLargeur() {
 		return largeur;
 	}
@@ -110,7 +127,27 @@ public class CarteVue {
 		return imagesTilesMap;
 	}
 
-	public BooleanProperty mineProperty(){
-		return mine;
+	public boolean isEtatClik() {
+		return etatClik;
+	}
+
+	public void setTempInitialMinage(int tempInitialMinage) {
+		this.tempInitialMinage = tempInitialMinage;
+	}
+
+	public int getTempInitialMinage() {
+		return tempInitialMinage;
+	}
+
+	public ImageView getTileMiner() {
+		return tileMiner;
+	}
+
+	public TilePane getPanneauJeu() {
+		return panneauJeu;
+	}
+
+	public int getPositionTileMiner() {
+		return positionMiner;
 	}
 }
