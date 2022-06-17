@@ -70,7 +70,7 @@ public class InventaireVue extends Pane{
 	private void creerInventaireVue() {
 		imagesFondInventaire = new Images(CheminRelatifFond);
 		creerBox();
-		affichageInventaire();
+		//affichageInventaire();
 	}
 	
 	private void insererFond() {
