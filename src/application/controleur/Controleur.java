@@ -14,6 +14,7 @@ import application.vue.*;
 import application.vue.inventaire.InventaireVue;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
@@ -89,18 +90,66 @@ public class Controleur implements Initializable {
 		root.addEventHandler(KeyEvent.KEY_RELEASED, new KeyReleased(joueur, joueurVue));
 
 		droneSentinelleVue.setOnMouseClicked(event -> {
-			if (joueur.getEnMain() instanceof Pistolet)
+			if (joueur.getEnMain() instanceof Pistolet) {
 				droneSentinelle.perdreVie(3);
+				Transition tir = new Transition() {
+
+					{
+						setCycleDuration(Duration.millis(300));
+
+					}
+
+					@Override
+					protected void interpolate(double v) {
+						joueurVue.setImage(joueurVue.getImages().getImage(11));
+					}
+				};
+				tir.play();
+			}
 		});
 
 		robotFantassinVue.setOnMouseClicked(event -> {
-			if (joueur.getEnMain() instanceof Pistolet || Math.abs(joueur.getY() - robotFantassin.getY()) < 50 && joueur.getEnMain() instanceof Epee)
+			if (Math.abs(joueur.getY() - robotFantassin.getY()) < 50 && joueur.getEnMain() instanceof Epee){
 				robotFantassin.perdreVie(4);
+			} else if (joueur.getEnMain() instanceof Pistolet ) {
+				robotFantassin.perdreVie(3);
+				Transition tir = new Transition() {
+
+					{
+						setCycleDuration(Duration.millis(300));
+
+					}
+
+					@Override
+					protected void interpolate(double v) {
+						joueurVue.setImage(joueurVue.getImages().getImage(11));
+					}
+				};
+				tir.play();
+			}
+
 		});
 
 		robotGeneralVue.setOnMouseClicked(event -> {
-			if (joueur.getEnMain() instanceof Pistolet || Math.abs(joueur.getY() - robotGeneral.getY()) < 50 && joueur.getEnMain() instanceof Epee)
+			if (joueur.getEnMain() instanceof Pistolet ) {
+				robotGeneral.perdreVie(3);
+				Transition tir = new Transition() {
+
+					{
+						setCycleDuration(Duration.millis(300));
+
+					}
+
+					@Override
+					protected void interpolate(double v) {
+						joueurVue.setImage(joueurVue.getImages().getImage(11));
+					}
+				};
+				tir.play();
+			}
+			else if (Math.abs(joueur.getY() - robotGeneral.getY()) < 50 && joueur.getEnMain() instanceof Epee) {
 				robotGeneral.perdreVie(4);
+			}
 		});
 
 		joueur.getInventaire().ajouterObjet(0, 1);
