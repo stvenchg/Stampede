@@ -4,6 +4,7 @@ package application.modele.objet;
 
 import application.modele.objet.Outils.Pioche;
 import application.modele.objet.armes.Epee;
+import application.modele.objet.armes.Pistolet;
 import application.modele.objet.materiaux.MineraiDeFer;
 import application.modele.objet.materiaux.Terre;
 import javafx.collections.FXCollections;
@@ -21,6 +22,7 @@ public class Inventaire {
 		inventaire.add(new Epee(0));
 		inventaire.add(new Terre(0));
 		inventaire.add(new MineraiDeFer(0));
+		inventaire.add(new Pistolet(0));
 
 	}
 	
