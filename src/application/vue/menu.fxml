@@ -1,22 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.MenuControleur">
+<AnchorPane prefHeight="896.0" prefWidth="1520.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.MenuControleur">
    <children>
-      <Label layoutX="127.0" layoutY="60.0" text="Stampede oeoe">
-         <font>
-            <Font size="44.0" />
-         </font>
-      </Label>
-      <Button fx:id="jouerButton" layoutX="132.0" layoutY="184.0" mnemonicParsing="false" onAction="#jouerButtonPressed" prefHeight="26.0" prefWidth="338.0" text="Lancer le jeu" />
-      <Button fx:id="quitterButton" layoutX="132.0" layoutY="222.0" mnemonicParsing="false" onAction="#quitterButtonPressed" prefHeight="26.0" prefWidth="338.0" text="Quitter" />
-      <Label layoutX="99.0" layoutY="363.0" text="Jeu conçu par Steven CHING, Yanis HAMANI, Philippe SANTOS" />
+      <Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="549.0" layoutY="851.0" text="Jeu conçu par Steven CHING, Yanis HAMANI, Philippe SANTOS" textAlignment="CENTER" textFill="WHITE" />
+      <ImageView fx:id="logo" fitHeight="147.0" fitWidth="710.0" layoutX="405.0" layoutY="59.0" onMouseEntered="#logoMouseEntered" onMouseExited="#logoMouseExited" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../ressources/menu/logoStampede.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="jouerButton" fitHeight="104.0" fitWidth="275.0" layoutX="629.0" layoutY="334.0" onMouseEntered="#jouerButtonEntered" onMouseExited="#jouerButtonExited" onMousePressed="#jouerButtonPressed" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../ressources/menu/jouerButton.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="howToButton" fitHeight="104.0" fitWidth="275.0" layoutX="629.0" layoutY="423.0" onMouseEntered="#howToButtonEntered" onMouseExited="#howToButtonExited" onMousePressed="#howToButtonPressed" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../ressources/menu/howToButton.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="quitterButton" fitHeight="104.0" fitWidth="275.0" layoutX="629.0" layoutY="512.0" onMouseEntered="#quitterButtonEntered" onMouseExited="#quitterButtonExited" onMousePressed="#quitterButtonPressed" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../ressources/menu/quitterButton.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
    </children>
 </AnchorPane>

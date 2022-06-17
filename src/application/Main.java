@@ -12,7 +12,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 
-		Image fond = new Image("application/ressources/map/bgorange.png");
+		Image fond = new Image("application/ressources/menu/blurMain.jpg");
 
 		BackgroundImage imageFond = new BackgroundImage(fond, BackgroundRepeat.SPACE,
 				BackgroundRepeat.SPACE,
@@ -23,12 +23,12 @@ public class Main extends Application {
 
 		try {
 			AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/application/vue/menu.fxml"));
-			Scene scene = new Scene(root,1520,896);
-			// scene.getStylesheets().add(getClass().getResource("./application.css").toExternalForm());
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("../menu.css").toExternalForm());
 			root.requestFocus();
 			primaryStage.setResizable(false);
 			primaryStage.setScene(scene);
-			primaryStage.setTitle("Stampede");
+			primaryStage.setTitle("Stampede - Menu principal");
 			root.setBackground(background);
 			primaryStage.show();
 			primaryStage.getIcons().add(new Image("/application/ressources/menu/iconeVash.png"));

@@ -83,7 +83,6 @@ public class Controleur implements Initializable {
 		faireBindEtListener();
 		insererImagesPaneCentral();
 		initGameLoop();
-		getInventaireVue().affichageInventaire();
 
 		gameLoop.play();
 		root.addEventHandler(KeyEvent.KEY_PRESSED, new KeyPressed(joueur, joueurVue, this));
