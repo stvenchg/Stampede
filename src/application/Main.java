@@ -12,7 +12,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 
-		Image fond = new Image("application/ressources/map/bgorange.png");
+		Image fond = new Image("application/ressources/menu/blurMain.jpg");
 
 		BackgroundImage imageFond = new BackgroundImage(fond, BackgroundRepeat.SPACE,
 				BackgroundRepeat.SPACE,
