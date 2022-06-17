@@ -51,7 +51,7 @@ public class Environnement {
 	}
 
 	public Joueur getJoueur(){
-		return joueur;
+		return this.joueur;
 	}
 
 	public Personnage getRobotFantassin() {
@@ -61,9 +61,6 @@ public class Environnement {
 	public Personnage getDroneSentinelle() {
 		return this.droneSentinelle;
 	}
-
-	public ArrayList<Integer> getMap() {
-		return this.carte.getMap();
 
 	public ObservableList<Integer> mapProperty() {
 			return this.carte.mapProperty();

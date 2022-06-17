@@ -78,7 +78,7 @@ public class CarteVue extends TilePane{
 							int position = panneauJeu.getChildren().indexOf(tile);
 							env.mapProperty().set(position, numeroObjet);
 						} else {
-							env.getJoueur().setEnMain(null);
+							env.getJoueur().prendreEnMain(null);
 						}
 					}
 				}

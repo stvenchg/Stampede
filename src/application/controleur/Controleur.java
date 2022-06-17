@@ -47,8 +47,6 @@ import javafx.util.Duration;
 public class Controleur implements Initializable {
 
 	private Environnement env;
-	private Personnage joueur;
-	private Personnage robotFantassin;
 
 	private Timeline gameLoop;
 	private int temps;
@@ -177,42 +175,42 @@ public class Controleur implements Initializable {
 
 		// Collision joueur
 
-		if (env.getMap().get(env.getTileBas(joueur.getX(), joueur.getY())) == 1 ||
-				env.getMap().get(env.getTileBas(joueur.getX(), joueur.getY())) == 2 ||
-				env.getMap().get(env.getTileBas(joueur.getX(), joueur.getY())) == 3 ||
-				env.getMap().get(env.getTileBas(joueur.getX(), joueur.getY())) == 4 ||
-				env.getMap().get(env.getTileBas(joueur.getX(), joueur.getY())) == 5 ||
-				env.getMap().get(env.getTileBas(joueur.getX(), joueur.getY())) == 6) {
+		if (env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 1 ||
+				env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 2 ||
+				env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 3 ||
+				env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 4 ||
+				env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 5 ||
+				env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 6) {
 
 
 			joueur.setY(joueur.getY() - 5);
 			joueur.setSaute(false);
 		}
 
-		if (env.getMap().get(env.getTileBas(joueur.getX(), joueur.getY())) == 7) {
+		if (env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 7) {
 			this.joueur.meurt();
 			joueurVue.setVisible(false);
 			joueur.setY(joueur.getY() - 5);
 		}
 
-		if (env.getMap().get(env.getTileBasDroite(joueur.getX(), joueur.getY())) == 1 ||
-				env.getMap().get(env.getTileBasDroite(joueur.getX(), joueur.getY())) == 3) {
+		if (env.mapProperty().get(env.getTileBasDroite(joueur.getX(), joueur.getY())) == 1 ||
+				env.mapProperty().get(env.getTileBasDroite(joueur.getX(), joueur.getY())) == 3) {
 			System.out.println("TOUCHE BAS DROITE");
 			joueur.setY(joueur.getY() - 5);
 		}
 
-		if (env.getMap().get(env.getTileBasGauche(joueur.getX(), joueur.getY())) == 1 ||
-				env.getMap().get(env.getTileBasDroite(joueur.getX(), joueur.getY())) == 3) {
+		if (env.mapProperty().get(env.getTileBasGauche(joueur.getX(), joueur.getY())) == 1 ||
+				env.mapProperty().get(env.getTileBasDroite(joueur.getX(), joueur.getY())) == 3) {
 			System.out.println("TOUCHE BAS GAUCHE");
 			joueur.setY(joueur.getY() - 5);
 		}
 
-		if (env.getMap().get(env.getTileHautGauche(joueur.getX(), joueur.getY())) == 2) {
+		if (env.mapProperty().get(env.getTileHautGauche(joueur.getX(), joueur.getY())) == 2) {
 			System.out.println("TOUCHE HAUT GAUCHE");
 			joueur.setX(joueur.getX() + 5);
 		}
 
-		if (env.getMap().get(env.getTileHautDroite(joueur.getX(), joueur.getY())) == 2) {
+		if (env.mapProperty().get(env.getTileHautDroite(joueur.getX(), joueur.getY())) == 2) {
 			System.out.println("TOUCHE HAUT DROITE");
 			joueur.setX(joueur.getX() - 5);
 		}
@@ -220,37 +218,37 @@ public class Controleur implements Initializable {
 
 		// Collision robot
 
-		if (env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
-				env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 2 ||
-				env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 3 ||
-				env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 4 ||
-				env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 5 ||
-				env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 6) {
+		if (env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
+				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 2 ||
+				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 3 ||
+				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 4 ||
+				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 5 ||
+				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 6) {
 
 			robotFantassin.setY(robotFantassin.getY() - 5);
 
 		}
-		if (env.getMap().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 7) {
+		if (env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 7) {
 			this.robotFantassin.meurt();
 			robotFantassin.setY(robotFantassin.getY() - 5);
 		}
 
 
-		if (env.getMap().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
-				env.getMap().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 3) {
+		if (env.mapProperty().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
+				env.mapProperty().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 3) {
 			robotFantassin.setY(robotFantassin.getY() - 5);
 		}
 
-		if (env.getMap().get(env.getTileBasGauche(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
-				env.getMap().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 3) {
+		if (env.mapProperty().get(env.getTileBasGauche(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
+				env.mapProperty().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 3) {
 			robotFantassin.setY(robotFantassin.getY() - 5);
 		}
 
-		if (env.getMap().get(env.getTileHautGauche(robotFantassin.getX(), robotFantassin.getY())) == 2) {
+		if (env.mapProperty().get(env.getTileHautGauche(robotFantassin.getX(), robotFantassin.getY())) == 2) {
 			robotFantassin.setX(robotFantassin.getX() + 5);
 		}
 
-		if (env.getMap().get(env.getTileHautDroite(robotFantassin.getX(), robotFantassin.getY())) == 2) {
+		if (env.mapProperty().get(env.getTileHautDroite(robotFantassin.getX(), robotFantassin.getY())) == 2) {
 			robotFantassin.setX(robotFantassin.getX() - 5);
 		}
 
@@ -310,7 +308,7 @@ public class Controleur implements Initializable {
 		// Création de la vue de la vie avec l'observable
 		this.vieVue = new VieVue(carteVue);
 		this.obsVie = new ObservableVie(vieVue);
-		this.joueurPersonnage.vieProperty().addListener(obsVie);
+		this.joueur.vieProperty().addListener(obsVie);
 
 		//Création de l'inventaire
 		this.inventaireVue = new InventaireVue();
@@ -338,7 +336,7 @@ public class Controleur implements Initializable {
 		this.droneSentinelleVue.translateYProperty().bindBidirectional(this.droneSentinelle.yProperty());
 
 		//Creation des Listeners pour InventaireVue
-		joueur.getInventaire().getObjet(0).objetProperty().addListener(new ObservateurObjet(joueur.getInventaire().getObjet(0), inventaireVue, joueur));
+		((Joueur)joueur).getInventaire().getObjet(0).objetProperty().addListener(new ObservateurObjet(joueur.getInventaire().getObjet(0), inventaireVue, joueur));
 		joueur.getInventaire().getObjet(1).objetProperty().addListener(new ObservateurObjet(joueur.getInventaire().getObjet(1), inventaireVue, joueur));
 		joueur.getInventaire().getObjet(2).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(2), inventaireVue, joueur));
 		joueur.getInventaire().getObjet(3).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(3), inventaireVue, joueur));
@@ -366,7 +364,7 @@ public class Controleur implements Initializable {
 		System.out.println("Robot y:" + robotFantassin.getY());
 //		System.out.println("Direction robot:" + robotFantassin.getDirection());
 		System.out.println("Vie du joueur: " + joueur.vieProperty().getValue());
-		System.out.println(env.getMap().get(env.getTileBas(joueur.getX(), joueur.getY())));
+		System.out.println(env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())));
 		System.out.println("Vie du robot fantassin: " + robotFantassin.vieProperty().getValue());
 		System.out.println("Vie du dronde sentinelle: " + droneSentinelle.vieProperty().getValue());
 		System.out.println(this.env.getListePersonnages());
