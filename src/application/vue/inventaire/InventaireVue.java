@@ -15,7 +15,7 @@ public class InventaireVue extends Pane{
 	private final static String CheminRelatifObjets = "../ressources/tiles/objets/";
 	private final static String CheminRelatifFond = "../ressources/tiles/inventaire/";
 	private final static String CheminPoliceMincraft = "/application/ressources/polices/minecraft.ttf";
-	private final static String TexteInventaire = "Inventory";
+	private final static String TexteInventaire = "Inventaire";
 	private final static int NbColonnesInventaire = 6;
 	private final static int DecalageBordSceneInventaireX = 60;
 

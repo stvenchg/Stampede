@@ -10,6 +10,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 
@@ -24,6 +25,10 @@ public class ObservateurObjet implements ChangeListener<Number>{
 
 	private Joueur joueur;
 	private Text textNomObjetTemp;
+
+	private final static String CheminPoliceMincraft = "/application/ressources/polices/minecraft.ttf";
+
+	private Font policeEcritureMincraft = Font.loadFont(getClass().getResourceAsStream(CheminPoliceMincraft), 42);
 	
 	public ObservateurObjet(Objet obj, InventaireVue inventaireVue, Joueur joueur) {
 		this.obj = obj;
@@ -40,6 +45,7 @@ public class ObservateurObjet implements ChangeListener<Number>{
 		textNomObjetTemp.getStyleClass().add("TexteObjetInventaire");
 		textNomObjetTemp.setLayoutX(5);
 		textNomObjetTemp.setLayoutY(-10);
+		textNomObjetTemp.setFont(policeEcritureMincraft);
 	}
 	
 	@Override
