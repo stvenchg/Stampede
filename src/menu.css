@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'Minecraft';
+    src: url('/application/ressources/polices/minecraft.ttf');
+}
+
+.text {
+    -fx-font-family: "Minecraft";
+}
