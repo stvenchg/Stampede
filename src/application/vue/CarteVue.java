@@ -70,7 +70,7 @@ public class CarteVue extends TilePane{
 		});
 
 		tile.setOnMouseClicked(mouseEvent -> {
-			if(mouseEvent.getButton() == MouseButton.PRIMARY) {
+			if(mouseEvent.getButton() == MouseButton.SECONDARY) {
 				if (env.getJoueur().getEnMain() instanceof Ressource) {
 					if (getNumeroTile(tile) == 0) {
 						int numeroObjet = ((Ressource) env.getJoueur().getEnMain()).getobjetNumero();
@@ -107,7 +107,7 @@ public class CarteVue extends TilePane{
 	}
 
 	public int getNumeroTile(ImageView tile){
-		String url = tile.getImage().getUrl();
+		String url = tile.getImage().impl_getUrl();
 
 		if (url.charAt(url.length() - 6) != '/')
 			return Integer.parseInt(String.valueOf(url.charAt(url.length() - 6) + url.charAt(url.length() - 5)));
