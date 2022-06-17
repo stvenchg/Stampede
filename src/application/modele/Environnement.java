@@ -11,10 +11,10 @@ public class Environnement {
 	private int hauteur;
 	private int largeur;
 	private ArrayList<Personnage> listePersonnages;
-	private Personnage joueurPersonnage;
 	private Joueur joueur;
 	private Personnage robotFantassin;
 	private Personnage droneSentinelle;
+	private Personnage robotGeneral;
 
 	public Environnement() {
 		this.carte = new Carte();
@@ -22,12 +22,13 @@ public class Environnement {
 		this.largeur = this.carte.getLargeur();
 		this.listePersonnages = new ArrayList<Personnage>();
 		this.joueur = new Joueur();
-		this.joueurPersonnage = joueur;
-		this.ajouterPersonnage(joueurPersonnage);
+		this.ajouterPersonnage(joueur);
 		this.robotFantassin = new RobotFantassin();
 		this.ajouterPersonnage(robotFantassin);
 		this.droneSentinelle = new DroneSentinelle();
 		this.ajouterPersonnage(droneSentinelle);
+		this.robotGeneral = new RobotGeneral();
+		this.ajouterPersonnage(robotGeneral);
 	}
 
 	public void update() {
@@ -47,7 +48,7 @@ public class Environnement {
 	}
 
 	public Personnage getJoueurPersonnage() {
-		return this.joueurPersonnage;
+		return this.joueur;
 	}
 
 	public Joueur getJoueur(){
@@ -60,6 +61,10 @@ public class Environnement {
 
 	public Personnage getDroneSentinelle() {
 		return this.droneSentinelle;
+	}
+
+	public Personnage getRobotGeneral() {
+		return this.robotGeneral;
 	}
 
 	public ObservableList<Integer> mapProperty() {
@@ -136,6 +141,61 @@ public class Environnement {
 
 		int xTile = (xJoueur + 25) / 16;
 		int yTile = (yJoueur + 2) / 16;
+		int getTileHautDroite;
+
+		getTileHautDroite = (xTile) + (yTile * 95);
+
+		return getTileHautDroite;
+	}
+
+	public int getTileBasGeneral(int xJoueur, int yJoueur) {
+
+		int xTile = (xJoueur) / 16;
+		int yTile = (yJoueur + 80) / 16;
+		int tileBas;
+
+		tileBas = (xTile) + (yTile * 95);
+
+		return tileBas;
+	}
+
+	public int getTileBasDroiteGeneral(int xJoueur, int yJoueur) {
+
+		int xTile = (xJoueur + 90) / 16;
+		int yTile = (yJoueur + 80) / 16;
+		int tileBasDroite;
+
+		tileBasDroite = (xTile) + (yTile * 95);
+
+		return tileBasDroite;
+	}
+
+	public int getTileBasGaucheGeneral(int xJoueur, int yJoueur) {
+
+		int xTile = (xJoueur) / 16;
+		int yTile = (yJoueur + 80) / 16;
+		int tileBasGauche;
+
+		tileBasGauche = (xTile) + (yTile * 95);
+
+		return tileBasGauche;
+	}
+
+	public int getTileHautGaucheGeneral(int xJoueur, int yJoueur) {
+
+		int xTile = (xJoueur) / 16;
+		int yTile = (yJoueur) / 16;
+		int tileHautGauche;
+
+		tileHautGauche = (xTile) + (yTile * 95);
+
+		return tileHautGauche;
+	}
+
+	public int getTileHautDroiteGeneral(int xJoueur, int yJoueur) {
+
+		int xTile = (xJoueur + 90) / 16;
+		int yTile = (yJoueur) / 16;
 		int getTileHautDroite;
 
 		getTileHautDroite = (xTile) + (yTile * 95);

@@ -13,11 +13,7 @@ import application.modele.Personnage;
 import application.modele.SoundEffect;
 import application.modele.objet.armes.Epee;
 import application.modele.objet.armes.Pistolet;
-import application.vue.CarteVue;
-import application.vue.DroneSentinelleVue;
-import application.vue.JoueurVue;
-import application.vue.RobotFantassinVue;
-import application.vue.VieVue;
+import application.vue.*;
 import application.vue.inventaire.InventaireVue;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -59,6 +55,8 @@ public class Controleur implements Initializable {
 	private Personnage droneSentinelle;
 	private DroneSentinelleVue droneSentinelleVue;
 	private Joueur joueur;
+	private Personnage robotGeneral;
+	private RobotGeneralVue robotGeneralVue;
 	private SoundEffect die = new SoundEffect("application/ressources/sounds/boss_die.wav");
 	private BooleanProperty mine;
 	private int tempInit;
@@ -103,6 +101,11 @@ public class Controleur implements Initializable {
 				robotFantassin.perdreVie(4);
 		});
 
+		robotGeneralVue.setOnMouseClicked(event -> {
+			if (joueur.getEnMain() instanceof Pistolet || Math.abs(joueur.getY() - robotGeneral.getY()) < 50 && joueur.getEnMain() instanceof Epee)
+				robotGeneral.perdreVie(4);
+		});
+
 		joueur.getInventaire().ajouterObjet(0, 1);
 		joueur.getInventaire().ajouterObjet(1, 1);
 		joueur.getInventaire().ajouterObjet(2, 93);
@@ -135,6 +138,7 @@ public class Controleur implements Initializable {
 		this.env.update();
 		joueur.gravite();
 		robotFantassin.gravite();
+		robotGeneral.gravite();
 
 		//action du robot fantassin
 
@@ -170,6 +174,25 @@ public class Controleur implements Initializable {
 				if (temps % 2000 == 0) {
 					droneSentinelle.attaque(joueur);
 				}
+			}
+		}
+
+		//action du robot general
+
+		if (robotGeneral.estVivant() && joueur.estVivant()) {
+			if (joueur.getX() > robotGeneral.getX() && (joueur.getX() - robotGeneral.getX()) > 50) {
+				robotGeneral.setX(robotGeneral.getX() + 1);
+				robotGeneral.setDirection(1);
+
+			} else if (joueur.getX() < robotGeneral.getX() && (robotGeneral.getX() - joueur.getX()) > 50) {
+				robotGeneral.setX(robotGeneral.getX() - 1);
+				robotGeneral.setDirection(-1);
+
+			} else {
+				if (Math.abs(joueur.getY() - robotGeneral.getY()) < 50 && temps % 700 == 0) {
+					robotGeneral.attaque(joueur);
+				}
+
 			}
 		}
 
@@ -252,6 +275,44 @@ public class Controleur implements Initializable {
 			robotFantassin.setX(robotFantassin.getX() - 5);
 		}
 
+		// Collisions Robot General
+
+		if (env.mapProperty().get(env.getTileBasGeneral(robotGeneral.getX(), robotGeneral.getY())) == 1 ||
+				env.mapProperty().get(env.getTileBasGeneral(robotGeneral.getX(), robotGeneral.getY())) == 2 ||
+				env.mapProperty().get(env.getTileBasGeneral(robotGeneral.getX(), robotGeneral.getY())) == 3 ||
+				env.mapProperty().get(env.getTileBasGeneral(robotGeneral.getX(), robotGeneral.getY())) == 4 ||
+				env.mapProperty().get(env.getTileBasGeneral(robotGeneral.getX(), robotGeneral.getY())) == 5 ||
+				env.mapProperty().get(env.getTileBasGeneral(robotGeneral.getX(), robotGeneral.getY())) == 6) {
+
+			robotGeneral.setY(robotGeneral.getY() - 5);
+
+		}
+		if (env.mapProperty().get(env.getTileBasGeneral(robotGeneral.getX(), robotGeneral.getY())) == 7) {
+			this.robotGeneral.meurt();
+			robotGeneral.setY(robotGeneral.getY() - 5);
+		}
+
+
+		if (env.mapProperty().get(env.getTileBasDroiteGeneral(robotGeneral.getX(), robotGeneral.getY())) == 1 ||
+				env.mapProperty().get(env.getTileBasDroiteGeneral(robotGeneral.getX(), robotGeneral.getY())) == 3) {
+			robotGeneral.setY(robotGeneral.getY() - 5);
+		}
+
+		if (env.mapProperty().get(env.getTileBasGaucheGeneral(robotGeneral.getX(), robotGeneral.getY())) == 1 ||
+				env.mapProperty().get(env.getTileBasDroiteGeneral(robotGeneral.getX(), robotGeneral.getY())) == 3) {
+			robotGeneral.setY(robotGeneral.getY() - 5);
+		}
+
+		if (env.mapProperty().get(env.getTileHautGauche(robotGeneral.getX(), robotGeneral.getY())) == 2) {
+			robotGeneral.setX(robotGeneral.getX() + 5);
+		}
+
+		if (env.mapProperty().get(env.getTileHautDroiteGeneral(robotGeneral.getX(), robotGeneral.getY())) == 2) {
+			robotGeneral.setX(robotGeneral.getX() - 5);
+		}
+
+		// Gestion des morts
+
 		if (!joueur.estVivant()) {
 			//paneCentral.getChildren().remove(joueurVue);
 			Image joueurMort = new Image("application/ressources/sprites/joueur/9.png");
@@ -287,10 +348,17 @@ public class Controleur implements Initializable {
 			paneCentral.getChildren().remove(droneSentinelleVue);
 		}
 
+		if (!robotGeneral.estVivant()) {
+			paneCentral.getChildren().remove(robotGeneralVue);
+		}
+
+		if (joueur.getEnMain() instanceof Pistolet && joueur.getTrajectoire() == 0 )
+			joueurVue.setImage(joueurVue.getImages().getImage(10));
 
 		joueurVue.setScaleX(joueur.getDirection());
 		robotFantassinVue.setScaleX(robotFantassin.getDirection());
 		droneSentinelleVue.setScaleX(droneSentinelle.getDirection());
+		robotGeneralVue.setScaleX(robotGeneral.getDirection());
 
 	}
 
@@ -320,6 +388,11 @@ public class Controleur implements Initializable {
 		// Création d'une sentinelle et de sa vue
 		this.droneSentinelle = this.env.getDroneSentinelle();
 		this.droneSentinelleVue = new DroneSentinelleVue();
+
+		// Création d'un général et de sa vue
+		this.robotGeneral = this.env.getRobotGeneral();
+		this.robotGeneralVue = new RobotGeneralVue();
+
 	}
 
 	private void faireBindEtListener() {
@@ -334,6 +407,10 @@ public class Controleur implements Initializable {
 		// Bind DroneSentinelle
 		this.droneSentinelleVue.translateXProperty().bindBidirectional(this.droneSentinelle.xProperty());
 		this.droneSentinelleVue.translateYProperty().bindBidirectional(this.droneSentinelle.yProperty());
+
+		// Bind RobotGeneral
+		this.robotGeneralVue.translateXProperty().bindBidirectional(this.robotGeneral.xProperty());
+		this.robotGeneralVue.translateYProperty().bindBidirectional(this.robotGeneral.yProperty());
 
 		//Creation des Listeners pour InventaireVue
 		((Joueur)joueur).getInventaire().getObjet(0).objetProperty().addListener(new ObservateurObjet(joueur.getInventaire().getObjet(0), inventaireVue, joueur));
@@ -353,6 +430,7 @@ public class Controleur implements Initializable {
 		this.paneCentral.getChildren().add(vieVue);
 		this.paneCentral.getChildren().add(robotFantassinVue);
 		this.paneCentral.getChildren().add(droneSentinelleVue);
+		this.paneCentral.getChildren().add(robotGeneralVue);
 		this.paneCentral.getChildren().add(inventaireVue);
 	}
 
