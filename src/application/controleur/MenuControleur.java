@@ -23,6 +23,10 @@ public class MenuControleur implements Initializable {
     @FXML private ImageView quitterButton;
     @FXML
     private ImageView howToButton;
+
+    @FXML
+    private ImageView optionsButton;
+
     @FXML
     private ImageView logo;
 
@@ -122,6 +126,30 @@ public class MenuControleur implements Initializable {
 
     /////////////////////////////////////////////////////////////////////
 
+    // Bouton Options ///////////////////////////////////////////////////
+
+    @FXML
+    private void optionsButtonPressed(MouseEvent event) {
+
+        button_clicked.playSound();
+    }
+    @FXML
+    public void optionsButtonEntered(MouseEvent event) {
+        optionsButton.setOpacity(0.8);
+        optionsButton.setScaleX(optionsButton.getScaleX()+0.1);
+        optionsButton.setScaleY(optionsButton.getScaleY()+0.1);
+        button_hover.playSound();
+    }
+
+    @FXML
+    public  void optionsButtonExited(MouseEvent event) {
+        optionsButton.setOpacity(1);
+        optionsButton.setScaleX(optionsButton.getScaleX()-0.1);
+        optionsButton.setScaleY(optionsButton.getScaleY()-0.1);
+    }
+
+    /////////////////////////////////////////////////////////////////////
+
     private void lancerJeu(Stage stage) {
         try {
             BorderPane root1 = (BorderPane) FXMLLoader.load(getClass().getResource("/application/vue/vue.fxml"));
@@ -137,8 +165,7 @@ public class MenuControleur implements Initializable {
             stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent e) {
-                    Platform.exit();
-                    System.exit(0);
+                    stage.close();
                 }
             });
 

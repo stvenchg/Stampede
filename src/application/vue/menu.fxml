@@ -14,7 +14,7 @@
             <Image url="@../ressources/menu/logoStampede.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="jouerButton" fitHeight="104.0" fitWidth="275.0" layoutX="629.0" layoutY="334.0" onMouseEntered="#jouerButtonEntered" onMouseExited="#jouerButtonExited" onMousePressed="#jouerButtonPressed" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="jouerButton" fitHeight="104.0" fitWidth="275.0" layoutX="629.0" layoutY="289.0" onMouseEntered="#jouerButtonEntered" onMouseExited="#jouerButtonExited" onMousePressed="#jouerButtonPressed" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../ressources/menu/jouerButton.png" />
          </image>
@@ -22,7 +22,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <ImageView fx:id="howToButton" fitHeight="104.0" fitWidth="275.0" layoutX="629.0" layoutY="423.0" onMouseEntered="#howToButtonEntered" onMouseExited="#howToButtonExited" onMousePressed="#howToButtonPressed" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="howToButton" fitHeight="104.0" fitWidth="275.0" layoutX="629.0" layoutY="378.0" onMouseEntered="#howToButtonEntered" onMouseExited="#howToButtonExited" onMousePressed="#howToButtonPressed" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../ressources/menu/howToButton.png" />
          </image>
@@ -30,9 +30,17 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <ImageView fx:id="quitterButton" fitHeight="104.0" fitWidth="275.0" layoutX="629.0" layoutY="512.0" onMouseEntered="#quitterButtonEntered" onMouseExited="#quitterButtonExited" onMousePressed="#quitterButtonPressed" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="quitterButton" fitHeight="104.0" fitWidth="275.0" layoutX="629.0" layoutY="556.0" onMouseEntered="#quitterButtonEntered" onMouseExited="#quitterButtonExited" onMousePressed="#quitterButtonPressed" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../ressources/menu/quitterButton.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="optionsButton" fitHeight="104.0" fitWidth="275.0" layoutX="629.0" layoutY="467.0" onMouseEntered="#optionsButtonEntered" onMouseExited="#optionsButtonExited" onMousePressed="#optionsButtonPressed" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../ressources/menu/optionsButton.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
