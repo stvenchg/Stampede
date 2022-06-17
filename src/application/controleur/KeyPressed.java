@@ -3,7 +3,6 @@ package application.controleur;
 import application.modele.Personnage;
 import application.vue.JoueurVue;
 import application.vue.RobotFantassinVue;
-import application.vue.DeplacementAnimation;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 

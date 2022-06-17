@@ -1,4 +1,4 @@
-package application.vue;
+package application.controleur;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -8,6 +8,7 @@ import application.controleur.Controleur;
 import application.modele.Joueur;
 import application.modele.Personnage;
 import application.modele.SoundEffect;
+import application.vue.JoueurVue;
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;

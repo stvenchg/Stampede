@@ -6,18 +6,14 @@ import java.util.ResourceBundle;
 import application.controleur.inventaire.ObservateurObjet;
 import application.controleur.inventaire.ObservateurResources;
 
-import application.controleur.inventaire.ObservateurObjet;
-import application.controleur.inventaire.ObservateurResources;
 import application.controleur.map.ObservateurMap;
 import application.modele.Environnement;
 import application.modele.Joueur;
 import application.modele.Personnage;
 import application.modele.SoundEffect;
 import application.modele.objet.armes.Epee;
-import application.modele.SoundEffect;
+import application.modele.objet.armes.Pistolet;
 import application.vue.CarteVue;
-import application.vue.DeplacementAnimation;
-import application.vue.DroneSentinelleVue;
 import application.vue.DroneSentinelleVue;
 import application.vue.JoueurVue;
 import application.vue.RobotFantassinVue;
@@ -27,8 +23,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
@@ -98,6 +92,17 @@ public class Controleur implements Initializable {
 		gameLoop.play();
 		root.addEventHandler(KeyEvent.KEY_PRESSED, new KeyPressed(joueur, joueurVue, this));
 		root.addEventHandler(KeyEvent.KEY_RELEASED, new KeyReleased(joueur, joueurVue));
+
+		droneSentinelleVue.setOnMouseClicked(event -> {
+			if (joueur.getEnMain() instanceof Pistolet)
+				droneSentinelle.perdreVie(3);
+		});
+
+		robotFantassinVue.setOnMouseClicked(event -> {
+			if (joueur.getEnMain() instanceof Pistolet || Math.abs(joueur.getY() - robotFantassin.getY()) < 50 && joueur.getEnMain() instanceof Epee)
+				robotFantassin.perdreVie(4);
+		});
+
 		joueur.getInventaire().ajouterObjet(0, 1);
 		joueur.getInventaire().ajouterObjet(1, 1);
 		joueur.getInventaire().ajouterObjet(2, 93);
@@ -131,6 +136,8 @@ public class Controleur implements Initializable {
 		joueur.gravite();
 		robotFantassin.gravite();
 
+		//action du robot fantassin
+
 		if (robotFantassin.estVivant() && joueur.estVivant()) {
 			if (joueur.getX() > robotFantassin.getX() && (joueur.getX() - robotFantassin.getX()) > 50) {
 				robotFantassin.setX(robotFantassin.getX() + 1);
@@ -143,14 +150,12 @@ public class Controleur implements Initializable {
 			} else {
 				if (Math.abs(joueur.getY() - robotFantassin.getY()) < 50 && temps % 700 == 0) {
 					robotFantassin.attaque(joueur);
-					robotFantassinVue.setOnMouseClicked(event -> {
-						if (Math.abs(joueur.getY() - robotFantassin.getY()) < 50 && joueur.getEnMain() instanceof Epee)
-							robotFantassin.perdreVie(2);
-					});
 				}
 
 			}
 		}
+
+		//action du drone sentinelle
 
 		if (droneSentinelle.estVivant() && joueur.estVivant()) {
 			if (joueur.getX() > droneSentinelle.getX() && (joueur.getX() - droneSentinelle.getX()) > 50) {
@@ -162,13 +167,8 @@ public class Controleur implements Initializable {
 				droneSentinelle.setDirection(-1);
 
 			} else {
-				if (Math.abs(joueur.getY() - droneSentinelle.getY()) < 50 && temps % 700 == 0) {
+				if (temps % 2000 == 0) {
 					droneSentinelle.attaque(joueur);
-
-					droneSentinelleVue.setOnMouseClicked(event -> {
-						if (Math.abs(joueur.getY() - droneSentinelle.getY()) < 50)
-							droneSentinelle.perdreVie(2);
-					});
 				}
 			}
 		}

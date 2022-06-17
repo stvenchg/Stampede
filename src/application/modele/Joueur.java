@@ -2,6 +2,7 @@ package application.modele;
 
 import application.modele.objet.Inventaire;
 import application.modele.objet.Objet;
+import javafx.beans.property.ObjectProperty;
 
 public class Joueur extends Personnage {
 
@@ -24,6 +25,7 @@ public class Joueur extends Personnage {
 	public void prendreEnMain(Objet objet){
 		this.enMain = objet;
 	}
+
 	public Inventaire getInventaire() {
 		return inventaire;
 	}
