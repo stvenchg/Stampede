@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Minage implements Runnable {
 
-    private CarteVue mapVue;
+    private CarteVue mapVue; //dqs
 
     private final static String CheminRelatifImageMinageAnimationZom = "../ressources/minage/";
     private Joueur joueur;
