@@ -107,7 +107,7 @@ public class CarteVue extends TilePane{
 	}
 
 	public int getNumeroTile(ImageView tile){
-		String url = tile.getImage().getUrl();
+		String url = tile.getImage().impl_getUrl();
 
 		if (url.charAt(url.length() - 6) != '/')
 			return Integer.parseInt(String.valueOf(url.charAt(url.length() - 6) + url.charAt(url.length() - 5)));

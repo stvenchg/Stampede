@@ -7,10 +7,7 @@ import application.controleur.inventaire.ObservateurObjet;
 import application.controleur.inventaire.ObservateurResources;
 
 import application.controleur.map.ObservateurMap;
-import application.modele.Environnement;
-import application.modele.Joueur;
-import application.modele.Personnage;
-import application.modele.SoundEffect;
+import application.modele.*;
 import application.modele.objet.armes.Epee;
 import application.modele.objet.armes.Pistolet;
 import application.vue.*;
@@ -50,12 +47,12 @@ public class Controleur implements Initializable {
 	private JoueurVue joueurVue;
 	private VieVue vieVue;
 	private CarteVue carteVue;
-	private Personnage robotFantassin;
+	private RobotFantassin robotFantassin;
 	private RobotFantassinVue robotFantassinVue;
-	private Personnage droneSentinelle;
+	private DroneSentinelle droneSentinelle;
 	private DroneSentinelleVue droneSentinelleVue;
 	private Joueur joueur;
-	private Personnage robotGeneral;
+	private RobotGeneral robotGeneral;
 	private RobotGeneralVue robotGeneralVue;
 	private SoundEffect die = new SoundEffect("application/ressources/sounds/boss_die.wav");
 	private BooleanProperty mine;
@@ -191,6 +188,8 @@ public class Controleur implements Initializable {
 			} else {
 				if (Math.abs(joueur.getY() - robotGeneral.getY()) < 50 && temps % 700 == 0) {
 					robotGeneral.attaque(joueur);
+				} else if (temps % 2000 == 0){
+					robotGeneral.attaqueDistance(joueur);
 				}
 
 			}

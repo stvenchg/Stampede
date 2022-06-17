@@ -12,9 +12,9 @@ public class Environnement {
 	private int largeur;
 	private ArrayList<Personnage> listePersonnages;
 	private Joueur joueur;
-	private Personnage robotFantassin;
-	private Personnage droneSentinelle;
-	private Personnage robotGeneral;
+	private RobotFantassin robotFantassin;
+	private DroneSentinelle droneSentinelle;
+	private RobotGeneral robotGeneral;
 
 	public Environnement() {
 		this.carte = new Carte();
@@ -55,15 +55,15 @@ public class Environnement {
 		return this.joueur;
 	}
 
-	public Personnage getRobotFantassin() {
+	public RobotFantassin getRobotFantassin() {
 		return this.robotFantassin;
 	}
 
-	public Personnage getDroneSentinelle() {
+	public DroneSentinelle getDroneSentinelle() {
 		return this.droneSentinelle;
 	}
 
-	public Personnage getRobotGeneral() {
+	public RobotGeneral getRobotGeneral() {
 		return this.robotGeneral;
 	}
 
