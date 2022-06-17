@@ -1,8 +1,9 @@
 package application.modele;
 
-import javafx.collections.ObservableList;
-
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
+import javafx.collections.ObservableList;
 
 public class Environnement {
 
@@ -61,8 +62,11 @@ public class Environnement {
 		return this.droneSentinelle;
 	}
 
+	public ArrayList<Integer> getMap() {
+		return this.carte.getMap();
+
 	public ObservableList<Integer> mapProperty() {
-		return this.carte.mapProperty();
+			return this.carte.mapProperty();
 	}
 
 	public ArrayList<Personnage> getListePersonnages() {
@@ -144,6 +148,5 @@ public class Environnement {
 
 	public Environnement getEnvironement() {
 		return this;
-	}
-
+	}	
 }

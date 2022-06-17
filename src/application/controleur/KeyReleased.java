@@ -18,13 +18,15 @@ public class KeyReleased implements EventHandler<KeyEvent>{
 		this.joueur = joueur2;
 		this.joueurVue = joueurVue;
 	}
-	
+
 	@Override
 	public void handle(KeyEvent event) {
 
-		if(event.getCode() == KeyCode.D || event.getCode() == KeyCode.Q || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
-			joueurVue.setImage(joueurVue.getImages().getImage(0));
-		}	
+		if(joueur.estVivant())
+			if(event.getCode() == KeyCode.D || event.getCode() == KeyCode.Q || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
+				joueurVue.setImage(joueurVue.getImages().getImage(0));
+				joueur.setTrajectoire(0);
+			}
 	}
 
 }
