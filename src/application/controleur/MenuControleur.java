@@ -46,11 +46,18 @@ public class MenuControleur implements Initializable {
     @FXML
     private ImageView goBackOptionsButton;
 
+    @FXML
+    private ImageView sonToggleButton;
+
 
     private static SoundEffect button_hover = new SoundEffect("application/ressources/sounds/button_hover.wav");
     private static SoundEffect button_clicked = new SoundEffect("application/ressources/sounds/button_clicked.wav");
 
     private static SoundEffect menuSound = new SoundEffect("application/ressources/sounds/menuThemeSound.wav");
+
+    public boolean sonActive = true;
+    Image ActiveButtonImage = new Image("application/ressources/menu/activeButton.png");
+    Image DesactiveButtonImage = new Image("application/ressources/menu/desactiveButton.png");
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -228,7 +235,42 @@ public class MenuControleur implements Initializable {
         button_clicked.playSoundMenu();
     }
 
+    @FXML
+    void sonToggleButtonPressed(MouseEvent event) {
 
+        if (sonActive) {
+            sonToggleButton.setImage(DesactiveButtonImage);
+            sonActive = false;
+
+            menuSound.stop();
+        }
+        else {
+            sonToggleButton.setImage(ActiveButtonImage);
+            sonActive = true;
+
+            menuSound.playSound();
+        }
+
+        button_clicked.playSoundMenu();
+    }
+
+    @FXML
+    void sonToggleButtonEntered(MouseEvent event) {
+        sonToggleButton.setOpacity(0.8);
+        sonToggleButton.setScaleX(sonToggleButton.getScaleX()+0.1);
+        sonToggleButton.setScaleY(sonToggleButton.getScaleY()+0.1);
+
+        button_hover.playSoundMenu();
+    }
+
+    @FXML
+    void sonToggleButtonExited(MouseEvent event) {
+        sonToggleButton.setOpacity(1);
+        sonToggleButton.setScaleX(sonToggleButton.getScaleX()-0.1);
+        sonToggleButton.setScaleY(sonToggleButton.getScaleY()-0.1);
+
+        button_hover.playSoundMenu();
+    }
 
 
 
