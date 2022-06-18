@@ -145,6 +145,7 @@ public class ObservateurObjet implements ChangeListener<Number>{
 		Inventaire inventaire = joueur.getInventaire();
 
 		//Actualise Fligue
+		System.out.println(inventaire.getObjet(4).getNbRessources());
 		if(inventaire.getObjet(4).getNbRessources() < 1)
 			if(inventaire.getObjet(5).getNbRessources() > 2 && inventaire.getObjet(8).getNbRessources() > 4 && inventaire.getObjet(9 ).getNbRessources() > 5)
 				inventaireVue.getPanneauImagesCraft().getChildren().get(0).setOpacity(1);
@@ -153,6 +154,11 @@ public class ObservateurObjet implements ChangeListener<Number>{
 				inventaireVue.getPanneauImagesCraft().getChildren().get(0).setScaleX(1);
 				inventaireVue.getPanneauImagesCraft().getChildren().get(0).setScaleY(1);
 			}
+		else {
+			inventaireVue.getPanneauImagesCraft().getChildren().get(0).setOpacity(0.4);
+			inventaireVue.getPanneauImagesCraft().getChildren().get(0).setScaleX(1);
+			inventaireVue.getPanneauImagesCraft().getChildren().get(0).setScaleY(1);
+		}
 
 		//Actualise Balle
 		if(inventaire.getObjet(5).getNbRessources() > 0)

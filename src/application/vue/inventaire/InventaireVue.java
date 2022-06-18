@@ -89,10 +89,6 @@ public class InventaireVue extends Pane{
 
 	private void initialiserCraft(){
 
-		var ref = new Object() {
-			ImageView img;
-		};
-
 		panneauImagesCraft.getChildren().add(new ImageView(imagesObjetsInventaire.getImage(4)));
 		ImageView img = (ImageView) panneauImagesCraft.getChildren().get(0);
 		img.setOpacity(0.4);
@@ -116,7 +112,6 @@ public class InventaireVue extends Pane{
 		ajouterEventCraft(img1);
 		img1.setOnMouseClicked(mouseEvent -> {
 			if(mouseEvent.getButton() == MouseButton.PRIMARY) {
-				System.out.println("opacité = " + img1.getOpacity());
 				if (img1.getOpacity() == 1) {
 					joueur.getInventaire().ajouterObjet(6, 1);
 

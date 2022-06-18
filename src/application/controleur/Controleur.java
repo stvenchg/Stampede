@@ -81,6 +81,7 @@ public class Controleur implements Initializable {
 
 		initialiserVariables();
 		faireBindEtListener();
+		joueur.ajouterRessourceInitial();
 		insererImagesPaneCentral();
 		initGameLoop();
 		getInventaireVue().affichageInventaire();
@@ -151,16 +152,6 @@ public class Controleur implements Initializable {
 				robotGeneral.perdreVie(4);
 			}
 		});
-
-		joueur.getInventaire().ajouterObjet(0, 1);
-		joueur.getInventaire().ajouterObjet(1, 1);
-		joueur.getInventaire().ajouterObjet(2, 93);
-		joueur.getInventaire().ajouterObjet(3, 7);
-		joueur.getInventaire().ajouterObjet(4, 2);
-		joueur.getInventaire().ajouterObjet(5, 2);
-		//(Joueur)joueur.getInventaire().supprimerObjet(2, 5);
-		//joueur.getInventaire().supprimerObjet(0, 3);
-		//joueur.getInventaire().ajouterObjet(2, 93);
 	}
 
 	private void initGameLoop() {
@@ -472,7 +463,7 @@ public class Controleur implements Initializable {
 		joueur.getInventaire().getObjet(7).objetProperty().addListener(new ObservateurObjet(joueur.getInventaire().getObjet(7), inventaireVue, joueur));
 		joueur.getInventaire().getObjet(8).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(8), inventaireVue, joueur));
 		joueur.getInventaire().getObjet(9).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(9), inventaireVue, joueur));
-
+		joueur.getInventaire().getObjet(10).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(10), inventaireVue, joueur));
 
 		//Creation Observateur Map
 		env.mapProperty().addListener(new ObservateurMap(carteVue, env.mapProperty()));

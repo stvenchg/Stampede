@@ -29,6 +29,7 @@ public class Inventaire {
 		inventaire.add(new Vaisseau());
 		inventaire.add(new Ressort());
 		inventaire.add(new Engrenage());
+		inventaire.add(new NoyauEnergie());
 	}
 	
 	public void ajouterObjet(int obj, int nombre) {

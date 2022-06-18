@@ -5,7 +5,7 @@ import application.modele.objet.Objet;
 public class Engrenage extends Objet {
 
     public Engrenage() {
-        super(10, "Engrenage");
+        super(9, "Engrenage");
     }
 
     @Override

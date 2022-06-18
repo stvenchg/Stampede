@@ -5,7 +5,7 @@ import application.modele.objet.Objet;
 public class NoyauEnergie extends Objet {
 
     public NoyauEnergie() {
-        super(11, "Noyau d'énergie");
+        super(10, "Noyau d'énergie");
     }
 
     @Override
