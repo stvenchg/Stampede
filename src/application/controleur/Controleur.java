@@ -96,7 +96,7 @@ public class Controleur implements Initializable {
 				Transition tir = new Transition() {
 
 					{
-						setCycleDuration(Duration.millis(300));
+						setCycleDuration(Duration.millis(200));
 
 					}
 
@@ -117,7 +117,7 @@ public class Controleur implements Initializable {
 				Transition tir = new Transition() {
 
 					{
-						setCycleDuration(Duration.millis(300));
+						setCycleDuration(Duration.millis(200));
 
 					}
 
@@ -137,7 +137,7 @@ public class Controleur implements Initializable {
 				Transition tir = new Transition() {
 
 					{
-						setCycleDuration(Duration.millis(300));
+						setCycleDuration(Duration.millis(200));
 
 					}
 
@@ -392,7 +392,7 @@ public class Controleur implements Initializable {
 			paneCentral.getChildren().remove(robotGeneralVue);
 		}
 
-		if (joueur.getEnMain() instanceof Pistolet && joueur.getTrajectoire() == 0 )
+		if (joueur.getEnMain() instanceof Pistolet && joueur.getTrajectoire() == 0 && joueur.estVivant())
 			joueurVue.setImage(joueurVue.getImages().getImage(10));
 
 		joueurVue.setScaleX(joueur.getDirection());
