@@ -8,7 +8,7 @@ public abstract class Personnage {
 	private SimpleIntegerProperty X;
 	private SimpleIntegerProperty Y;
 	public SimpleIntegerProperty direction;
-	private SimpleIntegerProperty vie;
+	protected SimpleIntegerProperty vie;
 	private boolean saute;
 	private int trajectoire;
 
@@ -100,6 +100,8 @@ public abstract class Personnage {
 	public void meurt() {
 		this.vie.setValue(0);
 	}
+
+	public abstract void respawn();
 
 	public boolean getSaute() {
 		return this.saute;

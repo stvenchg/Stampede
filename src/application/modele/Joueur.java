@@ -31,6 +31,11 @@ public class Joueur extends Personnage {
 		perso.perdreVie(4);
 	}
 
+	@Override
+	public void respawn() {
+		super.vie.setValue(10);
+	}
+
 	public void prendreEnMain(Objet objet){
 		this.enMain = objet;
 	}

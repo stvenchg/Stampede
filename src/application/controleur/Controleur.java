@@ -164,7 +164,7 @@ public class Controleur implements Initializable {
 
 					if (temps % 5 == 0) {
 						faireTour();
-						//afficherInfosEnConsole();
+						afficherInfosEnConsole();
 					}
 					temps++;
 				}));
@@ -173,14 +173,20 @@ public class Controleur implements Initializable {
 	}
 
 	private void faireTour() {
-		this.env.update();
+		//this.env.update();
 		joueur.gravite();
 		robotFantassin.gravite();
 		robotGeneral.gravite();
 
+		// regenaration de la vie du perso
+
+		if (joueur.estVivant() && joueur.getVie() < 12 && temps % 15000 == 0)
+			joueur.ajouterVie(1);
+
+
 		//action du robot fantassin
 
-		if (robotFantassin.estVivant() && joueur.estVivant()) {
+		if (robotFantassin.estVivant() && joueur.estVivant() && robotFantassinVue.isVisible()) {
 			if (joueur.getX() > robotFantassin.getX() && (joueur.getX() - robotFantassin.getX()) > 50) {
 				robotFantassin.setX(robotFantassin.getX() + 1);
 				robotFantassin.setDirection(1);
@@ -197,9 +203,16 @@ public class Controleur implements Initializable {
 			}
 		}
 
+		if (!robotFantassin.estVivant() && temps % 5000 == 0) {
+			robotFantassin.respawn();
+			robotFantassinVue.setVisible(true);
+		}
+
+
+
 		//action du drone sentinelle
 
-		if (droneSentinelle.estVivant() && joueur.estVivant()) {
+		if (droneSentinelle.estVivant() && joueur.estVivant() && droneSentinelleVue.isVisible()) {
 			if (joueur.getX() > droneSentinelle.getX() && (joueur.getX() - droneSentinelle.getX()) > 50) {
 				droneSentinelle.setX(droneSentinelle.getX() + 2);
 				droneSentinelle.setDirection(1);
@@ -215,9 +228,14 @@ public class Controleur implements Initializable {
 			}
 		}
 
+		if (!droneSentinelleVue.isVisible() && temps % 8000 == 0 && joueur.getEnMain() instanceof Pistolet) {
+			droneSentinelle.respawn();
+			droneSentinelleVue.setVisible(true);
+		}
+
 		//action du robot general
 
-		if (robotGeneral.estVivant() && joueur.estVivant()) {
+		if (robotGeneral.estVivant() && joueur.estVivant() && robotGeneralVue.isVisible()) {
 			if (joueur.getX() > robotGeneral.getX() && (joueur.getX() - robotGeneral.getX()) > 50) {
 				robotGeneral.setX(robotGeneral.getX() + 1);
 				robotGeneral.setDirection(1);
@@ -381,11 +399,11 @@ public class Controleur implements Initializable {
 		}
 
 		if (!robotFantassin.estVivant()) {
-			paneCentral.getChildren().remove(robotFantassinVue);
+			robotFantassinVue.setVisible(false);
 		}
 
 		if (!droneSentinelle.estVivant()) {
-			paneCentral.getChildren().remove(droneSentinelleVue);
+			droneSentinelleVue.setVisible(false);
 		}
 
 		if (!robotGeneral.estVivant()) {
@@ -425,9 +443,12 @@ public class Controleur implements Initializable {
 		this.robotFantassin = this.env.getRobotFantassin();
 		this.robotFantassinVue = new RobotFantassinVue();
 
+
+
 		// Création d'une sentinelle et de sa vue
 		this.droneSentinelle = this.env.getDroneSentinelle();
 		this.droneSentinelleVue = new DroneSentinelleVue();
+
 
 		// Création d'un général et de sa vue
 		this.robotGeneral = this.env.getRobotGeneral();
@@ -475,7 +496,9 @@ public class Controleur implements Initializable {
 		this.paneCentral.getChildren().add(vieVue);
 		this.paneCentral.getChildren().add(robotFantassinVue);
 		this.paneCentral.getChildren().add(droneSentinelleVue);
+		droneSentinelleVue.setVisible(false);
 		this.paneCentral.getChildren().add(robotGeneralVue);
+		robotGeneralVue.setVisible(false);
 		this.paneCentral.getChildren().add(inventaireVue);
 	}
 
@@ -491,6 +514,7 @@ public class Controleur implements Initializable {
 		System.out.println("Vie du robot fantassin: " + robotFantassin.vieProperty().getValue());
 		System.out.println("Vie du dronde sentinelle: " + droneSentinelle.vieProperty().getValue());
 		System.out.println(this.env.getListePersonnages());
+		System.out.println(robotFantassin.estVivant());
 	}
 
 	public InventaireVue getInventaireVue() {

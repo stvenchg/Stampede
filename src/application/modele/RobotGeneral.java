@@ -13,6 +13,11 @@ public class RobotGeneral extends Personnage {
         perso.perdreVie(4);
     }
 
+    @Override
+    public void respawn() {
+        super.vie.setValue(20);
+    }
+
     public void attaqueDistance(Personnage perso) {
         perso.perdreVie(3);
     }
