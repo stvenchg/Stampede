@@ -156,6 +156,7 @@ public class Controleur implements Initializable {
 		joueur.getInventaire().ajouterObjet(2, 93);
 		joueur.getInventaire().ajouterObjet(3, 7);
 		joueur.getInventaire().ajouterObjet(4, 2);
+		joueur.getInventaire().ajouterObjet(5, 2);
 		//(Joueur)joueur.getInventaire().supprimerObjet(2, 5);
 		//joueur.getInventaire().supprimerObjet(0, 3);
 		//joueur.getInventaire().ajouterObjet(2, 93);
@@ -171,7 +172,7 @@ public class Controleur implements Initializable {
 
 					if (temps % 5 == 0) {
 						faireTour();
-						afficherInfosEnConsole();
+						//afficherInfosEnConsole();
 					}
 					temps++;
 				}));
@@ -426,7 +427,7 @@ public class Controleur implements Initializable {
 		this.joueur.vieProperty().addListener(obsVie);
 
 		//Création de l'inventaire
-		this.inventaireVue = new InventaireVue();
+		this.inventaireVue = new InventaireVue(joueur);
 
 		// Création d'un fantassin et de sa vue
 		this.robotFantassin = this.env.getRobotFantassin();
@@ -460,11 +461,16 @@ public class Controleur implements Initializable {
 		this.robotGeneralVue.translateYProperty().bindBidirectional(this.robotGeneral.yProperty());
 
 		//Creation des Listeners pour InventaireVue
-		((Joueur)joueur).getInventaire().getObjet(0).objetProperty().addListener(new ObservateurObjet(joueur.getInventaire().getObjet(0), inventaireVue, joueur));
+		joueur.getInventaire().getObjet(0).objetProperty().addListener(new ObservateurObjet(joueur.getInventaire().getObjet(0), inventaireVue, joueur));
 		joueur.getInventaire().getObjet(1).objetProperty().addListener(new ObservateurObjet(joueur.getInventaire().getObjet(1), inventaireVue, joueur));
 		joueur.getInventaire().getObjet(2).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(2), inventaireVue, joueur));
 		joueur.getInventaire().getObjet(3).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(3), inventaireVue, joueur));
-		joueur.getInventaire().getObjet(4).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(4), inventaireVue, joueur));
+		joueur.getInventaire().getObjet(4).objetProperty().addListener(new ObservateurObjet(joueur.getInventaire().getObjet(4), inventaireVue, joueur));
+		joueur.getInventaire().getObjet(5).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(5), inventaireVue, joueur));
+		joueur.getInventaire().getObjet(6).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(6), inventaireVue, joueur));
+		joueur.getInventaire().getObjet(7).objetProperty().addListener(new ObservateurObjet(joueur.getInventaire().getObjet(7), inventaireVue, joueur));
+		joueur.getInventaire().getObjet(8).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(8), inventaireVue, joueur));
+		joueur.getInventaire().getObjet(9).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(9), inventaireVue, joueur));
 
 
 		//Creation Observateur Map

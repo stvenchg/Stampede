@@ -3,6 +3,7 @@ package application.controleur.inventaire;
 import java.util.ArrayList;
 
 import application.modele.Joueur;
+import application.modele.objet.Inventaire;
 import application.modele.objet.Objet;
 import application.vue.inventaire.InventaireVue;
 import javafx.beans.value.ChangeListener;
@@ -45,6 +46,7 @@ public class ObservateurObjet implements ChangeListener<Number>{
 	@Override
 	public void changed(ObservableValue<? extends Number> arg0, Number ans, Number nv){
 		actualiserVueInventaire(ans.intValue(), nv.intValue());
+		actualiserCraft();
 	}
 	
 	public void actualiserVueInventaire(int ans, int nv){
@@ -138,4 +140,47 @@ public class ObservateurObjet implements ChangeListener<Number>{
 	public InventaireVue getInventaireVue() {
 		return inventaireVue;
 	}
+
+	private void actualiserCraft(){
+		Inventaire inventaire = joueur.getInventaire();
+
+		//Actualise Fligue
+		if(inventaire.getObjet(4).getNbRessources() < 1)
+			if(inventaire.getObjet(5).getNbRessources() > 2 && inventaire.getObjet(8).getNbRessources() > 4 && inventaire.getObjet(9 ).getNbRessources() > 5)
+				inventaireVue.getPanneauImagesCraft().getChildren().get(0).setOpacity(1);
+			else {
+				inventaireVue.getPanneauImagesCraft().getChildren().get(0).setOpacity(0.4);
+				inventaireVue.getPanneauImagesCraft().getChildren().get(0).setScaleX(1);
+				inventaireVue.getPanneauImagesCraft().getChildren().get(0).setScaleY(1);
+			}
+
+		//Actualise Balle
+		if(inventaire.getObjet(5).getNbRessources() > 0)
+			inventaireVue.getPanneauImagesCraft().getChildren().get(1).setOpacity(1);
+		else {
+			inventaireVue.getPanneauImagesCraft().getChildren().get(1).setOpacity(0.4);
+			inventaireVue.getPanneauImagesCraft().getChildren().get(1).setScaleX(1);
+			inventaireVue.getPanneauImagesCraft().getChildren().get(1).setScaleY(1);
+		}
+
+		//Actualise Block de fer
+		if(inventaire.getObjet(5).getNbRessources() > 4)
+			inventaireVue.getPanneauImagesCraft().getChildren().get(2).setOpacity(1);
+		else {
+			inventaireVue.getPanneauImagesCraft().getChildren().get(2).setOpacity(0.4);
+			inventaireVue.getPanneauImagesCraft().getChildren().get(2).setScaleX(1);
+			inventaireVue.getPanneauImagesCraft().getChildren().get(2).setScaleY(1);
+		}
+
+		//Actualise Vaisseau
+		if(inventaire.getObjet(5).getNbRessources() > 19 && inventaire.getObjet(9).getNbRessources() > 19 && inventaire.getObjet(8).getNbRessources() > 9 && inventaire.getObjet(10).getNbRessources() > 0)
+			inventaireVue.getPanneauImagesCraft().getChildren().get(3).setOpacity(1);
+		else {
+			inventaireVue.getPanneauImagesCraft().getChildren().get(3).setOpacity(0.4);
+			inventaireVue.getPanneauImagesCraft().getChildren().get(3).setScaleX(1);
+			inventaireVue.getPanneauImagesCraft().getChildren().get(3).setScaleY(1);
+		}
+
+	}
+
 }

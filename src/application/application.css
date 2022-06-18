@@ -19,7 +19,16 @@
     -x-alignment: center;
     -fx-font-size: 25;
     -fx-fill: #3d3d3d;
-    /*-fx-font-weight: bold;*/
+	-fx-font-family: 'Minecraft';
+	src: url('/application/ressources/polices/minecraft.ttf');
+}
+
+.TexteDeCraft
+{
+	-fx-font-size: 25;
+	-fx-fill: #3d3d3d;
+	-fx-font-family: 'Minecraft';
+	src: url('/application/ressources/polices/minecraft.ttf');
 }
 
 .NbRessources
@@ -28,6 +37,8 @@
 	-fx-background-color: black;
     -fx-font-size: 15;
     -fx-fill: white;
+	-fx-font-family: 'Minecraft';
+	src: url('/application/ressources/polices/minecraft.ttf');
 }
 
 .TexteObjetInventaire

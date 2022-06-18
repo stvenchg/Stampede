@@ -2,7 +2,6 @@ package application.modele;
 
 import application.modele.objet.Inventaire;
 import application.modele.objet.Objet;
-import javafx.beans.property.ObjectProperty;
 
 public class Joueur extends Personnage {
 

@@ -102,7 +102,6 @@ public class ObservateurResources extends ObservateurObjet {
 		objetVue.setPrefWidth(50);
 		nombre.getStyleClass().add("NbRessources");
 		nombre.setLayoutY(49);
-		nombre.setFont(super.getInventaireVue().getPoliceMincraft());
 		ImageView imageObjet = new ImageView(super.getInventaireVue().getImagesObjets().getImage(super.getnumeroObj()));
 		objetVue.getChildren().addAll(imageObjet, nombre);
 		super.ajouterEvent(objetVue);

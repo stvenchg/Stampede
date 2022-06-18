@@ -22,9 +22,9 @@ public class Main extends Application {
 		Background background = new Background(imageFond);
 
 		try {
-			AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/application/vue/menu.fxml"));
+			AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/menu/vue/menu.fxml"));
 			Scene scene = new Scene(root);
-			scene.getStylesheets().add(getClass().getResource("../menu.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/menu/vue/menu.css").toExternalForm());
 			root.requestFocus();
 			primaryStage.setResizable(false);
 			primaryStage.setScene(scene);
