@@ -1,7 +1,6 @@
-package application.controleur;
+package menu.controleur;
 
 import application.modele.SoundEffect;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -278,7 +277,7 @@ public class MenuControleur implements Initializable {
         try {
             BorderPane root1 = (BorderPane) FXMLLoader.load(getClass().getResource("/application/vue/vue.fxml"));
             Scene scene = new Scene(root1, 1520, 896);
-            scene.getStylesheets().add(getClass().getResource("../application.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("../../application/application.css").toExternalForm());
             root1.requestFocus();
             stage.setScene(scene);
             stage.setTitle("Stampede - Jeu");

@@ -1,13 +1,13 @@
 package application.vue.inventaire;
 
+import application.modele.Joueur;
 import application.vue.Images;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class InventaireVue extends Pane{
@@ -28,26 +28,27 @@ public class InventaireVue extends Pane{
 	public final static int DecalageBoxImages = 3+4;
 	private Images imagesFondInventaire;
 	private Images imagesObjetsInventaire;
-	private VBox vBox;
 	private Text texteInv;
 	private Pane panneauDeFondInventaire;
+
+	private TilePane panneauBordCraft;
+
+	private TilePane panneauImagesCraft;
 	private TilePane panneauBordInventaire;
 	private TilePane panneauImagesInventaire;
-	private Font policeEcritureMincraft = Font.loadFont(getClass().getResourceAsStream(CheminPoliceMincraft), 42);
+
+	private Joueur joueur;
 
 	
-	public InventaireVue() {
+	public InventaireVue(Joueur joueur) {
 		super(new Pane());
+		this.joueur = joueur;
 		imagesObjetsInventaire = new Images(CheminRelatifObjets);
 		creerInventaireVue();
 	}
 	
 	public Images getImagesObjets() {
 		return imagesObjetsInventaire;
-	}
-	
-	public Font getPoliceMincraft() {
-		return policeEcritureMincraft;
 	}
 	
 	public void ajouterObjet(Pane objet) {
@@ -79,6 +80,97 @@ public class InventaireVue extends Pane{
 		for(int i=0; i<18; i++) {
 			panneauBordInventaire.getChildren().add(new ImageView(imagesFondInventaire.getImage(1)));
 		}
+
+		for(int i=0; i<4; i++){
+			panneauBordCraft.getChildren().add(new ImageView(imagesFondInventaire.getImage(1)));
+		}
+		initialiserCraft();
+	}
+
+	private void initialiserCraft(){
+
+		var ref = new Object() {
+			ImageView img;
+		};
+
+		panneauImagesCraft.getChildren().add(new ImageView(imagesObjetsInventaire.getImage(4)));
+		ImageView img = (ImageView) panneauImagesCraft.getChildren().get(0);
+		img.setOpacity(0.4);
+		ajouterEventCraft(img);
+		img.setOnMouseClicked(mouseEvent -> {
+			if(mouseEvent.getButton() == MouseButton.PRIMARY) {
+				if (img.getOpacity() == 1) {
+					joueur.getInventaire().ajouterObjet(4, 1);
+
+					joueur.getInventaire().ajouterObjet(5, -3);
+					joueur.getInventaire().ajouterObjet(8, -5);
+					joueur.getInventaire().ajouterObjet(9, -6);
+				}
+			}
+		});
+
+
+		panneauImagesCraft.getChildren().add(new ImageView(imagesObjetsInventaire.getImage(6)));
+		ImageView img1 = (ImageView) panneauImagesCraft.getChildren().get(1);
+		img1.setOpacity(0.4);
+		ajouterEventCraft(img1);
+		img1.setOnMouseClicked(mouseEvent -> {
+			if(mouseEvent.getButton() == MouseButton.PRIMARY) {
+				System.out.println("opacité = " + img1.getOpacity());
+				if (img1.getOpacity() == 1) {
+					joueur.getInventaire().ajouterObjet(6, 1);
+
+					joueur.getInventaire().ajouterObjet(5, -1);
+				}
+			}
+		});
+
+		panneauImagesCraft.getChildren().add(new ImageView(imagesObjetsInventaire.getImage(3)));
+		ImageView img2 = (ImageView) panneauImagesCraft.getChildren().get(2);
+		img2.setOpacity(0.4);
+		ajouterEventCraft(img2);
+		img2.setOnMouseClicked(mouseEvent -> {
+			if(mouseEvent.getButton() == MouseButton.PRIMARY) {
+				if (img2.getOpacity() == 1) {
+					joueur.getInventaire().ajouterObjet(3, 1);
+
+					joueur.getInventaire().ajouterObjet(5, -5);
+				}
+			}
+		});
+
+		panneauImagesCraft.getChildren().add(new ImageView(imagesObjetsInventaire.getImage(7)));
+		ImageView img3 = (ImageView) panneauImagesCraft.getChildren().get(3);
+		img3.setOpacity(0.4);
+		ajouterEventCraft(img3);
+		img3.setOnMouseClicked(mouseEvent -> {
+			if(mouseEvent.getButton() == MouseButton.PRIMARY) {
+				if (img3.getOpacity() == 1) {
+					joueur.getInventaire().ajouterObjet(7, 1);
+
+					joueur.getInventaire().ajouterObjet(5, -20);
+					joueur.getInventaire().ajouterObjet(9, -20);
+					joueur.getInventaire().ajouterObjet(8, -10);
+					joueur.getInventaire().ajouterObjet(10, -1);
+				}
+			}
+		});
+	}
+
+	private void ajouterEventCraft(ImageView img){
+		img.setOnMouseEntered(mouseEvent -> {
+			if(img.getOpacity() == 1){
+				img.setScaleX(1.4);
+				img.setScaleY(1.4);
+			}
+		});
+
+		img.setOnMouseExited(mouseEvent -> {
+			if(img.getOpacity() == 1){
+				img.setScaleX(1);
+				img.setScaleY(1);
+			}
+		});
 	}
 	
 	public void changerOrdreListeInvetaire(Pane ObjDeplacer, int posObjArriver) {
@@ -106,17 +198,23 @@ public class InventaireVue extends Pane{
 		panneauDeFondInventaire = new Pane();
 		panneauBordInventaire = new TilePane();
 		panneauImagesInventaire = new TilePane();
+		panneauBordCraft = new TilePane();
+		panneauImagesCraft = new TilePane();
 		
 		insererFond();
 		gererPositionContenaire();
 
-		this.getChildren().addAll(texteInv,panneauDeFondInventaire);
-		//this.getChildren().add(vBox);
-		//vBox.getChildren().add(texteInv);
-		//vBox.getChildren().add(panneauDeFondInventaire);
+		Text textCraft = new Text("Craft");
+		textCraft.getStyleClass().add("TexteDeCraft");
+		textCraft.setLayoutX(180);
+		textCraft.setLayoutY(235);
 
+		this.getChildren().addAll(texteInv, panneauDeFondInventaire);
+		panneauDeFondInventaire.getChildren().add(textCraft);
 		panneauDeFondInventaire.getChildren().add(panneauBordInventaire);
 		panneauDeFondInventaire.getChildren().add(panneauImagesInventaire);
+		panneauDeFondInventaire.getChildren().add(panneauBordCraft);
+		panneauDeFondInventaire.getChildren().add(panneauImagesCraft);
 	}
 	
 	public void affichageInventaire() {
@@ -125,7 +223,7 @@ public class InventaireVue extends Pane{
 	
 	private void gererPositionContenaire() {
 		this.setPrefWidth(NbColonnesInventaire *64+60);
-		this.setPrefHeight(3*64+60+50);
+		this.setPrefHeight(3*64+60+50+64+64);
 		//vBox.setPrefWidth(this.getPrefWidth());
 		//vBox.setPrefHeight(this.getPrefHeight());
 		this.setLayoutX(DecalageBordSceneInventaireX);
@@ -134,31 +232,36 @@ public class InventaireVue extends Pane{
 		texteInv.setLayoutX(150);
 		texteInv.setLayoutY(50);
 		texteInv.getStyleClass().add("TexteMenuInventaire");
-		texteInv.setFont(policeEcritureMincraft);
 		
 		this.setOpacity(0.92);
 		
-		//panneauDeFondInventaire.setLayoutX(60);
-		//panneauDeFondInventaire.setLayoutY(60);
+
 
 		panneauImagesInventaire.setLayoutX(DecalageBordInventaireBoxX+DecalageBoxImages);
 		panneauImagesInventaire.setLayoutY(DecalageBoxImages);
-		//vBox.setAlignment(Pos.CENTER);
 		panneauBordInventaire.setLayoutX(DecalageBordInventaireBoxX);
 		panneauDeFondInventaire.setLayoutY(DecalageBordInventaireBoxY);
 		panneauImagesInventaire.setHgap(DecalageBordBoxBox);
 		panneauImagesInventaire.setVgap(DecalageBordBoxBox);
 		panneauImagesInventaire.setPrefColumns(NbColonnesInventaire);
-		
-		panneauBordInventaire.setPrefColumns(NbColonnesInventaire);
 
-		//vBox.setSpacing(20);
+		panneauBordCraft.setLayoutX(DecalageBordInventaireBoxX+7);
+		panneauBordCraft.setLayoutY(260);
+		panneauImagesCraft.setLayoutX(DecalageBordInventaireBoxX+DecalageBoxImages+7);
+		panneauImagesCraft.setLayoutY(260+ 7);
+		panneauBordCraft.setHgap(40);
+		panneauImagesCraft.setHgap(40 + DecalageBordBoxBox);
+
+		panneauBordInventaire.setPrefColumns(NbColonnesInventaire);
 	}
 
 	public int getDecalageBordSceneXEtInventaireXETContenaireImagesX(){
 		return DecalageBordSceneInventaireX + DecalageBordInventaireBoxX;
 	}
 
+	public TilePane getPanneauImagesCraft(){
+		return panneauImagesCraft;
+	}
 	public int getDecalageBordBoxBox(){
 		return DecalageBordBoxBox;
 	}
