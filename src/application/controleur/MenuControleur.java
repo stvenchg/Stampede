@@ -50,10 +50,10 @@ public class MenuControleur implements Initializable {
     private ImageView sonToggleButton;
 
 
-    private static SoundEffect button_hover = new SoundEffect("application/ressources/sounds/button_hover.wav");
-    private static SoundEffect button_clicked = new SoundEffect("application/ressources/sounds/button_clicked.wav");
+    public static SoundEffect button_hover = new SoundEffect("application/ressources/sounds/button_hover.wav");
+    public static SoundEffect button_clicked = new SoundEffect("application/ressources/sounds/button_clicked.wav");
 
-    private static SoundEffect menuSound = new SoundEffect("application/ressources/sounds/menuThemeSound.wav");
+    public static SoundEffect menuSound = new SoundEffect("application/ressources/sounds/menuThemeSound.wav");
 
     public boolean sonActive = true;
     Image ActiveButtonImage = new Image("application/ressources/menu/activeButton.png");

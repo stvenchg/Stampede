@@ -16,12 +16,14 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -30,7 +32,11 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import static application.controleur.MenuControleur.button_clicked;
+import static application.controleur.MenuControleur.button_hover;
 
 public class Controleur implements Initializable {
 
@@ -44,6 +50,16 @@ public class Controleur implements Initializable {
 	private TilePane panneauJeu;
 	@FXML
 	private Pane paneCentral;
+
+	@FXML
+	private ImageView quitterJeuButton;
+
+	@FXML
+	private ImageView recommencerButton;
+
+	@FXML
+	private ImageView optionsJeuButton;
+
 	private ObservableVie obsVie;
 	private JoueurVue joueurVue;
 	private VieVue vieVue;
@@ -61,6 +77,9 @@ public class Controleur implements Initializable {
 	private InventaireVue inventaireVue;
 	boolean isGameOverAdded = false;
 	private SoundEffect bgSound = new SoundEffect("application/ressources/sounds/bgSound.wav");
+
+	@FXML
+	private Pane pauseMenu;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -86,7 +105,7 @@ public class Controleur implements Initializable {
 		getInventaireVue().affichageInventaire();
 
 		gameLoop.play();
-		root.addEventHandler(KeyEvent.KEY_PRESSED, new KeyPressed(joueur, joueurVue, this));
+		root.addEventHandler(KeyEvent.KEY_PRESSED, new KeyPressed(joueur, joueurVue, this, pauseMenu, gameLoop, robotFantassinVue, droneSentinelleVue,  robotGeneralVue, vieVue));
 		root.addEventHandler(KeyEvent.KEY_RELEASED, new KeyReleased(joueur, joueurVue));
 
 		droneSentinelleVue.setOnMouseClicked(event -> {
@@ -407,7 +426,6 @@ public class Controleur implements Initializable {
 		robotFantassinVue.setScaleX(robotFantassin.getDirection());
 		droneSentinelleVue.setScaleX(droneSentinelle.getDirection());
 		robotGeneralVue.setScaleX(robotGeneral.getDirection());
-
 	}
 
 	private void initialiserVariables() {
@@ -440,6 +458,8 @@ public class Controleur implements Initializable {
 		// Création d'un général et de sa vue
 		this.robotGeneral = this.env.getRobotGeneral();
 		this.robotGeneralVue = new RobotGeneralVue();
+
+		pauseMenu.setVisible(false);
 
 	}
 
@@ -499,4 +519,70 @@ public class Controleur implements Initializable {
 	public InventaireVue getInventaireVue() {
 		return inventaireVue;
 	}
+
+	@FXML
+	void optionsJeuButtonEntered(MouseEvent event) {
+		optionsJeuButton.setOpacity(0.8);
+		optionsJeuButton.setScaleX(optionsJeuButton.getScaleX()+0.1);
+		optionsJeuButton.setScaleY(optionsJeuButton.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void optionsJeuButtonExited(MouseEvent event) {
+		optionsJeuButton.setOpacity(1);
+		optionsJeuButton.setScaleX(optionsJeuButton.getScaleX()-0.1);
+		optionsJeuButton.setScaleY(optionsJeuButton.getScaleY()-0.1);
+	}
+
+	@FXML
+	void optionsJeuButtonPressed(MouseEvent event) {
+		button_clicked.playSoundMenu();
+	}
+
+	@FXML
+	void quitterJeuButtonEntered(MouseEvent event) {
+		quitterJeuButton.setOpacity(0.8);
+		quitterJeuButton.setScaleX(quitterJeuButton.getScaleX()+0.1);
+		quitterJeuButton.setScaleY(quitterJeuButton.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void quitterJeuButtonExited(MouseEvent event) {
+		quitterJeuButton.setOpacity(1);
+		quitterJeuButton.setScaleX(quitterJeuButton.getScaleX()-0.1);
+		quitterJeuButton.setScaleY(quitterJeuButton.getScaleY()-0.1);
+	}
+
+	@FXML
+	void quitterJeuButtonPressed(MouseEvent event) {
+		Platform.exit();
+
+		button_clicked.playSoundMenu();
+	}
+
+	@FXML
+	void recommencerButtonEntered(MouseEvent event) {
+		recommencerButton.setOpacity(0.8);
+		recommencerButton.setScaleX(recommencerButton.getScaleX()+0.1);
+		recommencerButton.setScaleY(recommencerButton.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void recommencerButtonExited(MouseEvent event) {
+		recommencerButton.setOpacity(1);
+		recommencerButton.setScaleX(recommencerButton.getScaleX()-0.1);
+		recommencerButton.setScaleY(recommencerButton.getScaleY()-0.1);
+	}
+
+	@FXML
+	void recommencerButtonPressed(MouseEvent event) {
+		button_clicked.playSoundMenu();
+	}
+
 }
