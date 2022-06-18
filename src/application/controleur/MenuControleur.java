@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -30,13 +31,29 @@ public class MenuControleur implements Initializable {
     @FXML
     private ImageView logo;
 
+    @FXML
+    private BorderPane menuPane;
+
+    @FXML
+    private Pane instructionsPane;
+
+    @FXML
+    private ImageView goBackButton;
+
+
     private static SoundEffect button_hover = new SoundEffect("application/ressources/sounds/button_hover.wav");
     private static SoundEffect button_clicked = new SoundEffect("application/ressources/sounds/button_clicked.wav");
+
+    private static SoundEffect menuSound = new SoundEffect("application/ressources/sounds/menuThemeSound.wav");
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         jouerButton.requestFocus();
+
+        menuSound.playSound();
+
+        instructionsPane.setVisible(false);
 
     }
 
@@ -57,15 +74,15 @@ public class MenuControleur implements Initializable {
         Stage stage = new Stage();
         lancerJeu(stage);
 
-        button_clicked.playSound();
-
+        button_clicked.playSoundMenu();
+        menuSound.stop();
     }
 
     public void jouerButtonEntered(MouseEvent mouseEvent) {
         jouerButton.setOpacity(0.8);
         jouerButton.setScaleX(jouerButton.getScaleX()+0.1);
         jouerButton.setScaleY(jouerButton.getScaleY()+0.1);
-        button_hover.playSound();
+        button_hover.playSoundMenu();
     }
 
     public void jouerButtonExited(MouseEvent mouseEvent) {
@@ -82,7 +99,7 @@ public class MenuControleur implements Initializable {
         Stage stage = (Stage) quitterButton.getScene().getWindow();
         stage.close();
 
-        button_clicked.playSound();
+        button_clicked.playSoundMenu();
     }
 
     @FXML
@@ -90,7 +107,7 @@ public class MenuControleur implements Initializable {
         quitterButton.setOpacity(0.8);
         quitterButton.setScaleX(quitterButton.getScaleX()+0.1);
         quitterButton.setScaleY(quitterButton.getScaleY()+0.1);
-        button_hover.playSound();
+        button_hover.playSoundMenu();
     }
 
     @FXML
@@ -107,14 +124,16 @@ public class MenuControleur implements Initializable {
     @FXML
     private void howToButtonPressed(MouseEvent event) {
 
-        button_clicked.playSound();
+        menuPane.setVisible(false);
+        instructionsPane.setVisible(true);
+        button_clicked.playSoundMenu();
     }
     @FXML
     public void howToButtonEntered(MouseEvent event) {
         howToButton.setOpacity(0.8);
         howToButton.setScaleX(howToButton.getScaleX()+0.1);
         howToButton.setScaleY(howToButton.getScaleY()+0.1);
-        button_hover.playSound();
+        button_hover.playSoundMenu();
     }
 
     @FXML
@@ -131,14 +150,14 @@ public class MenuControleur implements Initializable {
     @FXML
     private void optionsButtonPressed(MouseEvent event) {
 
-        button_clicked.playSound();
+        button_clicked.playSoundMenu();
     }
     @FXML
     public void optionsButtonEntered(MouseEvent event) {
         optionsButton.setOpacity(0.8);
         optionsButton.setScaleX(optionsButton.getScaleX()+0.1);
         optionsButton.setScaleY(optionsButton.getScaleY()+0.1);
-        button_hover.playSound();
+        button_hover.playSoundMenu();
     }
 
     @FXML
@@ -149,6 +168,32 @@ public class MenuControleur implements Initializable {
     }
 
     /////////////////////////////////////////////////////////////////////
+
+    @FXML
+    void goBackButtonEntered(MouseEvent event) {
+        goBackButton.setOpacity(0.8);
+        goBackButton.setScaleX(goBackButton.getScaleX()+0.1);
+        goBackButton.setScaleY(goBackButton.getScaleY()+0.1);
+
+        button_hover.playSoundMenu();
+    }
+
+    @FXML
+    void goBackButtonExited(MouseEvent event) {
+        goBackButton.setOpacity(1);
+        goBackButton.setScaleX(goBackButton.getScaleX()-0.1);
+        goBackButton.setScaleY(goBackButton.getScaleY()-0.1);
+    }
+
+    @FXML
+    void goBackButtonPressed(MouseEvent event) {
+        instructionsPane.setVisible(false);
+        menuPane.setVisible(true);
+
+        button_clicked.playSoundMenu();
+    }
+
+
 
     private void lancerJeu(Stage stage) {
         try {
@@ -165,7 +210,7 @@ public class MenuControleur implements Initializable {
             stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent e) {
-                    stage.close();
+                    Platform.exit();
                 }
             });
 

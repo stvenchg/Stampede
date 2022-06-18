@@ -63,6 +63,9 @@ public class KeyPressed implements EventHandler<KeyEvent> {
 				case TAB:
 					controleur.getInventaireVue().affichageInventaire();
 					break;
+				case E:
+					controleur.getInventaireVue().affichageInventaire();
+					break;
 				case G:
 					joueurVue.setImage(joueurVue.getImages().getImage(10));
 				default:

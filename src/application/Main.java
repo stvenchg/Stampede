@@ -7,8 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.fxml.FXMLLoader;
 
-public class Main extends Application {
 
+public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 
