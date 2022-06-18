@@ -582,6 +582,36 @@ public class Controleur implements Initializable {
 
 	@FXML
 	void recommencerButtonPressed(MouseEvent event) {
+		pauseMenu.setVisible(false);
+		joueur.setVie(12);
+		robotFantassin.setVie(10);
+		robotGeneral.setVie(20);
+		droneSentinelle.setVie(6);
+
+		joueurVue.setVisible(true);
+		robotFantassinVue.setVisible(true);
+		robotGeneralVue.setVisible(true);
+		droneSentinelleVue.setVisible(true);
+		vieVue.setVisible(true);
+
+		joueur.setX(100);
+		joueur.setY(310);
+
+		robotFantassin.setX(300);
+		robotFantassin.setY(320);
+
+		robotGeneral.setX(800);
+		robotGeneral.setY(320);
+
+		droneSentinelle.setX(200);
+		droneSentinelle.setY(60);
+
+		bgSound.stop();
+		bgSound.playSound();
+
+		gameLoop.stop();
+		gameLoop.play();
+
 		button_clicked.playSoundMenu();
 	}
 
