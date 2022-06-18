@@ -3,7 +3,7 @@ package application.modele.objet.armes;
 public class Pistolet extends Arme {
 
     public Pistolet() {
-        super(3, "Pistolet", 10, 4);
+        super(3, "Gun", 10, 4);
     }
 
     @Override
