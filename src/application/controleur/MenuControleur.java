@@ -35,10 +35,16 @@ public class MenuControleur implements Initializable {
     private BorderPane menuPane;
 
     @FXML
+    private Pane optionsPane;
+
+    @FXML
     private Pane instructionsPane;
 
     @FXML
     private ImageView goBackButton;
+
+    @FXML
+    private ImageView goBackOptionsButton;
 
 
     private static SoundEffect button_hover = new SoundEffect("application/ressources/sounds/button_hover.wav");
@@ -54,6 +60,7 @@ public class MenuControleur implements Initializable {
         menuSound.playSound();
 
         instructionsPane.setVisible(false);
+        optionsPane.setVisible(false);
 
     }
 
@@ -150,6 +157,9 @@ public class MenuControleur implements Initializable {
     @FXML
     private void optionsButtonPressed(MouseEvent event) {
 
+        menuPane.setVisible(false);
+        optionsPane.setVisible(true);
+
         button_clicked.playSoundMenu();
     }
     @FXML
@@ -192,6 +202,33 @@ public class MenuControleur implements Initializable {
 
         button_clicked.playSoundMenu();
     }
+
+
+    @FXML
+    void goBackOptionsButtonEntered(MouseEvent event) {
+        goBackOptionsButton.setOpacity(0.8);
+        goBackOptionsButton.setScaleX(goBackOptionsButton.getScaleX()+0.1);
+        goBackOptionsButton.setScaleY(goBackOptionsButton.getScaleY()+0.1);
+
+        button_hover.playSoundMenu();
+    }
+
+    @FXML
+    void goBackOptionsButtonExited(MouseEvent event) {
+        goBackOptionsButton.setOpacity(1);
+        goBackOptionsButton.setScaleX(goBackOptionsButton.getScaleX()-0.1);
+        goBackOptionsButton.setScaleY(goBackOptionsButton.getScaleY()-0.1);
+    }
+
+    @FXML
+    void goBackOptionsButtonPressed(MouseEvent event) {
+        optionsPane.setVisible(false);
+        menuPane.setVisible(true);
+
+        button_clicked.playSoundMenu();
+    }
+
+
 
 
 

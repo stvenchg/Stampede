@@ -69,11 +69,31 @@
                <image>
                   <Image url="@../ressources/menu/arrowBack.png" />
                </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </ImageView>
             <ImageView fitHeight="742.0" fitWidth="512.0" layoutX="521.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../ressources/menu/instructions.png" />
                </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane fx:id="optionsPane" prefHeight="896.0" prefWidth="1520.0">
+         <children>
+            <ImageView fitHeight="109.0" fitWidth="465.0" layoutX="528.0" layoutY="78.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../ressources/menu/optionsText.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="goBackOptionsButton" fitHeight="50.0" fitWidth="28.0" layoutX="49.0" layoutY="70.0" onMouseEntered="#goBackOptionsButtonEntered" onMouseExited="#goBackOptionsButtonExited" onMousePressed="#goBackOptionsButtonPressed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../ressources/menu/arrowBack.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </ImageView>
          </children>
       </Pane>
