@@ -281,6 +281,8 @@ public class Controleur implements Initializable {
 			}
 		}
 
+
+
 		// Collision joueur
 
 		if (env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 1 ||
