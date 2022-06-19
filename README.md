@@ -89,6 +89,14 @@ D -> Avancer
 
 E -> Ouvrir ou fermer l'inventaire
 
+ECHAP -> Mettre le jeu en pause
+
+F1 -> Retirer de la vie au joueur
+
+F2 -> Ajouter de la vie au joueur
+
+F4 -> Mode invincible
+
 Clique droit -> Poser des blocs
 
 Clique gauche -> Attaquer / Tirer / Casser des blocs / Craft
