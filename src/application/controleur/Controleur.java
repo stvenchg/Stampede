@@ -79,6 +79,10 @@ public class Controleur implements Initializable {
 	private InventaireVue inventaireVue;
 	boolean isGameOverAdded = false;
 
+	private boolean robotFantassinMort = false;
+	private boolean droneSentinelleMort = false;
+	private boolean robotGeneralMort = false;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -218,6 +222,7 @@ public class Controleur implements Initializable {
 
 		if (!robotFantassin.estVivant() && temps % 5000 == 0) {
 			robotFantassin.respawn();
+			robotFantassinMort = false;
 			robotFantassinVue.setVisible(true);
 		}
 
@@ -241,6 +246,7 @@ public class Controleur implements Initializable {
 
 		if (!droneSentinelleVue.isVisible() && temps % 8000 == 0 && joueur.getEnMain() instanceof Pistolet) {
 			droneSentinelle.respawn();
+			droneSentinelleMort = false;
 			droneSentinelleVue.setVisible(true);
 		}
 
@@ -262,6 +268,17 @@ public class Controleur implements Initializable {
 				}
 
 			}
+		}
+
+		if (!robotGeneralVue.isVisible()
+				&& joueur.getInventaire().getObjet(8).getNbRessources() >= 10
+				&& joueur.getInventaire().getObjet(5).getNbRessources() >= 20
+				&& joueur.getInventaire().getObjet(9).getNbRessources() >= 20
+				&& !robotGeneralMort) {
+
+			robotGeneral.respawn();
+			//robotGeneralMort = true;
+			robotGeneralVue.setVisible(true);
 		}
 
 		// Collision joueur
@@ -295,14 +312,28 @@ public class Controleur implements Initializable {
 
 		if (!robotFantassin.estVivant()) {
 			robotFantassinVue.setVisible(false);
+			if (!robotFantassinMort) {
+				joueur.getInventaire().ajouterObjet(8, 1);
+				joueur.getInventaire().ajouterObjet(9, 1);
+				robotFantassinMort = true;
+			}
 		}
 
 		if (!droneSentinelle.estVivant()) {
 			droneSentinelleVue.setVisible(false);
+			if (!droneSentinelleMort) {
+				joueur.getInventaire().ajouterObjet(8, 1);
+				joueur.getInventaire().ajouterObjet(9, 2);
+				droneSentinelleMort = true;
+			}
 		}
 
 		if (!robotGeneral.estVivant()) {
-			paneCentral.getChildren().remove(robotGeneralVue);
+			robotGeneralVue.setVisible(false);
+			if (!robotGeneralMort) {
+				joueur.getInventaire().ajouterObjet(10, 1);
+				robotGeneralMort = true;
+			}
 		}
 
 		if (joueur.getEnMain() instanceof Pistolet && joueur.getTrajectoire() == 0 && joueur.estVivant())

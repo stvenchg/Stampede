@@ -20,9 +20,9 @@ public class Joueur extends Personnage {
 		inventaire.ajouterObjet(0, 1);
 		inventaire.ajouterObjet(1, 1);
 		inventaire.ajouterObjet(5, 30);
-		inventaire.ajouterObjet(8, 10);
+		inventaire.ajouterObjet(8, 9);
 		inventaire.ajouterObjet(9, 30);
-		inventaire.ajouterObjet(10, 1);
+		//inventaire.ajouterObjet(10, 1);
 		this.enMain = inventaire.getObjet(1);
 	}
 
@@ -33,7 +33,7 @@ public class Joueur extends Personnage {
 
 	@Override
 	public void respawn() {
-		super.vie.setValue(10);
+		super.vie.setValue(12);
 	}
 
 	public void prendreEnMain(Objet objet){
