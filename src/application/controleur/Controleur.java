@@ -105,8 +105,9 @@ public class Controleur implements Initializable {
 		root.addEventHandler(KeyEvent.KEY_RELEASED, new KeyReleased(joueur, joueurVue));
 
 		droneSentinelleVue.setOnMouseClicked(event -> {
-			if (joueur.getEnMain() instanceof Pistolet) {
+			if (joueur.getEnMain() instanceof Pistolet && joueur.getInventaire().getObjet(6).getNbRessources() > 0) {
 				droneSentinelle.perdreVie(3);
+				joueur.getInventaire().supprimerObjet(6,1);
 				Transition tir = new Transition() {
 
 					{
@@ -127,8 +128,9 @@ public class Controleur implements Initializable {
 		robotFantassinVue.setOnMouseClicked(event -> {
 			if (Math.abs(joueur.getY() - robotFantassin.getY()) < 50 && joueur.getEnMain() instanceof Epee){
 				robotFantassin.perdreVie(4);
-			} else if (joueur.getEnMain() instanceof Pistolet ) {
+			} else if (joueur.getEnMain() instanceof Pistolet && joueur.getInventaire().getObjet(6).getNbRessources() > 0) {
 				robotFantassin.perdreVie(3);
+				joueur.getInventaire().supprimerObjet(6,1);
 				Transition tir = new Transition() {
 
 					{
@@ -150,8 +152,9 @@ public class Controleur implements Initializable {
 
 
 		robotGeneralVue.setOnMouseClicked(event -> {
-			if (joueur.getEnMain() instanceof Pistolet ) {
+			if (joueur.getEnMain() instanceof Pistolet && joueur.getInventaire().getObjet(6).getNbRessources() > 0) {
 				robotGeneral.perdreVie(3);
+				joueur.getInventaire().supprimerObjet(6,1);
 				Transition tir = new Transition() {
 
 					{
