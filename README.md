@@ -10,9 +10,11 @@
 - [Philippe SANTOS](https://github.com/Philippe20033)
 
 
-## License
+## Badges
 
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?style=for-the-badge&logo=appveyor)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?style=for-the-badge)]()
+
+[![Made with Java](https://img.shields.io/badge/MADE%20WITH-JAVA-red?style=for-the-badge)]()
 
 ## Vidéo de démonstration
 
