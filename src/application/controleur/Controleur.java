@@ -640,7 +640,6 @@ public class Controleur implements Initializable {
 
 		button_hover.playSoundMenu();
 	}
-
 	@FXML
 	void nonButtonExited(MouseEvent event) {
 		nonButton.setOpacity(1);
@@ -654,8 +653,6 @@ public class Controleur implements Initializable {
 		askIfReadyPane.setVisible(false);
 		button_clicked.playSoundMenu();
 	}
-
-
 
 	@FXML
 	void ouiButtonEntered(MouseEvent event) {
@@ -685,8 +682,6 @@ public class Controleur implements Initializable {
 		gameCompleted.playSound();
 		button_clicked.playSoundMenu();
 	}
-
-
 
 	@FXML
 	void quitterJeuButtonFinPartieEntered(MouseEvent event) {
