@@ -18,7 +18,9 @@ public class RobotFantassin extends Personnage{
 	@Override
 	public void respawn() {
 		super.vie.setValue(10);
-		this.setX(50);
+		int rand = (int)(Math.random() * 1480);
+
+		this.setX(rand);
 		this.setY(600);
 	}
 
