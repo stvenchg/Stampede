@@ -35,8 +35,8 @@ import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import static application.controleur.MenuControleur.button_clicked;
-import static application.controleur.MenuControleur.button_hover;
+import static menu.controleur.MenuControleur.button_clicked;
+import static menu.controleur.MenuControleur.button_hover;
 
 public class Controleur implements Initializable {
 
@@ -77,6 +77,8 @@ public class Controleur implements Initializable {
 	private InventaireVue inventaireVue;
 	boolean isGameOverAdded = false;
 	private SoundEffect bgSound = new SoundEffect("application/ressources/sounds/bgSound.wav");
+
+	private SoundEffect gun = new SoundEffect("application/ressources/sounds/gun.wav");
 
 	@FXML
 	private Pane pauseMenu;
@@ -121,7 +123,8 @@ public class Controleur implements Initializable {
 
 					@Override
 					protected void interpolate(double v) {
-						joueurVue.setImage(joueurVue.getImages().getImage(11));
+						joueurVue.setImage(11);
+						gun.playSoundMenu();
 					}
 				};
 				tir.play();
@@ -142,7 +145,9 @@ public class Controleur implements Initializable {
 
 					@Override
 					protected void interpolate(double v) {
-						joueurVue.setImage(joueurVue.getImages().getImage(11));
+
+						joueurVue.setImage(11);
+						gun.playSoundMenu();
 					}
 				};
 				tir.play();
@@ -162,7 +167,10 @@ public class Controleur implements Initializable {
 
 					@Override
 					protected void interpolate(double v) {
-						joueurVue.setImage(joueurVue.getImages().getImage(11));
+
+						joueurVue.setImage(11);
+						gun.playSoundMenu();
+
 					}
 				};
 				tir.play();
@@ -391,9 +399,7 @@ public class Controleur implements Initializable {
 		// Gestion des morts
 
 		if (!joueur.estVivant()) {
-			//paneCentral.getChildren().remove(joueurVue);
-			Image joueurMort = new Image("application/ressources/sprites/joueur/9.png");
-			joueurVue.setImage(joueurMort);
+			joueurVue.setImage(9);
 			joueurVue.setLayoutY(joueurVue.getY() + 20);
 
 			ImageView gameover = new ImageView("application/ressources/menu/gameover.png");
@@ -430,7 +436,7 @@ public class Controleur implements Initializable {
 		}
 
 		if (joueur.getEnMain() instanceof Pistolet && joueur.getTrajectoire() == 0 && joueur.estVivant())
-			joueurVue.setImage(joueurVue.getImages().getImage(10));
+			joueurVue.setImage(10);
 
 		joueurVue.setScaleX(joueur.getDirection());
 		robotFantassinVue.setScaleX(robotFantassin.getDirection());
@@ -611,8 +617,6 @@ public class Controleur implements Initializable {
 
 		joueurVue.setVisible(true);
 		robotFantassinVue.setVisible(true);
-		robotGeneralVue.setVisible(true);
-		droneSentinelleVue.setVisible(true);
 		vieVue.setVisible(true);
 
 		joueur.setX(100);
@@ -620,12 +624,6 @@ public class Controleur implements Initializable {
 
 		robotFantassin.setX(300);
 		robotFantassin.setY(320);
-
-		robotGeneral.setX(800);
-		robotGeneral.setY(320);
-
-		droneSentinelle.setX(200);
-		droneSentinelle.setY(60);
 
 		bgSound.stop();
 		bgSound.playSound();

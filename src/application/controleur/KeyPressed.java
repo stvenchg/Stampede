@@ -93,16 +93,12 @@ public class KeyPressed implements EventHandler<KeyEvent> {
 						Gameloop.play();
 						joueurVue.setVisible(true);
 						robotFantassinVue.setVisible(true);
-						robotGeneralVue.setVisible(true);
-						droneSentinelleVue.setVisible(true);
 						vieVue.setVisible(true);
 					} else {
 						pauseMenu.setVisible(true);
 						Gameloop.pause();
 						joueurVue.setVisible(false);
 						robotFantassinVue.setVisible(false);
-						robotGeneralVue.setVisible(false);
-						droneSentinelleVue.setVisible(false);
 						vieVue.setVisible(false);
 					}
 					break;
