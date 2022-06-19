@@ -54,6 +54,12 @@ public class Controleur implements Initializable {
 	private ImageView optionsJeuButton;
 
 	@FXML
+	private ImageView recommencerButtonPause;
+
+	@FXML
+	private ImageView quitterJeuButtonPause;
+
+	@FXML
 	private Pane pauseMenu;
 	@FXML
 	private Pane gameOverPane;
@@ -454,6 +460,29 @@ public class Controleur implements Initializable {
 	}
 
 	@FXML
+	void quitterJeuButtonPauseEntered(MouseEvent event) {
+		quitterJeuButtonPause.setOpacity(0.8);
+		quitterJeuButtonPause.setScaleX(quitterJeuButtonPause.getScaleX()+0.1);
+		quitterJeuButtonPause.setScaleY(quitterJeuButtonPause.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void quitterJeuButtonPauseExited(MouseEvent event) {
+		quitterJeuButtonPause.setOpacity(1);
+		quitterJeuButtonPause.setScaleX(quitterJeuButtonPause.getScaleX()-0.1);
+		quitterJeuButtonPause.setScaleY(quitterJeuButtonPause.getScaleY()-0.1);
+	}
+
+	@FXML
+	void quitterJeuButtonPausePressed(MouseEvent event) {
+		Platform.exit();
+
+		button_clicked.playSoundMenu();
+	}
+
+	@FXML
 	void recommencerButtonEntered(MouseEvent event) {
 		recommencerButton.setOpacity(0.8);
 		recommencerButton.setScaleX(recommencerButton.getScaleX()+0.1);
@@ -496,4 +525,50 @@ public class Controleur implements Initializable {
 
 		button_clicked.playSoundMenu();
 	}
+
+	@FXML
+	void recommencerButtonPauseEntered(MouseEvent event) {
+		recommencerButtonPause.setOpacity(0.8);
+		recommencerButtonPause.setScaleX(recommencerButtonPause.getScaleX()+0.1);
+		recommencerButtonPause.setScaleY(recommencerButtonPause.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void recommencerButtonPauseExited(MouseEvent event) {
+		recommencerButtonPause.setOpacity(1);
+		recommencerButtonPause.setScaleX(recommencerButtonPause.getScaleX()-0.1);
+		recommencerButtonPause.setScaleY(recommencerButtonPause.getScaleY()-0.1);
+	}
+
+	@FXML
+	void recommencerButtonPausePressed(MouseEvent event) {
+		pauseMenu.setVisible(false);
+		gameOverPane.setVisible(false);
+		joueur.setVie(12);
+		robotFantassin.setVie(10);
+		robotGeneral.setVie(20);
+		droneSentinelle.setVie(6);
+
+		joueurVue.setVisible(true);
+		robotFantassinVue.setVisible(true);
+		vieVue.setVisible(true);
+
+		joueur.setX(100);
+		joueur.setY(310);
+
+		robotFantassin.setX(300);
+		robotFantassin.setY(320);
+
+		bgSound.stop();
+		bgSound.playSound();
+
+		gameLoop.stop();
+		gameLoop.play();
+
+		button_clicked.playSoundMenu();
+	}
+
+
 }

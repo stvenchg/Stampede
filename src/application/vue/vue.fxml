@@ -24,7 +24,7 @@
                         <Image url="@../ressources/menu/pauseText.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="recommencerButton" fitHeight="108.0" fitWidth="277.0" layoutX="624.0" layoutY="303.0" onMouseEntered="#recommencerButtonEntered" onMouseExited="#recommencerButtonExited" onMousePressed="#recommencerButtonPressed" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="recommencerButtonPause" fitHeight="108.0" fitWidth="277.0" layoutX="624.0" layoutY="303.0" onMouseEntered="#recommencerButtonPauseEntered" onMouseExited="#recommencerButtonPauseExited" onMousePressed="#recommencerButtonPausePressed" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../ressources/menu/recommencerButton.png" />
                      </image>
@@ -40,7 +40,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <ImageView fx:id="quitterJeuButton" fitHeight="108.0" fitWidth="277.0" layoutX="624.0" layoutY="486.0" onMouseEntered="#quitterJeuButtonEntered" onMouseExited="#quitterJeuButtonExited" onMousePressed="#quitterJeuButtonPressed" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="quitterJeuButtonPause" fitHeight="108.0" fitWidth="277.0" layoutX="624.0" layoutY="486.0" onMouseEntered="#quitterJeuButtonPauseEntered" onMouseExited="#quitterJeuButtonPauseExited" onMousePressed="#quitterJeuButtonPausePressed" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../ressources/menu/quitterButton.png" />
                      </image>
