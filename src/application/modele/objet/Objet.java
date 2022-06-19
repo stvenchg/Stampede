@@ -9,10 +9,10 @@ public abstract class Objet {
 	private String nom;
 	private IntegerProperty nbObjet;
 	
-	public Objet(int numero, String nom, int nbRes) {
+	public Objet(int numero, String nom) {
 		this.objetNumero = numero;
 		this.nom = nom;
-		this.nbObjet = new SimpleIntegerProperty(nbRes);
+		this.nbObjet = new SimpleIntegerProperty(0);
 	}
 	
 	public abstract void lacher();

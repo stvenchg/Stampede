@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Minage implements Runnable {
 
-    private CarteVue mapVue;
+    private CarteVue mapVue; //dqsd
 
     private final static String CheminRelatifImageMinageAnimationZom = "../ressources/minage/";
     private Joueur joueur;
@@ -58,7 +58,10 @@ public class Minage implements Runnable {
             }
             if(i != -1){
                 int position = mapVue.getPanneauJeu().getChildren().indexOf(mapVue.getTileMiner());
-                joueur.getInventaire().getObjet(mapVue.getNumeroTile(mapVue.getTileMiner())).addRessources(1);
+                if(mapVue.getNumeroTile(mapVue.getTileMiner()) == 3)
+                    joueur.getInventaire().getObjet(5).addRessources(1);
+                else
+                    joueur.getInventaire().getObjet(mapVue.getNumeroTile(mapVue.getTileMiner())).addRessources(1);
                 map.set(position, 0);
             }
         }

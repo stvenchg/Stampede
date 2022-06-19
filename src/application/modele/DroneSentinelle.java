@@ -13,4 +13,11 @@ public class DroneSentinelle extends Personnage {
 		perso.perdreVie(3);
 	}
 
+	@Override
+	public void respawn() {
+		super.vie.setValue(6);
+		this.setX(1400);
+		this.setY(60);
+	}
+
 }

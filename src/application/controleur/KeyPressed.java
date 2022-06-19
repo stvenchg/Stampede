@@ -1,11 +1,12 @@
 package application.controleur;
 
 import application.modele.Personnage;
-import application.vue.JoueurVue;
-import application.vue.RobotFantassinVue;
-import application.vue.DeplacementAnimation;
+import application.vue.*;
+import javafx.animation.Timeline;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 
 public class KeyPressed implements EventHandler<KeyEvent> {
 
@@ -14,12 +15,29 @@ public class KeyPressed implements EventHandler<KeyEvent> {
 	private JoueurVue joueurVue;
 	private RobotFantassinVue robotFantassinVue;
 
+	private DroneSentinelleVue droneSentinelleVue;
+
+	private RobotGeneralVue robotGeneralVue;
+
+	private VieVue vieVue;
+
 	private Controleur controleur;
 
-	public KeyPressed(Personnage joueur2, JoueurVue joueurVue, Controleur controleur) {
+	@FXML
+	private Pane pauseMenu;
+
+	private Timeline Gameloop;
+
+	public KeyPressed(Personnage joueur2, JoueurVue joueurVue, Controleur controleur, Pane pauseMenu, Timeline Gameloop, RobotFantassinVue robotFantassinVue, DroneSentinelleVue droneSentinelleVue, RobotGeneralVue robotGeneralVue, VieVue vieVue) {
 		this.joueur = joueur2;
 		this.joueurVue = joueurVue;
 		this.controleur = controleur;
+		this.pauseMenu = pauseMenu;
+		this.Gameloop = Gameloop;
+		this.robotGeneralVue = robotGeneralVue;
+		this.droneSentinelleVue = droneSentinelleVue;
+		this.robotFantassinVue = robotFantassinVue;
+		this.vieVue = vieVue;
 	}
 
 	public void handle(KeyEvent event) {
@@ -64,8 +82,24 @@ public class KeyPressed implements EventHandler<KeyEvent> {
 				case TAB:
 					controleur.getInventaireVue().affichageInventaire();
 					break;
-				case G:
-					joueurVue.setImage(joueurVue.getImages().getImage(10));
+				case E:
+					controleur.getInventaireVue().affichageInventaire();
+					break;
+				case ESCAPE:
+					if (pauseMenu.isVisible()) {
+						pauseMenu.setVisible(false);
+						Gameloop.play();
+						joueurVue.setVisible(true);
+						robotFantassinVue.setVisible(true);
+						vieVue.setVisible(true);
+					} else {
+						pauseMenu.setVisible(true);
+						Gameloop.pause();
+						joueurVue.setVisible(false);
+						robotFantassinVue.setVisible(false);
+						vieVue.setVisible(false);
+					}
+					break;
 				default:
 					break;
 

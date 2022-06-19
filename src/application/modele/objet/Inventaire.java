@@ -5,10 +5,7 @@ package application.modele.objet;
 import application.modele.objet.Outils.Pioche;
 import application.modele.objet.armes.Epee;
 import application.modele.objet.armes.Pistolet;
-import application.modele.objet.materiaux.MineraiDeFer;
-import application.modele.objet.materiaux.Terre;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import application.modele.objet.materiaux.*;
 
 import java.util.ArrayList;
 
@@ -18,12 +15,21 @@ public class Inventaire {
 	
 	public Inventaire() {
 		inventaire = new ArrayList<>();
-		inventaire.add(new Pioche(0));
-		inventaire.add(new Epee(0));
-		inventaire.add(new Terre(0));
-		inventaire.add(new MineraiDeFer(0));
-		inventaire.add(new Pistolet(0));
+		initialisationInventaire();
+	}
 
+	private void initialisationInventaire(){
+		inventaire.add(new Pioche());
+		inventaire.add(new Epee());
+		inventaire.add(new Terre());
+		inventaire.add(new BlocDeMetal());
+		inventaire.add(new Pistolet());
+		inventaire.add(new PlaqueDeMetal());
+		inventaire.add(new Balle());
+		inventaire.add(new Vaisseau());
+		inventaire.add(new Ressort());
+		inventaire.add(new Engrenage());
+		inventaire.add(new NoyauEnergie());
 	}
 	
 	public void ajouterObjet(int obj, int nombre) {

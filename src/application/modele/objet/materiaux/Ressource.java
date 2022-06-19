@@ -8,8 +8,8 @@ public abstract class Ressource extends Objet{
 	private int distance;
 	
 	
-	public Ressource(int resistance, String nom, int distance, int numero, int nbRessource) {
-		super(numero, nom, nbRessource);
+	public Ressource(int resistance, String nom, int distance, int numero) {
+		super(numero, nom);
 		this.distance = distance;
 		this.resistance = resistance;
 	}

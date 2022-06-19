@@ -32,4 +32,13 @@ public class SoundEffect {
         }
     }
 
+    public void playSoundMenu() {
+            clip.start();
+            clip.setFramePosition(0);
+    }
+
+    public void stop() {
+       clip.stop();;
+    }
+
 }

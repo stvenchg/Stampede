@@ -6,8 +6,8 @@ public class Pioche extends Objet{
 	
 	private final static int degat = 2;
 
-	public Pioche(int nombre) {
-		super(0, "Pioche", nombre);
+	public Pioche() {
+		super(0, "Pioche");
 	}
 
 	@Override

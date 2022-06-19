@@ -2,38 +2,28 @@ package application.controleur;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import application.controleur.inventaire.ObservateurObjet;
-import application.controleur.inventaire.ObservateurResources;
-
 import application.controleur.inventaire.ObservateurObjet;
 import application.controleur.inventaire.ObservateurResources;
 import application.controleur.map.ObservateurMap;
-import application.modele.Environnement;
-import application.modele.Joueur;
-import application.modele.Personnage;
-import application.modele.SoundEffect;
+import application.modele.*;
 import application.modele.objet.armes.Epee;
-import application.modele.SoundEffect;
-import application.vue.CarteVue;
-import application.vue.DeplacementAnimation;
-import application.vue.DroneSentinelleVue;
-import application.vue.DroneSentinelleVue;
-import application.vue.JoueurVue;
-import application.vue.RobotFantassinVue;
-import application.vue.VieVue;
+import application.modele.objet.armes.Pistolet;
+import application.modele.objet.materiaux.Balle;
+import application.modele.objet.materiaux.Vaisseau;
+import application.vue.*;
 import application.vue.inventaire.InventaireVue;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -43,11 +33,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.util.Duration;
-
+import static application.Parameters.*;
 public class Controleur implements Initializable {
 
 	private Environnement env;
-
 	private Timeline gameLoop;
 	private int temps;
 	@FXML
@@ -56,56 +45,158 @@ public class Controleur implements Initializable {
 	private TilePane panneauJeu;
 	@FXML
 	private Pane paneCentral;
+
+	@FXML
+	private ImageView quitterJeuButton;
+
+	@FXML
+	private ImageView recommencerButton;
+
+	@FXML
+	private ImageView optionsJeuButton;
+
+	@FXML
+	private ImageView recommencerButtonPause;
+
+	@FXML
+	private ImageView quitterJeuButtonPause;
+
+	@FXML
+	private Pane pauseMenu;
+	@FXML
+	private Pane gameOverPane;
+
+	@FXML
+	private Pane askIfReadyPane;
+
+	@FXML
+	private ImageView nonButton;
+
+	@FXML
+	private ImageView ouiButton;
+
+	@FXML
+	private Pane finPartiePane;
+
+	@FXML
+	private ImageView quitterJeuButtonFinPartie;
+
+	@FXML
+	private ImageView recommencerButtonFinPartie;
+
 	private ObservableVie obsVie;
 	private JoueurVue joueurVue;
 	private VieVue vieVue;
 	private CarteVue carteVue;
-	private Personnage robotFantassin;
+	private RobotFantassin robotFantassin;
 	private RobotFantassinVue robotFantassinVue;
-	private Personnage droneSentinelle;
+	private DroneSentinelle droneSentinelle;
 	private DroneSentinelleVue droneSentinelleVue;
 	private Joueur joueur;
-	private SoundEffect die = new SoundEffect("application/ressources/sounds/boss_die.wav");
+	private RobotGeneral robotGeneral;
+	private RobotGeneralVue robotGeneralVue;
 	private BooleanProperty mine;
 	private int tempInit;
 	private InventaireVue inventaireVue;
 	boolean isGameOverAdded = false;
-	private SoundEffect bgSound = new SoundEffect("application/ressources/sounds/bgSound.wav");
+
+	private boolean robotFantassinMort = false;
+	private boolean droneSentinelleMort = false;
+	private boolean robotGeneralMort = false;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		Image fond = new Image("application/ressources/map/bgorange.png");
-
-		BackgroundImage imageFond = new BackgroundImage(fond, BackgroundRepeat.SPACE,
-				BackgroundRepeat.SPACE,
-				BackgroundPosition.DEFAULT,
-				BackgroundSize.DEFAULT);
-
+		BackgroundImage imageFond = new BackgroundImage(fond, BackgroundRepeat.SPACE, BackgroundRepeat.SPACE, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 		Background background = new Background(imageFond);
 
-
 		bgSound.playSound();
-
 		root.setBackground(background);
 
 		initialiserVariables();
 		faireBindEtListener();
+		joueur.ajouterRessourceInitial();
 		insererImagesPaneCentral();
 		initGameLoop();
 		getInventaireVue().affichageInventaire();
 
 		gameLoop.play();
-		root.addEventHandler(KeyEvent.KEY_PRESSED, new KeyPressed(joueur, joueurVue, this));
+		root.addEventHandler(KeyEvent.KEY_PRESSED, new KeyPressed(joueur, joueurVue, this, pauseMenu, gameLoop, robotFantassinVue, droneSentinelleVue,  robotGeneralVue, vieVue));
 		root.addEventHandler(KeyEvent.KEY_RELEASED, new KeyReleased(joueur, joueurVue));
-		joueur.getInventaire().ajouterObjet(0, 1);
-		joueur.getInventaire().ajouterObjet(1, 1);
-		joueur.getInventaire().ajouterObjet(2, 93);
-		joueur.getInventaire().ajouterObjet(3, 7);
-		joueur.getInventaire().ajouterObjet(4, 2);
-		//(Joueur)joueur.getInventaire().supprimerObjet(2, 5);
-		//joueur.getInventaire().supprimerObjet(0, 3);
-		//joueur.getInventaire().ajouterObjet(2, 93);
+
+		droneSentinelleVue.setOnMouseClicked(event -> {
+			if (joueur.getEnMain() instanceof Pistolet && joueur.getInventaire().getObjet(6).getNbRessources() > 0) {
+				droneSentinelle.perdreVie(3);
+				joueur.getInventaire().supprimerObjet(6,1);
+				Transition tir = new Transition() {
+
+					{
+						setCycleDuration(Duration.millis(200));
+
+					}
+
+					@Override
+					protected void interpolate(double v) {
+						joueurVue.setImage(11);
+						gun.playSoundMenu();
+					}
+				};
+				tir.play();
+			}
+		});
+
+		robotFantassinVue.setOnMouseClicked(event -> {
+			if (Math.abs(joueur.getY() - robotFantassin.getY()) < 50 && joueur.getEnMain() instanceof Epee){
+				robotFantassin.perdreVie(4);
+			} else if (joueur.getEnMain() instanceof Pistolet && joueur.getInventaire().getObjet(6).getNbRessources() > 0) {
+				robotFantassin.perdreVie(3);
+				joueur.getInventaire().supprimerObjet(6,1);
+				Transition tir = new Transition() {
+
+					{
+						setCycleDuration(Duration.millis(200));
+
+					}
+
+					@Override
+					protected void interpolate(double v) {
+
+						joueurVue.setImage(11);
+						gun.playSoundMenu();
+					}
+				};
+				tir.play();
+			}
+
+		});
+
+
+		robotGeneralVue.setOnMouseClicked(event -> {
+			if (joueur.getEnMain() instanceof Pistolet && joueur.getInventaire().getObjet(6).getNbRessources() > 0) {
+				robotGeneral.perdreVie(3);
+				joueur.getInventaire().supprimerObjet(6,1);
+				Transition tir = new Transition() {
+
+					{
+						setCycleDuration(Duration.millis(200));
+
+					}
+
+					@Override
+					protected void interpolate(double v) {
+
+						joueurVue.setImage(11);
+						gun.playSoundMenu();
+
+					}
+				};
+				tir.play();
+			}
+			else if (Math.abs(joueur.getY() - robotGeneral.getY()) < 50 && joueur.getEnMain() instanceof Epee) {
+				robotGeneral.perdreVie(4);
+			}
+		});
 	}
 
 	private void initGameLoop() {
@@ -113,9 +204,8 @@ public class Controleur implements Initializable {
 		temps = 0;
 		gameLoop.setCycleCount(Timeline.INDEFINITE);
 
-		KeyFrame kf = new KeyFrame(Duration.seconds(0.002), // 1 frame = 0.002 seconde
+		KeyFrame kf = new KeyFrame(Duration.seconds(0.002),
 				(ev -> {
-
 					if (temps % 5 == 0) {
 						faireTour();
 						afficherInfosEnConsole();
@@ -127,11 +217,17 @@ public class Controleur implements Initializable {
 	}
 
 	private void faireTour() {
-		this.env.update();
 		joueur.gravite();
 		robotFantassin.gravite();
+		robotGeneral.gravite();
 
-		if (robotFantassin.estVivant() && joueur.estVivant()) {
+		// regenaration de la vie du perso
+		if (joueur.estVivant() && joueur.getVie() < 12 && temps % 15000 == 0)
+			joueur.ajouterVie(1);
+
+
+		//action du robot fantassin
+		if (robotFantassin.estVivant() && joueur.estVivant() && robotFantassinVue.isVisible()) {
 			if (joueur.getX() > robotFantassin.getX() && (joueur.getX() - robotFantassin.getX()) > 50) {
 				robotFantassin.setX(robotFantassin.getX() + 1);
 				robotFantassin.setDirection(1);
@@ -143,16 +239,20 @@ public class Controleur implements Initializable {
 			} else {
 				if (Math.abs(joueur.getY() - robotFantassin.getY()) < 50 && temps % 700 == 0) {
 					robotFantassin.attaque(joueur);
-					robotFantassinVue.setOnMouseClicked(event -> {
-						if (Math.abs(joueur.getY() - robotFantassin.getY()) < 50 && joueur.getEnMain() instanceof Epee)
-							robotFantassin.perdreVie(2);
-					});
 				}
 
 			}
 		}
 
-		if (droneSentinelle.estVivant() && joueur.estVivant()) {
+		if (!robotFantassin.estVivant() && temps % 5000 == 0) {
+			robotFantassin.respawn();
+			robotFantassinMort = false;
+			robotFantassinVue.setVisible(true);
+		}
+
+
+		//action du drone sentinelle
+		if (droneSentinelle.estVivant() && joueur.estVivant() && droneSentinelleVue.isVisible()) {
 			if (joueur.getX() > droneSentinelle.getX() && (joueur.getX() - droneSentinelle.getX()) > 50) {
 				droneSentinelle.setX(droneSentinelle.getX() + 2);
 				droneSentinelle.setDirection(1);
@@ -162,136 +262,115 @@ public class Controleur implements Initializable {
 				droneSentinelle.setDirection(-1);
 
 			} else {
-				if (Math.abs(joueur.getY() - droneSentinelle.getY()) < 50 && temps % 700 == 0) {
+				if (temps % 2000 == 0) {
 					droneSentinelle.attaque(joueur);
-
-					droneSentinelleVue.setOnMouseClicked(event -> {
-						if (Math.abs(joueur.getY() - droneSentinelle.getY()) < 50)
-							droneSentinelle.perdreVie(2);
-					});
 				}
 			}
 		}
 
+		if (!droneSentinelleVue.isVisible() && temps % 8000 == 0 && joueur.getEnMain() instanceof Pistolet) {
+			droneSentinelle.respawn();
+			droneSentinelleMort = false;
+			droneSentinelleVue.setVisible(true);
+		}
+
+		// action du robot general
+		if (robotGeneral.estVivant() && joueur.estVivant() && robotGeneralVue.isVisible()) {
+			if (joueur.getX() > robotGeneral.getX() && (joueur.getX() - robotGeneral.getX()) > 50) {
+				robotGeneral.setX(robotGeneral.getX() + 1);
+				robotGeneral.setDirection(1);
+
+			} else if (joueur.getX() < robotGeneral.getX() && (robotGeneral.getX() - joueur.getX()) > 50) {
+				robotGeneral.setX(robotGeneral.getX() - 1);
+				robotGeneral.setDirection(-1);
+
+			} else {
+				if (Math.abs(joueur.getY() - robotGeneral.getY()) < 50 && temps % 700 == 0) {
+					robotGeneral.attaque(joueur);
+				} else if (temps % 2000 == 0){
+					robotGeneral.attaqueDistance(joueur);
+				}
+
+			}
+		}
+
+		if (!robotGeneralVue.isVisible()
+				&& joueur.getInventaire().getObjet(8).getNbRessources() >= 10
+				&& joueur.getInventaire().getObjet(5).getNbRessources() >= 20
+				&& joueur.getInventaire().getObjet(9).getNbRessources() >= 20
+				&& !robotGeneralMort) {
+
+			robotGeneral.respawn();
+			//robotGeneralMort = true;
+			robotGeneralVue.setVisible(true);
+		}
+
 		// Collision joueur
-
-		if (env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 1 ||
-				env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 2 ||
-				env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 3 ||
-				env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 4 ||
-				env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 5 ||
-				env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 6) {
-
-
-			joueur.setY(joueur.getY() - 5);
-			joueur.setSaute(false);
-		}
-
-		if (env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 7) {
-			this.joueur.meurt();
-			joueurVue.setVisible(false);
-			joueur.setY(joueur.getY() - 5);
-		}
-
-		if (env.mapProperty().get(env.getTileBasDroite(joueur.getX(), joueur.getY())) == 1 ||
-				env.mapProperty().get(env.getTileBasDroite(joueur.getX(), joueur.getY())) == 3) {
-			System.out.println("TOUCHE BAS DROITE");
-			joueur.setY(joueur.getY() - 5);
-		}
-
-		if (env.mapProperty().get(env.getTileBasGauche(joueur.getX(), joueur.getY())) == 1 ||
-				env.mapProperty().get(env.getTileBasDroite(joueur.getX(), joueur.getY())) == 3) {
-			System.out.println("TOUCHE BAS GAUCHE");
-			joueur.setY(joueur.getY() - 5);
-		}
-
-		if (env.mapProperty().get(env.getTileHautGauche(joueur.getX(), joueur.getY())) == 2) {
-			System.out.println("TOUCHE HAUT GAUCHE");
-			joueur.setX(joueur.getX() + 5);
-		}
-
-		if (env.mapProperty().get(env.getTileHautDroite(joueur.getX(), joueur.getY())) == 2) {
-			System.out.println("TOUCHE HAUT DROITE");
-			joueur.setX(joueur.getX() - 5);
-		}
+		Collisions Joueur = new Collisions(env, joueur, joueurVue);
+		Joueur.collisionJoueur();
 
 
 		// Collision robot
+		Collisions RobotFantassin = new Collisions(env, robotFantassin, robotFantassinVue);
+		RobotFantassin.collisionRobotFantassin();
 
-		if (env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
-				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 2 ||
-				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 3 ||
-				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 4 ||
-				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 5 ||
-				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 6) {
+		// Collisions Robot General
+		Collisions RobotGeneral = new Collisions(env, robotGeneral, robotGeneralVue);
+		RobotGeneral.collisionRobotGeneral();
 
-			robotFantassin.setY(robotFantassin.getY() - 5);
-
-		}
-		if (env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 7) {
-			this.robotFantassin.meurt();
-			robotFantassin.setY(robotFantassin.getY() - 5);
-		}
-
-
-		if (env.mapProperty().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
-				env.mapProperty().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 3) {
-			robotFantassin.setY(robotFantassin.getY() - 5);
-		}
-
-		if (env.mapProperty().get(env.getTileBasGauche(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
-				env.mapProperty().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 3) {
-			robotFantassin.setY(robotFantassin.getY() - 5);
-		}
-
-		if (env.mapProperty().get(env.getTileHautGauche(robotFantassin.getX(), robotFantassin.getY())) == 2) {
-			robotFantassin.setX(robotFantassin.getX() + 5);
-		}
-
-		if (env.mapProperty().get(env.getTileHautDroite(robotFantassin.getX(), robotFantassin.getY())) == 2) {
-			robotFantassin.setX(robotFantassin.getX() - 5);
-		}
+		// Gestion des morts
 
 		if (!joueur.estVivant()) {
-			//paneCentral.getChildren().remove(joueurVue);
-			Image joueurMort = new Image("application/ressources/sprites/joueur/9.png");
-			joueurVue.setImage(joueurMort);
+			joueurVue.setImage(9);
 			joueurVue.setLayoutY(joueurVue.getY() + 20);
 
-			ImageView gameover = new ImageView("application/ressources/menu/gameover.png");
-			gameover.setFitWidth(300);
-			gameover.setFitHeight(200);
-			gameover.setLayoutX((panneauJeu.getMaxWidth() / 3) + 100);
-			gameover.setLayoutY(30);
-
-			if (!isGameOverAdded) {
-				paneCentral.getChildren().add(gameover);
-				TranslateTransition gameover_down = new TranslateTransition(Duration.millis(250), gameover);
-				gameover_down.setByY(+40);
-				gameover_down.play();
-				die.playSound();
-				isGameOverAdded = true;
-			}
-
-			if (temps % 1000 == 0) {
-				gameLoop.stop();
-			}
-
+			gameLoop.stop();
+			gameOverPane.setVisible(true);
+			bgSound.stop();
+			gameOver.playSound();
+			joueurVue.setVisible(false);
+			robotFantassinVue.setVisible(false);
+			robotGeneralVue.setVisible(false);
+			droneSentinelleVue.setVisible(false);
 		}
 
 		if (!robotFantassin.estVivant()) {
-			paneCentral.getChildren().remove(robotFantassinVue);
+			robotFantassinVue.setVisible(false);
+			if (!robotFantassinMort) {
+				joueur.getInventaire().ajouterObjet(8, 1);
+				joueur.getInventaire().ajouterObjet(9, 1);
+				robotFantassinMort = true;
+			}
 		}
 
 		if (!droneSentinelle.estVivant()) {
-			paneCentral.getChildren().remove(droneSentinelleVue);
+			droneSentinelleVue.setVisible(false);
+			if (!droneSentinelleMort) {
+				joueur.getInventaire().ajouterObjet(8, 1);
+				joueur.getInventaire().ajouterObjet(9, 2);
+				droneSentinelleMort = true;
+			}
 		}
 
+		if (!robotGeneral.estVivant()) {
+			robotGeneralVue.setVisible(false);
+			if (!robotGeneralMort) {
+				joueur.getInventaire().ajouterObjet(10, 1);
+				robotGeneralMort = true;
+			}
+		}
+
+		if (joueur.getEnMain() instanceof Pistolet && joueur.getTrajectoire() == 0 && joueur.estVivant())
+			joueurVue.setImage(10);
+
+		if (joueur.getEnMain() instanceof Vaisseau) {
+			askIfReadyPane.setVisible(true);
+		}
 
 		joueurVue.setScaleX(joueur.getDirection());
 		robotFantassinVue.setScaleX(robotFantassin.getDirection());
 		droneSentinelleVue.setScaleX(droneSentinelle.getDirection());
-
+		robotGeneralVue.setScaleX(robotGeneral.getDirection());
 	}
 
 	private void initialiserVariables() {
@@ -299,7 +378,7 @@ public class Controleur implements Initializable {
 		this.env = new Environnement();
 
 		// création de la vue de la map
-		this.carteVue = new CarteVue(env, panneauJeu, 95, 68);
+		this.carteVue = new CarteVue(env, panneauJeu, largeurMap, hauteurMap);
 
 		// Création du joueur et de la vue du joueur
 		this.joueur = this.env.getJoueur();
@@ -311,7 +390,7 @@ public class Controleur implements Initializable {
 		this.joueur.vieProperty().addListener(obsVie);
 
 		//Création de l'inventaire
-		this.inventaireVue = new InventaireVue();
+		this.inventaireVue = new InventaireVue(joueur);
 
 		// Création d'un fantassin et de sa vue
 		this.robotFantassin = this.env.getRobotFantassin();
@@ -320,6 +399,16 @@ public class Controleur implements Initializable {
 		// Création d'une sentinelle et de sa vue
 		this.droneSentinelle = this.env.getDroneSentinelle();
 		this.droneSentinelleVue = new DroneSentinelleVue();
+
+
+		// Création d'un général et de sa vue
+		this.robotGeneral = this.env.getRobotGeneral();
+		this.robotGeneralVue = new RobotGeneralVue();
+
+		pauseMenu.setVisible(false);
+		gameOverPane.setVisible(false);
+		askIfReadyPane.setVisible(false);
+		finPartiePane.setVisible(false);
 	}
 
 	private void faireBindEtListener() {
@@ -335,13 +424,22 @@ public class Controleur implements Initializable {
 		this.droneSentinelleVue.translateXProperty().bindBidirectional(this.droneSentinelle.xProperty());
 		this.droneSentinelleVue.translateYProperty().bindBidirectional(this.droneSentinelle.yProperty());
 
+		// Bind RobotGeneral
+		this.robotGeneralVue.translateXProperty().bindBidirectional(this.robotGeneral.xProperty());
+		this.robotGeneralVue.translateYProperty().bindBidirectional(this.robotGeneral.yProperty());
+
 		//Creation des Listeners pour InventaireVue
-		((Joueur)joueur).getInventaire().getObjet(0).objetProperty().addListener(new ObservateurObjet(joueur.getInventaire().getObjet(0), inventaireVue, joueur));
+		joueur.getInventaire().getObjet(0).objetProperty().addListener(new ObservateurObjet(joueur.getInventaire().getObjet(0), inventaireVue, joueur));
 		joueur.getInventaire().getObjet(1).objetProperty().addListener(new ObservateurObjet(joueur.getInventaire().getObjet(1), inventaireVue, joueur));
 		joueur.getInventaire().getObjet(2).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(2), inventaireVue, joueur));
 		joueur.getInventaire().getObjet(3).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(3), inventaireVue, joueur));
-		joueur.getInventaire().getObjet(4).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(4), inventaireVue, joueur));
-
+		joueur.getInventaire().getObjet(4).objetProperty().addListener(new ObservateurObjet(joueur.getInventaire().getObjet(4), inventaireVue, joueur));
+		joueur.getInventaire().getObjet(5).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(5), inventaireVue, joueur));
+		joueur.getInventaire().getObjet(6).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(6), inventaireVue, joueur));
+		joueur.getInventaire().getObjet(7).objetProperty().addListener(new ObservateurObjet(joueur.getInventaire().getObjet(7), inventaireVue, joueur));
+		joueur.getInventaire().getObjet(8).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(8), inventaireVue, joueur));
+		joueur.getInventaire().getObjet(9).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(9), inventaireVue, joueur));
+		joueur.getInventaire().getObjet(10).objetProperty().addListener(new ObservateurResources(joueur.getInventaire().getObjet(10), inventaireVue, joueur));
 
 		//Creation Observateur Map
 		env.mapProperty().addListener(new ObservateurMap(carteVue, env.mapProperty()));
@@ -353,6 +451,9 @@ public class Controleur implements Initializable {
 		this.paneCentral.getChildren().add(vieVue);
 		this.paneCentral.getChildren().add(robotFantassinVue);
 		this.paneCentral.getChildren().add(droneSentinelleVue);
+		droneSentinelleVue.setVisible(false);
+		this.paneCentral.getChildren().add(robotGeneralVue);
+		robotGeneralVue.setVisible(false);
 		this.paneCentral.getChildren().add(inventaireVue);
 	}
 
@@ -368,9 +469,292 @@ public class Controleur implements Initializable {
 		System.out.println("Vie du robot fantassin: " + robotFantassin.vieProperty().getValue());
 		System.out.println("Vie du dronde sentinelle: " + droneSentinelle.vieProperty().getValue());
 		System.out.println(this.env.getListePersonnages());
+		System.out.println(robotFantassin.estVivant());
 	}
 
 	public InventaireVue getInventaireVue() {
 		return inventaireVue;
 	}
+
+	@FXML
+	void optionsJeuButtonEntered(MouseEvent event) {
+		optionsJeuButton.setOpacity(0.8);
+		optionsJeuButton.setScaleX(optionsJeuButton.getScaleX()+0.1);
+		optionsJeuButton.setScaleY(optionsJeuButton.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void optionsJeuButtonExited(MouseEvent event) {
+		optionsJeuButton.setOpacity(1);
+		optionsJeuButton.setScaleX(optionsJeuButton.getScaleX()-0.1);
+		optionsJeuButton.setScaleY(optionsJeuButton.getScaleY()-0.1);
+	}
+
+	@FXML
+	void optionsJeuButtonPressed(MouseEvent event) {
+		button_clicked.playSoundMenu();
+		joueur.getInventaire().ajouterObjet(7, 1);
+	}
+
+	@FXML
+	void quitterJeuButtonEntered(MouseEvent event) {
+		quitterJeuButton.setOpacity(0.8);
+		quitterJeuButton.setScaleX(quitterJeuButton.getScaleX()+0.1);
+		quitterJeuButton.setScaleY(quitterJeuButton.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void quitterJeuButtonExited(MouseEvent event) {
+		quitterJeuButton.setOpacity(1);
+		quitterJeuButton.setScaleX(quitterJeuButton.getScaleX()-0.1);
+		quitterJeuButton.setScaleY(quitterJeuButton.getScaleY()-0.1);
+	}
+
+	@FXML
+	void quitterJeuButtonPressed(MouseEvent event) {
+		Platform.exit();
+
+		button_clicked.playSoundMenu();
+	}
+
+	@FXML
+	void quitterJeuButtonPauseEntered(MouseEvent event) {
+		quitterJeuButtonPause.setOpacity(0.8);
+		quitterJeuButtonPause.setScaleX(quitterJeuButtonPause.getScaleX()+0.1);
+		quitterJeuButtonPause.setScaleY(quitterJeuButtonPause.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void quitterJeuButtonPauseExited(MouseEvent event) {
+		quitterJeuButtonPause.setOpacity(1);
+		quitterJeuButtonPause.setScaleX(quitterJeuButtonPause.getScaleX()-0.1);
+		quitterJeuButtonPause.setScaleY(quitterJeuButtonPause.getScaleY()-0.1);
+	}
+
+	@FXML
+	void quitterJeuButtonPausePressed(MouseEvent event) {
+		Platform.exit();
+
+		button_clicked.playSoundMenu();
+	}
+
+	@FXML
+	void recommencerButtonEntered(MouseEvent event) {
+		recommencerButton.setOpacity(0.8);
+		recommencerButton.setScaleX(recommencerButton.getScaleX()+0.1);
+		recommencerButton.setScaleY(recommencerButton.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void recommencerButtonExited(MouseEvent event) {
+		recommencerButton.setOpacity(1);
+		recommencerButton.setScaleX(recommencerButton.getScaleX()-0.1);
+		recommencerButton.setScaleY(recommencerButton.getScaleY()-0.1);
+	}
+
+	@FXML
+	void recommencerButtonPressed(MouseEvent event) {
+		pauseMenu.setVisible(false);
+		gameOverPane.setVisible(false);
+		joueur.setVie(12);
+		robotFantassin.setVie(10);
+		robotGeneral.setVie(20);
+		droneSentinelle.setVie(6);
+
+		joueurVue.setVisible(true);
+		robotFantassinVue.setVisible(true);
+		vieVue.setVisible(true);
+
+		joueur.setX(100);
+		joueur.setY(310);
+
+		robotFantassin.setX(300);
+		robotFantassin.setY(320);
+
+		bgSound.stop();
+		bgSound.playSound();
+
+		gameLoop.stop();
+		gameLoop.play();
+
+		button_clicked.playSoundMenu();
+	}
+
+	@FXML
+	void recommencerButtonPauseEntered(MouseEvent event) {
+		recommencerButtonPause.setOpacity(0.8);
+		recommencerButtonPause.setScaleX(recommencerButtonPause.getScaleX()+0.1);
+		recommencerButtonPause.setScaleY(recommencerButtonPause.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void recommencerButtonPauseExited(MouseEvent event) {
+		recommencerButtonPause.setOpacity(1);
+		recommencerButtonPause.setScaleX(recommencerButtonPause.getScaleX()-0.1);
+		recommencerButtonPause.setScaleY(recommencerButtonPause.getScaleY()-0.1);
+	}
+
+	@FXML
+	void recommencerButtonPausePressed(MouseEvent event) {
+		pauseMenu.setVisible(false);
+		gameOverPane.setVisible(false);
+		joueur.setVie(12);
+		robotFantassin.setVie(10);
+		robotGeneral.setVie(20);
+		droneSentinelle.setVie(6);
+
+		joueurVue.setVisible(true);
+		robotFantassinVue.setVisible(true);
+		vieVue.setVisible(true);
+
+		joueur.setX(100);
+		joueur.setY(310);
+
+		robotFantassin.setX(300);
+		robotFantassin.setY(320);
+
+		bgSound.stop();
+		bgSound.playSound();
+
+		gameLoop.stop();
+		gameLoop.play();
+
+		button_clicked.playSoundMenu();
+	}
+
+	@FXML
+	void nonButtonEntered(MouseEvent event) {
+		nonButton.setOpacity(0.8);
+		nonButton.setScaleX(nonButton.getScaleX()+0.1);
+		nonButton.setScaleY(nonButton.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void nonButtonExited(MouseEvent event) {
+		nonButton.setOpacity(1);
+		nonButton.setScaleX(nonButton.getScaleX()-0.1);
+		nonButton.setScaleY(nonButton.getScaleY()-0.1);
+	}
+
+	@FXML
+	void nonButtonPressed(MouseEvent event) {
+		joueur.prendreEnMain(null);
+		askIfReadyPane.setVisible(false);
+		button_clicked.playSoundMenu();
+	}
+
+
+
+	@FXML
+	void ouiButtonEntered(MouseEvent event) {
+		ouiButton.setOpacity(0.8);
+		ouiButton.setScaleX(ouiButton.getScaleX()+0.1);
+		ouiButton.setScaleY(ouiButton.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void ouiButtonExited(MouseEvent event) {
+		ouiButton.setOpacity(1);
+		ouiButton.setScaleX(ouiButton.getScaleX()-0.1);
+		ouiButton.setScaleY(ouiButton.getScaleY()-0.1);
+	}
+
+	@FXML
+	void ouiButtonPressed(MouseEvent event) {
+		finPartiePane.setVisible(true);
+
+		joueurVue.setVisible(false);
+		robotFantassinVue.setVisible(false);
+		droneSentinelleVue.setVisible(false);
+		robotGeneralVue.setVisible(false);
+
+		gameCompleted.playSound();
+		button_clicked.playSoundMenu();
+	}
+
+
+
+	@FXML
+	void quitterJeuButtonFinPartieEntered(MouseEvent event) {
+		quitterJeuButtonFinPartie.setOpacity(0.8);
+		quitterJeuButtonFinPartie.setScaleX(quitterJeuButtonFinPartie.getScaleX()+0.1);
+		quitterJeuButtonFinPartie.setScaleY(quitterJeuButtonFinPartie.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void quitterJeuButtonFinPartiePressed(MouseEvent event) {
+		Platform.exit();
+		button_clicked.playSoundMenu();
+	}
+
+	@FXML
+	void quitterJeuButtonFinPartieExited(MouseEvent event) {
+		quitterJeuButtonFinPartie.setOpacity(1);
+		quitterJeuButtonFinPartie.setScaleX(quitterJeuButtonFinPartie.getScaleX()-0.1);
+		quitterJeuButtonFinPartie.setScaleY(quitterJeuButtonFinPartie.getScaleY()-0.1);
+	}
+
+	@FXML
+	void recommencerButtonFinPartieEntered(MouseEvent event) {
+		recommencerButtonFinPartie.setOpacity(0.8);
+		recommencerButtonFinPartie.setScaleX(recommencerButtonFinPartie.getScaleX()+0.1);
+		recommencerButtonFinPartie.setScaleY(recommencerButtonFinPartie.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void recommencerButtonFinPartieExited(MouseEvent event) {
+		recommencerButtonFinPartie.setOpacity(1);
+		recommencerButtonFinPartie.setScaleX(recommencerButtonFinPartie.getScaleX()-0.1);
+		recommencerButtonFinPartie.setScaleY(recommencerButtonFinPartie.getScaleY()-0.1);
+	}
+
+	@FXML
+	void recommencerButtonFinPartiePressed(MouseEvent event) {
+
+		pauseMenu.setVisible(false);
+		gameOverPane.setVisible(false);
+		askIfReadyPane.setVisible(false);
+		finPartiePane.setVisible(false);
+		joueur.setVie(12);
+		robotFantassin.setVie(10);
+		robotGeneral.setVie(20);
+		droneSentinelle.setVie(6);
+
+		joueurVue.setVisible(true);
+		robotFantassinVue.setVisible(true);
+		vieVue.setVisible(true);
+
+		joueur.setX(100);
+		joueur.setY(310);
+
+		robotFantassin.setX(300);
+		robotFantassin.setY(320);
+
+		bgSound.stop();
+		bgSound.playSound();
+
+		gameLoop.stop();
+		gameLoop.play();
+
+		button_clicked.playSoundMenu();
+	}
+
 }
