@@ -40,36 +40,36 @@ On le surnomme "Vash the Stampede".
 Il possède une barre de vie limitée à 6 cœurs maximum, il récupère un demi-cœur toutes les trente secondes. Si le personnage n’a plus de cœur, il redémarre de zéro.
 ## Les différents ennemis
 
-Robot fantassin : Cet ennemi pourra se déplacer latéralement au sol à la même vitesse que le joueur, il ne peut attaquer le joueur que par combat rapproché (Il est armé d’une épée).
+**Robot fantassin** : Cet ennemi pourra se déplacer latéralement au sol à la même vitesse que le joueur, il ne peut attaquer le joueur que par combat rapproché (Il est armé d’une épée).
 (Drop: 3 engrenages)
 (Vie: 5 coeurs)
 (Dégâts: 2 coeurs)
 
-Drone sentinelle : Cet ennemi pourra se déplacer latéralement dans les airs légèrement plus vite que le joueur, il ne peut attaquer le joueur qu’à distance en tirant des missiles. Uniquement le flingue peut venir à bout de cet ennemi.
+**Drone sentinelle** : Cet ennemi pourra se déplacer latéralement dans les airs légèrement plus vite que le joueur, il ne peut attaquer le joueur qu’à distance en tirant des missiles. Uniquement le flingue peut venir à bout de cet ennemi.
 Cet ennemi n'apparaît pas tant que le joueur n’a pas le flingue.
 (Drop: 1 ressorts et 2 engrenages)
 (Vie: 3 coeurs)
 (Dégâts: 1.5 coeurs)
 
-Robot général : Cet ennemi est l’ennemi final, il apparaît une fois que tous les matériaux pour le vaisseau sont réunis (hormis le noyau d’énergie). Il pourra se déplacer latéralement au sol et en sautant (comme le joueur) plus vite que le joueur. Il peut attaquer le joueur au corps-à-corps avec une épée et à distance avec un flingue.
+**Robot général** : Cet ennemi est l’ennemi final, il apparaît une fois que tous les matériaux pour le vaisseau sont réunis (hormis le noyau d’énergie). Il pourra se déplacer latéralement au sol et en sautant (comme le joueur) plus vite que le joueur. Il peut attaquer le joueur au corps-à-corps avec une épée et à distance avec un flingue.
 (Drop: Noyau d’énergie)
 (Vie: 10 coeurs)
 (Dégâts flingue: 1.5 coeurs)	
 (Dégâts épée: 2 coeurs)
 ## Les armes et les matériaux
 
-Armes :
+**Armes** :
 	
     Epée (Utilisable dès le départ; Usage infini; Courte portée)
 		Dégâts : 2 coeurs 
 	Flingue  (Craft; Usage limité au nombre de munitions; Longue portée)
 		Dégâts : 1.5 coeurs
 
-Outils:
+**Outils** :
 	
     Pioche (Utilisable dès le départ; Usage infini; Courte portée)
 	
-Matériaux :
+**Matériaux** :
 
     Plaque de métal (Obtenable en cassant des débris)
 		Objet de craft
