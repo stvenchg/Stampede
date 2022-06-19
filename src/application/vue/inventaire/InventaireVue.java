@@ -113,7 +113,7 @@ public class InventaireVue extends Pane{
 		img1.setOnMouseClicked(mouseEvent -> {
 			if(mouseEvent.getButton() == MouseButton.PRIMARY) {
 				if (img1.getOpacity() == 1) {
-					joueur.getInventaire().ajouterObjet(6, 1);
+					joueur.getInventaire().ajouterObjet(6, 6);
 
 					joueur.getInventaire().ajouterObjet(5, -1);
 				}
