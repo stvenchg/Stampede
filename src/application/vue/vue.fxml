@@ -57,17 +57,17 @@
                         <Image url="@../ressources/menu/blurGameOver.jpg" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="160.0" fitWidth="574.0" layoutX="604.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="160.0" fitWidth="574.0" layoutX="605.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../ressources/menu/gameover.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="153.0" fitWidth="539.0" layoutX="491.0" layoutY="317.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="153.0" fitWidth="539.0" layoutX="490.0" layoutY="272.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../ressources/menu/vousetesmortText.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="recommencerButton" fitHeight="108.0" fitWidth="277.0" layoutX="625.0" layoutY="448.0" onMouseEntered="#recommencerButtonEntered" onMouseExited="#recommencerButtonExited" onMousePressed="#recommencerButtonPressed" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="recommencerButton" fitHeight="108.0" fitWidth="277.0" layoutX="625.0" layoutY="392.0" onMouseEntered="#recommencerButtonEntered" onMouseExited="#recommencerButtonExited" onMousePressed="#recommencerButtonPressed" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../ressources/menu/recommencerButton.png" />
                      </image>
@@ -75,7 +75,69 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <ImageView fx:id="quitterJeuButton" fitHeight="108.0" fitWidth="277.0" layoutX="624.0" layoutY="540.0" onMouseEntered="#quitterJeuButtonEntered" onMouseExited="#quitterJeuButtonExited" onMousePressed="#quitterJeuButtonPressed" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="quitterJeuButton" fitHeight="108.0" fitWidth="277.0" layoutX="624.0" layoutY="484.0" onMouseEntered="#quitterJeuButtonEntered" onMouseExited="#quitterJeuButtonExited" onMousePressed="#quitterJeuButtonPressed" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/quitterButton.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </Pane>
+
+                        <Pane fx:id="askIfReadyPane" layoutX="495.0" layoutY="111.0" prefHeight="230.0" prefWidth="529.0">
+               <children>
+                  <ImageView fitHeight="148.0" fitWidth="458.0" layoutX="36.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/vaisseauPrisText.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="ouiButton" fitHeight="79.0" fitWidth="201.0" layoutX="36.0" layoutY="120.0" onMouseEntered="#ouiButtonEntered" onMouseExited="#ouiButtonExited" onMousePressed="#ouiButtonPressed" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/ouiButton.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fx:id="nonButton" fitHeight="79.0" fitWidth="201.0" layoutX="295.0" layoutY="120.0" onMouseEntered="#nonButtonEntered" onMouseExited="#nonButtonExited" onMousePressed="#nonButtonPressed" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/nonButton.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </Pane>
+
+            <Pane fx:id="finPartiePane" prefHeight="906.0" prefWidth="1535.0">
+               <children>
+                  <ImageView fitHeight="913.0" fitWidth="1550.0" layoutY="-12.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/blurMain.jpg" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="125.0" fitWidth="572.0" layoutX="482.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/partieTermineeText.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="78.0" fitWidth="321.0" layoutX="607.0" layoutY="303.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/missionAccomplieText.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="recommencerButtonFinPartie" fitHeight="108.0" fitWidth="277.0" layoutX="632.0" layoutY="425.0" onMouseEntered="#recommencerButtonFinPartieEntered" onMouseExited="#recommencerButtonFinPartieExited" onMousePressed="#recommencerButtonFinPartiePressed" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/recommencerButton.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fx:id="quitterJeuButtonFinPartie" fitHeight="108.0" fitWidth="277.0" layoutX="632.0" layoutY="516.0" onMouseEntered="#quitterJeuButtonFinPartieEntered" onMouseExited="#quitterJeuButtonFinPartieExited" onMousePressed="#quitterJeuButtonFinPartiePressed" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../ressources/menu/quitterButton.png" />
                      </image>

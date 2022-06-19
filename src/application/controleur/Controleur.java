@@ -8,6 +8,8 @@ import application.controleur.map.ObservateurMap;
 import application.modele.*;
 import application.modele.objet.armes.Epee;
 import application.modele.objet.armes.Pistolet;
+import application.modele.objet.materiaux.Balle;
+import application.modele.objet.materiaux.Vaisseau;
 import application.vue.*;
 import application.vue.inventaire.InventaireVue;
 import javafx.animation.KeyFrame;
@@ -63,6 +65,25 @@ public class Controleur implements Initializable {
 	private Pane pauseMenu;
 	@FXML
 	private Pane gameOverPane;
+
+	@FXML
+	private Pane askIfReadyPane;
+
+	@FXML
+	private ImageView nonButton;
+
+	@FXML
+	private ImageView ouiButton;
+
+	@FXML
+	private Pane finPartiePane;
+
+	@FXML
+	private ImageView quitterJeuButtonFinPartie;
+
+	@FXML
+	private ImageView recommencerButtonFinPartie;
+
 	private ObservableVie obsVie;
 	private JoueurVue joueurVue;
 	private VieVue vieVue;
@@ -306,7 +327,7 @@ public class Controleur implements Initializable {
 			gameLoop.stop();
 			gameOverPane.setVisible(true);
 			bgSound.stop();
-			die.playSound();
+			gameOver.playSound();
 			joueurVue.setVisible(false);
 			robotFantassinVue.setVisible(false);
 			robotGeneralVue.setVisible(false);
@@ -341,6 +362,10 @@ public class Controleur implements Initializable {
 
 		if (joueur.getEnMain() instanceof Pistolet && joueur.getTrajectoire() == 0 && joueur.estVivant())
 			joueurVue.setImage(10);
+
+		if (joueur.getEnMain() instanceof Vaisseau) {
+			askIfReadyPane.setVisible(true);
+		}
 
 		joueurVue.setScaleX(joueur.getDirection());
 		robotFantassinVue.setScaleX(robotFantassin.getDirection());
@@ -382,6 +407,8 @@ public class Controleur implements Initializable {
 
 		pauseMenu.setVisible(false);
 		gameOverPane.setVisible(false);
+		askIfReadyPane.setVisible(false);
+		finPartiePane.setVisible(false);
 	}
 
 	private void faireBindEtListener() {
@@ -468,6 +495,7 @@ public class Controleur implements Initializable {
 	@FXML
 	void optionsJeuButtonPressed(MouseEvent event) {
 		button_clicked.playSoundMenu();
+		joueur.getInventaire().ajouterObjet(7, 1);
 	}
 
 	@FXML
@@ -604,5 +632,129 @@ public class Controleur implements Initializable {
 		button_clicked.playSoundMenu();
 	}
 
+	@FXML
+	void nonButtonEntered(MouseEvent event) {
+		nonButton.setOpacity(0.8);
+		nonButton.setScaleX(nonButton.getScaleX()+0.1);
+		nonButton.setScaleY(nonButton.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void nonButtonExited(MouseEvent event) {
+		nonButton.setOpacity(1);
+		nonButton.setScaleX(nonButton.getScaleX()-0.1);
+		nonButton.setScaleY(nonButton.getScaleY()-0.1);
+	}
+
+	@FXML
+	void nonButtonPressed(MouseEvent event) {
+		joueur.prendreEnMain(null);
+		askIfReadyPane.setVisible(false);
+		button_clicked.playSoundMenu();
+	}
+
+
+
+	@FXML
+	void ouiButtonEntered(MouseEvent event) {
+		ouiButton.setOpacity(0.8);
+		ouiButton.setScaleX(ouiButton.getScaleX()+0.1);
+		ouiButton.setScaleY(ouiButton.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void ouiButtonExited(MouseEvent event) {
+		ouiButton.setOpacity(1);
+		ouiButton.setScaleX(ouiButton.getScaleX()-0.1);
+		ouiButton.setScaleY(ouiButton.getScaleY()-0.1);
+	}
+
+	@FXML
+	void ouiButtonPressed(MouseEvent event) {
+		finPartiePane.setVisible(true);
+
+		joueurVue.setVisible(false);
+		robotFantassinVue.setVisible(false);
+		droneSentinelleVue.setVisible(false);
+		robotGeneralVue.setVisible(false);
+
+		gameCompleted.playSound();
+		button_clicked.playSoundMenu();
+	}
+
+
+
+	@FXML
+	void quitterJeuButtonFinPartieEntered(MouseEvent event) {
+		quitterJeuButtonFinPartie.setOpacity(0.8);
+		quitterJeuButtonFinPartie.setScaleX(quitterJeuButtonFinPartie.getScaleX()+0.1);
+		quitterJeuButtonFinPartie.setScaleY(quitterJeuButtonFinPartie.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void quitterJeuButtonFinPartiePressed(MouseEvent event) {
+		Platform.exit();
+		button_clicked.playSoundMenu();
+	}
+
+	@FXML
+	void quitterJeuButtonFinPartieExited(MouseEvent event) {
+		quitterJeuButtonFinPartie.setOpacity(1);
+		quitterJeuButtonFinPartie.setScaleX(quitterJeuButtonFinPartie.getScaleX()-0.1);
+		quitterJeuButtonFinPartie.setScaleY(quitterJeuButtonFinPartie.getScaleY()-0.1);
+	}
+
+	@FXML
+	void recommencerButtonFinPartieEntered(MouseEvent event) {
+		recommencerButtonFinPartie.setOpacity(0.8);
+		recommencerButtonFinPartie.setScaleX(recommencerButtonFinPartie.getScaleX()+0.1);
+		recommencerButtonFinPartie.setScaleY(recommencerButtonFinPartie.getScaleY()+0.1);
+
+		button_hover.playSoundMenu();
+	}
+
+	@FXML
+	void recommencerButtonFinPartieExited(MouseEvent event) {
+		recommencerButtonFinPartie.setOpacity(1);
+		recommencerButtonFinPartie.setScaleX(recommencerButtonFinPartie.getScaleX()-0.1);
+		recommencerButtonFinPartie.setScaleY(recommencerButtonFinPartie.getScaleY()-0.1);
+	}
+
+	@FXML
+	void recommencerButtonFinPartiePressed(MouseEvent event) {
+
+		pauseMenu.setVisible(false);
+		gameOverPane.setVisible(false);
+		askIfReadyPane.setVisible(false);
+		finPartiePane.setVisible(false);
+		joueur.setVie(12);
+		robotFantassin.setVie(10);
+		robotGeneral.setVie(20);
+		droneSentinelle.setVie(6);
+
+		joueurVue.setVisible(true);
+		robotFantassinVue.setVisible(true);
+		vieVue.setVisible(true);
+
+		joueur.setX(100);
+		joueur.setY(310);
+
+		robotFantassin.setX(300);
+		robotFantassin.setY(320);
+
+		bgSound.stop();
+		bgSound.playSound();
+
+		gameLoop.stop();
+		gameLoop.play();
+
+		button_clicked.playSoundMenu();
+	}
 
 }

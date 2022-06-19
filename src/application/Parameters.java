@@ -19,5 +19,7 @@ public class Parameters {
     public static SoundEffect menuSound = new SoundEffect("application/ressources/sounds/menuThemeSound.wav");
     public static SoundEffect walk = new SoundEffect("application/ressources/sounds/walk.wav");
     public static SoundEffect jump = new SoundEffect("application/ressources/sounds/jump.wav");
+    public static SoundEffect gameOver = new SoundEffect("application/ressources/sounds/gameOverSound.wav");
 
+    public static SoundEffect gameCompleted = new SoundEffect("application/ressources/sounds/gameCompleted.wav");
 }
