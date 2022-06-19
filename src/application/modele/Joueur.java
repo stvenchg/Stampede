@@ -19,9 +19,9 @@ public class Joueur extends Personnage {
 	public void ajouterRessourceInitial(){
 		inventaire.ajouterObjet(0, 1);
 		inventaire.ajouterObjet(1, 1);
-		inventaire.ajouterObjet(5, 30);
-		inventaire.ajouterObjet(8, 9);
-		inventaire.ajouterObjet(9, 30);
+		inventaire.ajouterObjet(5, 5);
+		inventaire.ajouterObjet(8, 5);
+		inventaire.ajouterObjet(9, 10);
 		//inventaire.ajouterObjet(10, 1);
 		this.enMain = inventaire.getObjet(1);
 	}

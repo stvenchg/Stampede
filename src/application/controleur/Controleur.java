@@ -459,17 +459,17 @@ public class Controleur implements Initializable {
 
 	private void afficherInfosEnConsole() {
 //		System.out.println("Direction joueur:" + joueur.getDirection());
-		System.out.println("Joueur x:" + joueur.getX());
-		System.out.println("Joueur y:" + joueur.getY());
-		System.out.println("Robot x:" + robotFantassin.getX());
-		System.out.println("Robot y:" + robotFantassin.getY());
+		//System.out.println("Joueur x:" + joueur.getX());
+		//System.out.println("Joueur y:" + joueur.getY());
+		//System.out.println("Robot x:" + robotFantassin.getX());
+		//System.out.println("Robot y:" + robotFantassin.getY());
 //		System.out.println("Direction robot:" + robotFantassin.getDirection());
-		System.out.println("Vie du joueur: " + joueur.vieProperty().getValue());
-		System.out.println(env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())));
-		System.out.println("Vie du robot fantassin: " + robotFantassin.vieProperty().getValue());
-		System.out.println("Vie du dronde sentinelle: " + droneSentinelle.vieProperty().getValue());
-		System.out.println(this.env.getListePersonnages());
-		System.out.println(robotFantassin.estVivant());
+		//System.out.println("Vie du joueur: " + joueur.vieProperty().getValue());
+		//System.out.println(env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())));
+		//System.out.println("Vie du robot fantassin: " + robotFantassin.vieProperty().getValue());
+		//System.out.println("Vie du dronde sentinelle: " + droneSentinelle.vieProperty().getValue());
+		//System.out.println(this.env.getListePersonnages());
+		//System.out.println(robotFantassin.estVivant());
 	}
 
 	public InventaireVue getInventaireVue() {
