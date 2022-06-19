@@ -1,19 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.TilePane?>
-<?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="root" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.Controleur">
+<BorderPane fx:id="root" prefHeight="896.0" prefWidth="1520.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.Controleur">
    <center>
-      <Pane fx:id="paneCentral" maxHeight="500.0" maxWidth="900.0" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT">
+      <Pane fx:id="paneCentral" maxHeight="896.0" maxWidth="1520.0" prefHeight="896.0" prefWidth="1520.0" BorderPane.alignment="TOP_LEFT">
          <children>
             <TilePane fx:id="panneauJeu" maxHeight="896.0" maxWidth="1520.0" prefHeight="896.0" prefWidth="1520.0" />
+            <Pane fx:id="pauseMenu" prefHeight="896.0" prefWidth="1520.0">
+               <children>
+                  <ImageView fitHeight="907.0" fitWidth="1536.0" layoutX="-9.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/blurMain.jpg" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="160.0" fitWidth="574.0" layoutX="473.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/pauseText.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="recommencerButton" fitHeight="108.0" fitWidth="277.0" layoutX="624.0" layoutY="303.0" onMouseEntered="#recommencerButtonEntered" onMouseExited="#recommencerButtonExited" onMousePressed="#recommencerButtonPressed" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/recommencerButton.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fx:id="optionsJeuButton" fitHeight="108.0" fitWidth="277.0" layoutX="623.0" layoutY="395.0" onMouseEntered="#optionsJeuButtonEntered" onMouseExited="#optionsJeuButtonExited" onMousePressed="#optionsJeuButtonPressed" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/optionsButton.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fx:id="quitterJeuButton" fitHeight="108.0" fitWidth="277.0" layoutX="624.0" layoutY="486.0" onMouseEntered="#quitterJeuButtonEntered" onMouseExited="#quitterJeuButtonExited" onMousePressed="#quitterJeuButtonPressed" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/quitterButton.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </Pane>
          </children>
       </Pane>
    </center>
