@@ -1,36 +1,24 @@
 package application.controleur;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import application.controleur.Controleur;
-import application.modele.Joueur;
 import application.modele.Personnage;
-import application.modele.SoundEffect;
 import application.vue.JoueurVue;
-import javafx.animation.Interpolator;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-
+import static application.Parameters.jump;
+import static application.Parameters.walk;
 
 public class DeplacementAnimation {
 
 	public SimpleIntegerProperty direction;
-
-	private static SoundEffect walk = new SoundEffect("application/ressources/sounds/walk.wav");
-	private static SoundEffect jump = new SoundEffect("application/ressources/sounds/jump.wav");
-
 	public static void sauter(Personnage joueur, JoueurVue joueurVue) {
 
 		if ((joueur.getY()-80) < 0) {
-			System.out.println("Limite hauteur de la carte atteinte");
+			System.out.println("Limite hauteur de la carte atteinte.");
 		}
 		else if (joueur.estVivant() && !joueur.getSaute()){
 
@@ -54,7 +42,6 @@ public class DeplacementAnimation {
 				Image spriteJoueurRetombeSaut = joueurVue.getImages().getImage(1);
 				images.add(spriteJoueurRetombeSaut);
 				images.add(joueurVue.getImages().getImage(0));
-//					walk.playSound();
 
 				Transition animation = new Transition() {
 					{
@@ -74,7 +61,6 @@ public class DeplacementAnimation {
 			});
 		}
 	}
-
 
 	static int count = 3;
 	public static void allerDroite(Personnage joueur, JoueurVue joueurVue) {
@@ -113,12 +99,6 @@ public class DeplacementAnimation {
 			droite.setByX(+10);
 			walk.playSound();
 			droite.play();
-
-
-
-//			droite.setOnFinished(e -> {
-//				joueurVue.setImage(joueurVue.getImages().getImage(0));
-//			});
 		}
 
 	}
@@ -161,12 +141,6 @@ public class DeplacementAnimation {
 			gauche.setByX(-10);
 			walk.playSound();
 			gauche.play();
-
-
-//			gauche.setOnFinished(e -> {
-//			joueurVue.setImage(joueurVue.getImages().getImage(0));
-//		});
-
 		}
 
 	}

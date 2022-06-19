@@ -85,8 +85,6 @@ public class KeyPressed implements EventHandler<KeyEvent> {
 				case E:
 					controleur.getInventaireVue().affichageInventaire();
 					break;
-				case G:
-					joueurVue.setImage(joueurVue.getImages().getImage(10));
 				case ESCAPE:
 					if (pauseMenu.isVisible()) {
 						pauseMenu.setVisible(false);

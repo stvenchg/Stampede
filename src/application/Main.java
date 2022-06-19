@@ -13,12 +13,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 
 		Image fond = new Image("application/ressources/menu/blurMain.jpg");
-
-		BackgroundImage imageFond = new BackgroundImage(fond, BackgroundRepeat.SPACE,
-				BackgroundRepeat.SPACE,
-				BackgroundPosition.DEFAULT,
-				BackgroundSize.DEFAULT);
-
+		BackgroundImage imageFond = new BackgroundImage(fond, BackgroundRepeat.SPACE, BackgroundRepeat.SPACE, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 		Background background = new Background(imageFond);
 
 		try {

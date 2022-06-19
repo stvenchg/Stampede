@@ -2,10 +2,8 @@ package application.controleur;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import application.controleur.inventaire.ObservateurObjet;
 import application.controleur.inventaire.ObservateurResources;
-
 import application.controleur.map.ObservateurMap;
 import application.modele.*;
 import application.modele.objet.armes.Epee;
@@ -32,16 +30,11 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import static menu.controleur.MenuControleur.button_clicked;
-import static menu.controleur.MenuControleur.button_hover;
-
+import static application.Parameters.*;
 public class Controleur implements Initializable {
 
 	private Environnement env;
-
 	private Timeline gameLoop;
 	private int temps;
 	@FXML
@@ -60,6 +53,10 @@ public class Controleur implements Initializable {
 	@FXML
 	private ImageView optionsJeuButton;
 
+	@FXML
+	private Pane pauseMenu;
+	@FXML
+	private Pane gameOverPane;
 	private ObservableVie obsVie;
 	private JoueurVue joueurVue;
 	private VieVue vieVue;
@@ -71,33 +68,19 @@ public class Controleur implements Initializable {
 	private Joueur joueur;
 	private RobotGeneral robotGeneral;
 	private RobotGeneralVue robotGeneralVue;
-	private SoundEffect die = new SoundEffect("application/ressources/sounds/boss_die.wav");
 	private BooleanProperty mine;
 	private int tempInit;
 	private InventaireVue inventaireVue;
 	boolean isGameOverAdded = false;
-	private SoundEffect bgSound = new SoundEffect("application/ressources/sounds/bgSound.wav");
-
-	private SoundEffect gun = new SoundEffect("application/ressources/sounds/gun.wav");
-
-	@FXML
-	private Pane pauseMenu;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		Image fond = new Image("application/ressources/map/bgorange.png");
-
-		BackgroundImage imageFond = new BackgroundImage(fond, BackgroundRepeat.SPACE,
-				BackgroundRepeat.SPACE,
-				BackgroundPosition.DEFAULT,
-				BackgroundSize.DEFAULT);
-
+		BackgroundImage imageFond = new BackgroundImage(fond, BackgroundRepeat.SPACE, BackgroundRepeat.SPACE, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 		Background background = new Background(imageFond);
 
-
 		bgSound.playSound();
-
 		root.setBackground(background);
 
 		initialiserVariables();
@@ -155,6 +138,7 @@ public class Controleur implements Initializable {
 
 		});
 
+
 		robotGeneralVue.setOnMouseClicked(event -> {
 			if (joueur.getEnMain() instanceof Pistolet ) {
 				robotGeneral.perdreVie(3);
@@ -186,9 +170,8 @@ public class Controleur implements Initializable {
 		temps = 0;
 		gameLoop.setCycleCount(Timeline.INDEFINITE);
 
-		KeyFrame kf = new KeyFrame(Duration.seconds(0.002), // 1 frame = 0.002 seconde
+		KeyFrame kf = new KeyFrame(Duration.seconds(0.002),
 				(ev -> {
-
 					if (temps % 5 == 0) {
 						faireTour();
 						afficherInfosEnConsole();
@@ -200,19 +183,16 @@ public class Controleur implements Initializable {
 	}
 
 	private void faireTour() {
-		//this.env.update();
 		joueur.gravite();
 		robotFantassin.gravite();
 		robotGeneral.gravite();
 
 		// regenaration de la vie du perso
-
 		if (joueur.estVivant() && joueur.getVie() < 12 && temps % 15000 == 0)
 			joueur.ajouterVie(1);
 
 
 		//action du robot fantassin
-
 		if (robotFantassin.estVivant() && joueur.estVivant() && robotFantassinVue.isVisible()) {
 			if (joueur.getX() > robotFantassin.getX() && (joueur.getX() - robotFantassin.getX()) > 50) {
 				robotFantassin.setX(robotFantassin.getX() + 1);
@@ -236,9 +216,7 @@ public class Controleur implements Initializable {
 		}
 
 
-
 		//action du drone sentinelle
-
 		if (droneSentinelle.estVivant() && joueur.estVivant() && droneSentinelleVue.isVisible()) {
 			if (joueur.getX() > droneSentinelle.getX() && (joueur.getX() - droneSentinelle.getX()) > 50) {
 				droneSentinelle.setX(droneSentinelle.getX() + 2);
@@ -260,8 +238,7 @@ public class Controleur implements Initializable {
 			droneSentinelleVue.setVisible(true);
 		}
 
-		//action du robot general
-
+		// action du robot general
 		if (robotGeneral.estVivant() && joueur.estVivant() && robotGeneralVue.isVisible()) {
 			if (joueur.getX() > robotGeneral.getX() && (joueur.getX() - robotGeneral.getX()) > 50) {
 				robotGeneral.setX(robotGeneral.getX() + 1);
@@ -281,122 +258,18 @@ public class Controleur implements Initializable {
 			}
 		}
 
-
-
 		// Collision joueur
-
-		if (env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 1 ||
-				env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 2 ||
-				env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 3 ||
-				env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 4 ||
-				env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 5 ||
-				env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 6) {
-
-
-			joueur.setY(joueur.getY() - 5);
-			joueur.setSaute(false);
-		}
-
-		if (env.mapProperty().get(env.getTileBas(joueur.getX(), joueur.getY())) == 7) {
-			this.joueur.meurt();
-			joueurVue.setVisible(false);
-			joueur.setY(joueur.getY() - 5);
-		}
-
-		if (env.mapProperty().get(env.getTileBasDroite(joueur.getX(), joueur.getY())) == 1 ||
-				env.mapProperty().get(env.getTileBasDroite(joueur.getX(), joueur.getY())) == 3) {
-			System.out.println("TOUCHE BAS DROITE");
-			joueur.setY(joueur.getY() - 5);
-		}
-
-		if (env.mapProperty().get(env.getTileBasGauche(joueur.getX(), joueur.getY())) == 1 ||
-				env.mapProperty().get(env.getTileBasDroite(joueur.getX(), joueur.getY())) == 3) {
-			System.out.println("TOUCHE BAS GAUCHE");
-			joueur.setY(joueur.getY() - 5);
-		}
-
-		if (env.mapProperty().get(env.getTileHautGauche(joueur.getX(), joueur.getY())) == 2) {
-			System.out.println("TOUCHE HAUT GAUCHE");
-			joueur.setX(joueur.getX() + 5);
-		}
-
-		if (env.mapProperty().get(env.getTileHautDroite(joueur.getX(), joueur.getY())) == 2) {
-			System.out.println("TOUCHE HAUT DROITE");
-			joueur.setX(joueur.getX() - 5);
-		}
+		Collisions Joueur = new Collisions(env, joueur, joueurVue);
+		Joueur.collisionJoueur();
 
 
 		// Collision robot
-
-		if (env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
-				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 2 ||
-				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 3 ||
-				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 4 ||
-				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 5 ||
-				env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 6) {
-
-			robotFantassin.setY(robotFantassin.getY() - 5);
-
-		}
-		if (env.mapProperty().get(env.getTileBas(robotFantassin.getX(), robotFantassin.getY())) == 7) {
-			this.robotFantassin.meurt();
-			robotFantassin.setY(robotFantassin.getY() - 5);
-		}
-
-
-		if (env.mapProperty().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
-				env.mapProperty().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 3) {
-			robotFantassin.setY(robotFantassin.getY() - 5);
-		}
-
-		if (env.mapProperty().get(env.getTileBasGauche(robotFantassin.getX(), robotFantassin.getY())) == 1 ||
-				env.mapProperty().get(env.getTileBasDroite(robotFantassin.getX(), robotFantassin.getY())) == 3) {
-			robotFantassin.setY(robotFantassin.getY() - 5);
-		}
-
-		if (env.mapProperty().get(env.getTileHautGauche(robotFantassin.getX(), robotFantassin.getY())) == 2) {
-			robotFantassin.setX(robotFantassin.getX() + 5);
-		}
-
-		if (env.mapProperty().get(env.getTileHautDroite(robotFantassin.getX(), robotFantassin.getY())) == 2) {
-			robotFantassin.setX(robotFantassin.getX() - 5);
-		}
+		Collisions RobotFantassin = new Collisions(env, robotFantassin, robotFantassinVue);
+		RobotFantassin.collisionRobotFantassin();
 
 		// Collisions Robot General
-
-		if (env.mapProperty().get(env.getTileBasGeneral(robotGeneral.getX(), robotGeneral.getY())) == 1 ||
-				env.mapProperty().get(env.getTileBasGeneral(robotGeneral.getX(), robotGeneral.getY())) == 2 ||
-				env.mapProperty().get(env.getTileBasGeneral(robotGeneral.getX(), robotGeneral.getY())) == 3 ||
-				env.mapProperty().get(env.getTileBasGeneral(robotGeneral.getX(), robotGeneral.getY())) == 4 ||
-				env.mapProperty().get(env.getTileBasGeneral(robotGeneral.getX(), robotGeneral.getY())) == 5 ||
-				env.mapProperty().get(env.getTileBasGeneral(robotGeneral.getX(), robotGeneral.getY())) == 6) {
-
-			robotGeneral.setY(robotGeneral.getY() - 5);
-
-		}
-		if (env.mapProperty().get(env.getTileBasGeneral(robotGeneral.getX(), robotGeneral.getY())) == 7) {
-			this.robotGeneral.meurt();
-			robotGeneral.setY(robotGeneral.getY() - 5);
-		}
-
-
-		if (env.mapProperty().get(env.getTileBasDroiteGeneral(robotGeneral.getX(), robotGeneral.getY())) == 1 ||
-				env.mapProperty().get(env.getTileBasDroiteGeneral(robotGeneral.getX(), robotGeneral.getY())) == 3) {
-			robotGeneral.setY(robotGeneral.getY() - 5);
-		}
-
-		if (env.mapProperty().get(env.getTileBasGaucheGeneral(robotGeneral.getX(), robotGeneral.getY())) == 1 ||
-				env.mapProperty().get(env.getTileBasDroiteGeneral(robotGeneral.getX(), robotGeneral.getY())) == 3) {
-			robotGeneral.setY(robotGeneral.getY() - 5);
-		}
-
-		if (env.mapProperty().get(env.getTileHautGauche(robotGeneral.getX(), robotGeneral.getY())) == 2) {
-			robotGeneral.setX(robotGeneral.getX() + 5);
-		}
-
-		if (env.mapProperty().get(env.getTileHautDroiteGeneral(robotGeneral.getX(), robotGeneral.getY())) == 2) {
-			robotGeneral.setX(robotGeneral.getX() - 5);
-		}
+		Collisions RobotGeneral = new Collisions(env, robotGeneral, robotGeneralVue);
+		RobotGeneral.collisionRobotGeneral();
 
 		// Gestion des morts
 
@@ -404,25 +277,14 @@ public class Controleur implements Initializable {
 			joueurVue.setImage(9);
 			joueurVue.setLayoutY(joueurVue.getY() + 20);
 
-			ImageView gameover = new ImageView("application/ressources/menu/gameover.png");
-			gameover.setFitWidth(300);
-			gameover.setFitHeight(200);
-			gameover.setLayoutX((panneauJeu.getMaxWidth() / 3) + 100);
-			gameover.setLayoutY(30);
-
-			if (!isGameOverAdded) {
-				paneCentral.getChildren().add(gameover);
-				TranslateTransition gameover_down = new TranslateTransition(Duration.millis(250), gameover);
-				gameover_down.setByY(+40);
-				gameover_down.play();
-				die.playSound();
-				isGameOverAdded = true;
-			}
-
-			if (temps % 1000 == 0) {
-				gameLoop.stop();
-			}
-
+			gameLoop.stop();
+			gameOverPane.setVisible(true);
+			bgSound.stop();
+			die.playSound();
+			joueurVue.setVisible(false);
+			robotFantassinVue.setVisible(false);
+			robotGeneralVue.setVisible(false);
+			droneSentinelleVue.setVisible(false);
 		}
 
 		if (!robotFantassin.estVivant()) {
@@ -451,7 +313,7 @@ public class Controleur implements Initializable {
 		this.env = new Environnement();
 
 		// création de la vue de la map
-		this.carteVue = new CarteVue(env, panneauJeu, 95, 68);
+		this.carteVue = new CarteVue(env, panneauJeu, largeurMap, hauteurMap);
 
 		// Création du joueur et de la vue du joueur
 		this.joueur = this.env.getJoueur();
@@ -469,8 +331,6 @@ public class Controleur implements Initializable {
 		this.robotFantassin = this.env.getRobotFantassin();
 		this.robotFantassinVue = new RobotFantassinVue();
 
-
-
 		// Création d'une sentinelle et de sa vue
 		this.droneSentinelle = this.env.getDroneSentinelle();
 		this.droneSentinelleVue = new DroneSentinelleVue();
@@ -481,7 +341,7 @@ public class Controleur implements Initializable {
 		this.robotGeneralVue = new RobotGeneralVue();
 
 		pauseMenu.setVisible(false);
-
+		gameOverPane.setVisible(false);
 	}
 
 	private void faireBindEtListener() {
@@ -612,6 +472,7 @@ public class Controleur implements Initializable {
 	@FXML
 	void recommencerButtonPressed(MouseEvent event) {
 		pauseMenu.setVisible(false);
+		gameOverPane.setVisible(false);
 		joueur.setVie(12);
 		robotFantassin.setVie(10);
 		robotGeneral.setVie(20);
@@ -635,5 +496,4 @@ public class Controleur implements Initializable {
 
 		button_clicked.playSoundMenu();
 	}
-
 }

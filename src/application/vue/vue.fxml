@@ -50,6 +50,41 @@
                   </ImageView>
                </children>
             </Pane>
+            <Pane fx:id="gameOverPane" prefHeight="896.0" prefWidth="1520.0">
+               <children>
+                  <ImageView fitHeight="896.0" fitWidth="1520.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/blurMain.jpg" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="160.0" fitWidth="574.0" layoutX="604.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/gameover.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="153.0" fitWidth="539.0" layoutX="491.0" layoutY="317.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/vousetesmortText.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="recommencerButton" fitHeight="108.0" fitWidth="277.0" layoutX="625.0" layoutY="448.0" onMouseEntered="#recommencerButtonEntered" onMouseExited="#recommencerButtonExited" onMousePressed="#recommencerButtonPressed" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/recommencerButton.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fx:id="quitterJeuButton" fitHeight="108.0" fitWidth="277.0" layoutX="624.0" layoutY="540.0" onMouseEntered="#quitterJeuButtonEntered" onMouseExited="#quitterJeuButtonExited" onMousePressed="#quitterJeuButtonPressed" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../ressources/menu/quitterButton.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </Pane>
          </children>
       </Pane>
    </center>
