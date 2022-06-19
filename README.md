@@ -41,7 +41,7 @@ Il possède une barre de vie limitée à 6 cœurs maximum, il récupère un demi
 ## Les différents ennemis
 
 **Robot fantassin** : Cet ennemi pourra se déplacer latéralement au sol à la même vitesse que le joueur, il ne peut attaquer le joueur que par combat rapproché (Il est armé d’une épée).
-(Drop: 3 engrenages)
+(Drop: 1 engrenage et 1 ressort)
 (Vie: 5 coeurs)
 (Dégâts: 2 coeurs)
 
